@@ -1,0 +1,26 @@
+{
+  "character": {
+    "run": "assets/character/cat_run.png"
+  },
+  "obstacles": {
+    "passable": "assets/obstacles/passable.png",
+    "instantFail": "assets/obstacles/instantFail.png",
+    "slowdown": "assets/obstacles/slowdown.png"
+  },
+  "enemies": {
+    "dog": "assets/dogs/dog.png"
+  },
+  "backgrounds": {
+    "sky": "assets/backgrounds/sky.png",
+    "ground": "assets/backgrounds/ground.png"
+  },
+  "powerups": {
+    "speedBoost": "assets/powerups/speedBoost.png",
+    "shield": "assets/powerups/shield.png"
+  },
+  "ui": {
+    "revivePanel": "assets/ui/revivePanel.png",
+    "gameOver": "assets/ui/gameOver.png"
+  },
+  "appIcon": "ios/CatRunner/Assets.xcassets/AppIcon.appiconset/"
+}

@@ -1,0 +1,106 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://catrunner/config/variant.schema.json",
+  "title": "VariantConfig",
+  "description": "JSON Schema for config/default/variant.json — engine, obstacles, powerUps, difficultyScaling, monetization.",
+  "type": "object",
+  "required": ["engine", "obstacles", "powerUps", "difficultyScaling", "monetization"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string", "description": "Path to this schema for editor/validator." },
+    "engine": {
+      "type": "object",
+      "required": ["lanes", "playerStartLane", "segmentDurationSeconds", "jumpDurationSeconds", "slideDurationSeconds", "baseSpeed", "deterministicPhysics"],
+      "additionalProperties": false,
+      "properties": {
+        "lanes": { "type": "integer", "minimum": 1, "maximum": 10, "default": 5 },
+        "playerStartLane": { "type": "integer", "minimum": 0, "maximum": 4, "default": 2 },
+        "segmentDurationSeconds": {
+          "type": "object",
+          "required": ["min", "max"],
+          "additionalProperties": false,
+          "properties": {
+            "min": { "type": "number", "minimum": 0.5, "exclusiveMaximum": 60 },
+            "max": { "type": "number", "minimum": 0.5, "maximum": 60 }
+          }
+        },
+        "jumpDurationSeconds": { "type": "number", "minimum": 0.1, "maximum": 2 },
+        "slideDurationSeconds": { "type": "number", "minimum": 0.1, "maximum": 2 },
+        "baseSpeed": { "type": "number", "minimum": 0.1 },
+        "deterministicPhysics": { "type": "boolean" }
+      }
+    },
+    "obstacles": {
+      "type": "object",
+      "required": ["types", "segmentDurationSeconds", "clusterConfig"],
+      "additionalProperties": false,
+      "properties": {
+        "types": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["id", "laneSpan"],
+            "additionalProperties": false,
+            "properties": {
+              "id": { "type": "string", "enum": ["passable", "instantFail", "slowdown"] },
+              "laneSpan": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 2,
+                "items": { "type": "integer", "minimum": 1, "maximum": 5 }
+              }
+            }
+          }
+        },
+        "segmentDurationSeconds": { "type": "number", "minimum": 0.5, "maximum": 60 },
+        "clusterConfig": {
+          "type": "object",
+          "required": ["enabled", "minGroupSize", "maxGroupSize", "layout"],
+          "additionalProperties": false,
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "minGroupSize": { "type": "integer", "minimum": 1, "maximum": 5 },
+            "maxGroupSize": { "type": "integer", "minimum": 1, "maximum": 5 },
+            "layout": { "type": "string", "enum": ["linear", "wide"] }
+          }
+        }
+      }
+    },
+    "powerUps": {
+      "type": "object",
+      "required": ["types", "maxActive", "spawnProbability", "placementRule"],
+      "additionalProperties": false,
+      "properties": {
+        "types": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["speedBoost", "shield"] },
+          "uniqueItems": true
+        },
+        "maxActive": { "type": "integer", "minimum": 0, "maximum": 5 },
+        "spawnProbability": { "type": "number", "minimum": 0, "maximum": 1 },
+        "placementRule": { "type": "string", "enum": ["freeLaneOnly"] }
+      }
+    },
+    "difficultyScaling": {
+      "type": "object",
+      "required": ["speedIncrementPerSegment", "multiLaneProbabilityIncrement", "instantFailProbabilityIncrement", "segmentsPerStep"],
+      "additionalProperties": false,
+      "properties": {
+        "speedIncrementPerSegment": { "type": "number", "minimum": 0 },
+        "multiLaneProbabilityIncrement": { "type": "number", "minimum": 0, "maximum": 1 },
+        "instantFailProbabilityIncrement": { "type": "number", "minimum": 0, "maximum": 1 },
+        "segmentsPerStep": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "monetization": {
+      "type": "object",
+      "required": ["reviveIAPProductId", "rewardedAdPlacementId"],
+      "additionalProperties": false,
+      "properties": {
+        "reviveIAPProductId": { "type": ["string", "null"] },
+        "rewardedAdPlacementId": { "type": ["string", "null"] }
+      }
+    }
+  }
+}
