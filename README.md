@@ -2,6 +2,8 @@
 
 A Next.js app scaffold.
 
+**Repository:** [https://github.com/GameswiththeKidsdotcom/CatRunner](https://github.com/GameswiththeKidsdotcom/CatRunner)
+
 ## Getting Started
 
 Install dependencies:
