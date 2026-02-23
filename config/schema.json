@@ -27,7 +27,8 @@
         "jumpDurationSeconds": { "type": "number", "minimum": 0.1, "maximum": 2 },
         "slideDurationSeconds": { "type": "number", "minimum": 0.1, "maximum": 2 },
         "baseSpeed": { "type": "number", "minimum": 0.1 },
-        "deterministicPhysics": { "type": "boolean" }
+        "deterministicPhysics": { "type": "boolean" },
+        "scrollerLoop": { "type": "boolean", "default": false, "description": "When true, on segment end restart same segment (same seed); no addSegmentCompleted on restart." }
       }
     },
     "obstacles": {

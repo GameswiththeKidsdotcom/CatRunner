@@ -31,9 +31,13 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Project Structure
 
+Root holds README and required config only. Logs in `logs/`, test reports in `reports/`. App code in `src/`, `ios/`, `e2e/`; docs in `docs/`; plans in `.cursor/Plans/`.
+
 ```
 src/
 ├── app/           # Next.js App Router pages and layouts
 ├── components/    # Reusable React components
 └── lib/          # Utilities and shared code
 ```
+
+**Testing:** Testing documentation and test-plan index: [docs/testing/](docs/testing/).

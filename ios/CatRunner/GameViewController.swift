@@ -25,6 +25,7 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
 
         if let view = self.view as? SKView {
+            view.accessibilityIdentifier = "GameView"
             let scene = GameScene(size: DesignSize)
             scene.scaleMode = .aspectFit
             scene.gameDelegate = self
@@ -67,10 +68,24 @@ extension GameViewController: GameSceneDelegate {
             message: "Score: \(scene.currentScore) | High: \(scene.highScore)",
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: "Revive", style: .default) { [weak scene] _ in
+        alert.view.accessibilityIdentifier = "GameOverAlert"
+        alert.addAction(UIAlertAction(title: "Watch ad", style: .default) { [weak scene] _ in
             scene?.resumeFromCheckpoint()
         })
-        alert.addAction(UIAlertAction(title: "Done", style: .cancel) { _ in })
+        alert.addAction(UIAlertAction(title: "Play again", style: .default) { [weak self] _ in
+            self?.startNewGame()
+        })
+        alert.addAction(UIAlertAction(title: "No thanks", style: .cancel) { _ in })
         present(alert, animated: true)
+    }
+
+    /// Starts a new run (fresh GameScene). High score persists via ScoreKeeper UserDefaults.
+    private func startNewGame() {
+        guard let view = view as? SKView else { return }
+        let scene = GameScene(size: DesignSize)
+        scene.scaleMode = .aspectFit
+        scene.gameDelegate = self
+        gameScene = scene
+        view.presentScene(scene)
     }
 }

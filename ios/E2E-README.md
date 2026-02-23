@@ -8,9 +8,9 @@ Per [e2e-spec-journeys.plan.md](../.cursor/Plans/subplans/P001/e2e-spec-journeys
 |---------|--------------------|----------------------------------------------|--------------------------------|
 | J1      | App launch / start | `testJ1_Launch_GameSceneVisible`             | GameView visible, no crash     |
 | J2      | Gameplay (swipe)   | `testJ2_Gameplay_SwipeAffectsGame`           | Swipe up (jump); no alert      |
-| J3      | Game over / Revive | `testJ3_GameOver_ReviveDialogAppears`        | Revive, Play again, Done       |
-| J4a     | Revive → resume    | `testJ4a_Revive_ResumeGameplay`              | Tap Revive → game scene        |
-| J4b     | Done → dismiss     | `testJ4b_Revive_Done_DismissesToScene`        | Tap Done → alert dismisses      |
+| J3      | Game over / Revive | `testJ3_GameOver_ReviveDialogAppears`        | Watch ad, Play again, No thanks |
+| J4a     | Revive → resume    | `testJ4a_Revive_ResumeGameplay`              | Tap Watch ad → game scene       |
+| J4b     | No thanks → dismiss | `testJ4b_Revive_Done_DismissesToScene`       | Tap No thanks → alert dismisses |
 | J5      | Play again         | `testJ5_PlayAgain_NewRunStarts`              | Tap Play again → new run       |
 
 ## Viewport / device (Investigation 4)

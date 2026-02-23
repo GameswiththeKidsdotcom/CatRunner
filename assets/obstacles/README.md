@@ -8,4 +8,4 @@ Placeholder for obstacle art per type:
 
 C4 obstacle types are configured in `config/default/variant.json` under `obstacles.types`. Paths in `config/default/assets.json`: passable.png, instantFail.png, slowdown.png.
 
-- **Current:** Pixel-art sprites in place (ui-designer workflow; ~88–132 pt wide).
+- **Current:** passable.png, instantFail.png, slowdown.png are cat-world style per [CAT-WORLD-VISION.md](../CAT-WORLD-VISION.md) (soft cozy 2D, rooftop-themed, transparent).

@@ -31,7 +31,7 @@ Reference: [.cursor/skills/canva-ui-design/SKILL.md](../../../../.cursor/skills/
 ## 2. Background Image: "Many Buildings"
 
 - **Content:** The image should depict **many buildings** — a continuous rooftop skyline (multiple roof lines, ledges, distant towers, neon signs) so that when the asset scrolls (tiled vertically), it reads as the cat running across many rooftops, not a single static screen.
-- **Technical:** Tileable **vertically** (vertical runner: 200 pt/s × 10–12 s = 2000–2400 pt). Design viewport width 393 pt ([P002-VIEWPORT.md](../z-P002/P002-VIEWPORT.md)). Suggested tile height: ~400–500 pt (e.g. 800–1000 px at @2x) so 4–6 tiles cover one segment; seams must be invisible when tiled.
+- **Technical:** Tileable **vertically** (vertical runner: 200 pt/s × 10–12 s = 2000–2400 pt). Design viewport width 393 pt ([P002-VIEWPORT.md](../zz-P002/P002-VIEWPORT.md)). Suggested tile height: ~400–500 pt (e.g. 800–1000 px at @2x) so 4–6 tiles cover one segment; seams must be invisible when tiled.
 - **Lane band for integration:** A clear horizontal "runway" band (roof ledges/platforms) where the 5 lanes sit. This band should have **consistent value and less busy detail** so the overlaid dog and box sprites (44pt max) read clearly and feel on the same plane. Buildings and sky above/below can be denser.
 - **Style:** Per [CAT-WORLD-VISION.md](../../../../assets/CAT-WORLD-VISION.md): soft cozy 2D, night blues/purples, neon accents; rooftop night. Must match existing [assets/reference/cat-world-hero-mockup.png](../../../../assets/reference/cat-world-hero-mockup.png) style.
 
@@ -81,7 +81,7 @@ Reference: [B5-backgrounds.plan.md](../../subplans/P001/B5-backgrounds.plan.md).
 
 - **Asset:** Many buildings; tileable vertically; runway band clear; style matches cat-world; dimensions match spec.
 - **Integration:** In simulator, after B5: background scrolls; dog and boxes on runway; no palette/scale clash; cat remains focal.
-- **Ui-test:** 5-iPhone matrix per [P002-VIEWPORT.md](../z-P002/P002-VIEWPORT.md); journeys §10.
+- **Ui-test:** 5-iPhone matrix per [P002-VIEWPORT.md](../zz-P002/P002-VIEWPORT.md); journeys §10.
 
 ---
 
@@ -121,7 +121,7 @@ Reference: [Agents/ui-designer.md](../../../../Agents/ui-designer.md).
 
 ## 10. Ui-test plan for this initiative
 
-**Scope:** E2E and viewport verification of scrolling many-buildings background and dog/boxes integration. iOS-only; 5-iPhone matrix per [P002-VIEWPORT.md](../z-P002/P002-VIEWPORT.md).
+**Scope:** E2E and viewport verification of scrolling many-buildings background and dog/boxes integration. iOS-only; 5-iPhone matrix per [P002-VIEWPORT.md](../zz-P002/P002-VIEWPORT.md).
 
 **User journeys:** (1) Gameplay with scrolling background — launch → play → background visible and scrolling, cat in lane, obstacles/dog on runway, no overflow. (2) Integration check — dog/boxes on runway, no palette clash, cat focal. (3) Contrast and readability.
 

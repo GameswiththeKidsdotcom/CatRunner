@@ -14,7 +14,7 @@ This document is the **single source of truth** for the CatRunner game. It is li
   - **passable:** No game over; may affect scoring or visuals as defined.
   - **slowdown:** Slows the player; no instant game over.
   - **Power-ups:** speedBoost, shield; effects apply to the single player only.
-- **Revive:** On first game-over, player may revive (IAP or rewarded ad per monetization config); after that, game over is final.
+- **Revive:** On first game-over, player may revive (IAP or rewarded ad per monetization config); after that, game over is final. **CTA labels (aligned):** Revive dialog uses "Watch ad" / "No thanks" / "Play again" in spec, E2E journeys, and iOS (`GameViewController.swift`). Logic-test and E2E assert on these labels.
 - **Scoring:** Score increases over time/distance; difficulty scaling applies (speed, obstacle probabilities).
 - **Difficulty scaling:** Config-driven (speed increment per segment, multi-lane and instantFail probability increments, segments per step).
 
@@ -73,7 +73,7 @@ See Master-Plan § Admin panel and C9 sub-plan for scaffold details.
 ## 6. CI/CD steps
 
 - **build.yml:** Build iOS app (xcodebuild); shared scheme **CatRunner**.
-- **test.yml:** Run tests: `xcodebuild test -scheme CatRunner -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' -configuration Debug` (from `ios/`); CatRunnerTests target.
+- **test.yml:** Run tests: `xcodebuild test -scheme CatRunner -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' -configuration Debug` (from `ios/`); scheme runs CatRunnerTests (58) + CatRunnerUITests (6). See §7 for baseline.
 - **deploy.yml:** Deploy to TestFlight (manual trigger); same scheme.
 
 All workflows under **`.github/workflows/`**.
@@ -82,8 +82,8 @@ All workflows under **`.github/workflows/`**.
 
 ## 7. Testing requirements
 
-- **Target:** CatRunnerTests (XCTest); unit, simulation, regression (deterministic runs), and optional performance.
-- **Baseline:** **55 tests** (pass count for CI and regression comparison).
+- **Target:** CatRunnerTests (XCTest; unit, simulation, regression, optional performance) and CatRunnerUITests (XCUITest; E2E journeys J1–J5). Both run via scheme CatRunner.
+- **Baseline:** **64 tests** (58 CatRunnerTests + 6 CatRunnerUITests) — pass count for CI and regression comparison.
 - **FPS/memory:** Targets documented in C11 plan: FPS ≥60, memory ≤300MB during normal gameplay; **not asserted in CI** (environment varies); use local/profile runs or Instruments to verify.
 
 ---

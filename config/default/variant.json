@@ -3,7 +3,8 @@
   "engine": {
     "lanes": 5,
     "playerStartLane": 2,
-    "segmentDurationSeconds": { "min": 2.0, "max": 3.0 },
+    "segmentDurationSeconds": { "min": 10, "max": 12 },
+    "scrollerLoop": false,
     "jumpDurationSeconds": 0.4,
     "slideDurationSeconds": 0.5,
     "baseSpeed": 1.0,

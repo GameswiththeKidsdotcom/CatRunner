@@ -1,6 +1,6 @@
 # BG4 Validation — 2026-02-23 (Lane A)
 
-**Per:** [P002-VIEWPORT.md](../z-P002/P002-VIEWPORT.md), [Many-buildings-bg.plan.md](./Many-buildings-bg.plan.md) §6, §10.
+**Per:** [P002-VIEWPORT.md](../zz-P002/P002-VIEWPORT.md), [Many-buildings-bg.plan.md](./Many-buildings-bg.plan.md) §6, §10.
 
 ## 5-iPhone matrix (simulator)
 

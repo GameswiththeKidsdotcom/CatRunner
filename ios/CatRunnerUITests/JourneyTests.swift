@@ -47,9 +47,9 @@ final class JourneyTests: XCTestCase {
         app.launch()
         let alert = app.alerts["Game Over"]
         XCTAssertTrue(alert.waitForExistence(timeout: 5), "J3: Game Over / Revive dialog should appear")
-        XCTAssertTrue(app.buttons["Revive"].exists, "J3: Revive button present")
+        XCTAssertTrue(app.buttons["Watch ad"].exists, "J3: Watch ad button present")
         XCTAssertTrue(app.buttons["Play again"].exists, "J3: Play again button present")
-        XCTAssertTrue(app.buttons["Done"].exists, "J3: Done button present")
+        XCTAssertTrue(app.buttons["No thanks"].exists, "J3: No thanks button present")
     }
 
     // MARK: - J4 — Revive flow
@@ -59,9 +59,9 @@ final class JourneyTests: XCTestCase {
         app.launch()
         let alert = app.alerts["Game Over"]
         XCTAssertTrue(alert.waitForExistence(timeout: 5))
-        app.buttons["Revive"].tap()
+        app.buttons["Watch ad"].tap()
         let gameView = app.otherElements["GameView"]
-        XCTAssertTrue(gameView.waitForExistence(timeout: 3), "J4a: After Revive, game scene should be visible again")
+        XCTAssertTrue(gameView.waitForExistence(timeout: 3), "J4a: After Watch ad, game scene should be visible again")
     }
 
     func testJ4b_Revive_Done_DismissesToScene() throws {
@@ -69,10 +69,10 @@ final class JourneyTests: XCTestCase {
         app.launch()
         let alert = app.alerts["Game Over"]
         XCTAssertTrue(alert.waitForExistence(timeout: 5))
-        app.buttons["Done"].tap()
-        XCTAssertFalse(alert.waitForExistence(timeout: 2), "J4b: After Done, alert should dismiss")
+        app.buttons["No thanks"].tap()
+        XCTAssertFalse(alert.waitForExistence(timeout: 2), "J4b: After No thanks, alert should dismiss")
         let gameView = app.otherElements["GameView"]
-        XCTAssertTrue(gameView.exists, "J4b: Game view still present after Done (no new run)")
+        XCTAssertTrue(gameView.exists, "J4b: Game view still present after No thanks (no new run)")
     }
 
     // MARK: - J5 — Game over → play again

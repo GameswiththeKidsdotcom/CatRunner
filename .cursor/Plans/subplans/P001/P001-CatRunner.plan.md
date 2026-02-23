@@ -21,23 +21,23 @@ CatRunner: 5-lane endless runner; cat vs dogs; VariantConfig-driven; App Store-r
 
 ## Design / supporting plans
 
-- [Sprites & UI assets](sprites-ui-assets.plan.md) — Asset inventory, image specs, ui-designer workflow for character, obstacles, power-ups, UI, app icon.
-- [UI mockups (Lane B)](ui-mockups.plan.md) — In-game UI mockups: pixel art, Revive/Game over, store in assets/ui/.
+- [Sprites & UI assets](zz-archive/sprites-ui-assets.plan.md) — Asset inventory, image specs, ui-designer workflow for character, obstacles, power-ups, UI, app icon.
+- [UI mockups (Lane B)](zz-archive/ui-mockups.plan.md) — In-game UI mockups: pixel art, Revive/Game over, store in assets/ui/.
 
 ## Phases / Chunks (ordered)
 
-1. [C1 — Bootstrap - Perfected](C1-bootstrap.plan.md)
-2. [C2 — VariantConfig - Perfected](C2-config.plan.md)
-3. [C3 — SegmentGenerator](C3-segment-generator.plan.md)
-4. [C4 — Obstacle types](C4-obstacle-types.plan.md)
-5. [C5 — Path guarantee](C5-path-guarantee.plan.md)
-6. [C6 — Power-up spawner](C6-powerup-spawner.plan.md)
-7. [C7 — Mechanics & collision](C7-mechanics-collision.plan.md)
-8. [C8 — Difficulty & scoring](C8-difficulty-scoring.plan.md)
-9. [C9 — Admin panel](C9-admin-panel.plan.md)
-10. [C10 — CI/CD](C10-cicd.plan.md)
-11. [C11 — Tests](C11-tests.plan.md)
-12. [C12 — Agents & spec](C12-agents-spec.plan.md)
+1. [C1 — Bootstrap - Perfected](zz-archive/C1-bootstrap.plan.md)
+2. [C2 — VariantConfig - Perfected](zz-archive/C2-config.plan.md)
+3. [C3 — SegmentGenerator](zz-archive/C3-segment-generator.plan.md)
+4. [C4 — Obstacle types](zz-archive/C4-obstacle-types.plan.md)
+5. [C5 — Path guarantee](zz-archive/C5-path-guarantee.plan.md)
+6. [C6 — Power-up spawner](zz-archive/C6-powerup-spawner.plan.md)
+7. [C7 — Mechanics & collision](zz-archive/C7-mechanics-collision.plan.md)
+8. [C8 — Difficulty & scoring](zz-archive/C8-difficulty-scoring.plan.md)
+9. [C9 — Admin panel](zz-archive/C9-admin-panel.plan.md)
+10. [C10 — CI/CD](zz-archive/C10-cicd.plan.md)
+11. [C11 — Tests](zz-archive/C11-tests.plan.md)
+12. [C12 — Agents & spec](zz-archive/C12-agents-spec.plan.md)
 
 ## Risks
 

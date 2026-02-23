@@ -11,6 +11,8 @@ build/
 
 # Testing
 coverage/
+logs/
+reports/
 
 # Environment
 .env

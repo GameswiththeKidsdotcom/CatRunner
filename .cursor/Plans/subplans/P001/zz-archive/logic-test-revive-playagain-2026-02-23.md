@@ -29,7 +29,7 @@ Per [e2e-spec-journeys.plan.md](e2e-spec-journeys.plan.md) §6.1. Read-only vali
 
 1. ~~**Unreachable valid state: new run.**~~ **Resolved.** "Play again" CTA is present; `startNewGame()` presents a new GameScene; new run is reachable.
 2. **No dead-end from Revive.** Revive → resume is consistent; no unreachable or invalid state observed.
-3. **CTA labels vs spec.** Spec/journey expected "Watch ad" / "No thanks"; implementation uses "Revive" / "Done" / "Play again". Document in spec or align UI (Lane A or product).
+3. ~~**CTA labels vs spec.**~~ **Resolved (CTA label alignment).** iOS and spec aligned to "Watch ad" / "No thanks" / "Play again" per docs/SPECIFICATION.md §1; GameViewController and JourneyTests updated 2026-02-23.
 
 ---
 
@@ -60,3 +60,5 @@ This is a **logic-test deliverable** for P001-E2E-Journeys. No new Plan ID; P001
 When Lane A implements "Play again", **re-invoke logic-test** (or Investigator) to confirm: allowed moves, no unreachable states, state consistency after Play again. Consider this engagement **complete** after Play-again is implemented and re-validated.
 
 **2026-02-23:** "Play again" CTA and `startNewGame()` already present in GameViewController; accessibility identifiers added (`GameView`, `GameOverAlert`). Logic-test re-validation: **complete.** Allowed moves: Revive, Play again, Done only from game-over state; no unreachable valid states; state after Play again = new GameScene (currentScore 0, highScore from UserDefaults). Investigator handoff: plan/doc updated; no new plan ID; P001-E2E-Journeys row in Master-Plan already references logic-test per §6.1.
+
+**2026-02-23 (CTA alignment):** iOS and spec aligned to "Watch ad" / "No thanks" / "Play again". GameViewController and JourneyTests updated; SPECIFICATION.md §1 and Master-Plan updated. Logic-test accepts these labels; no re-run required for label change (behavior unchanged).
