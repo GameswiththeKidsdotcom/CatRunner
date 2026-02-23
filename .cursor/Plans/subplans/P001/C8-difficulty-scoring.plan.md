@@ -1,6 +1,6 @@
 # C8 — Difficulty Scaling, Scoring, Revive
 
-**Next hand off:** Implement C8 after C6 and C7.
+**Next hand off:** Same as Master-Plan Lane A — implement C10 (CI/CD) per [C10-cicd.plan.md](C10-cicd.plan.md).
 
 ---
 

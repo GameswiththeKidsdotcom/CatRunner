@@ -1,0 +1,42 @@
+# C10 — CI: Build CatRunner iOS app on push/PR.
+# Config: repo config/default/ (variant.json). Build runs from ios/ with shared scheme.
+
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build
+        working-directory: ios
+        run: |
+          xcodebuild -scheme CatRunner \
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
+            -configuration Debug \
+            build 2>&1 | tee build.log
+
+      - name: Build report (placeholder)
+        run: |
+          echo "## Build summary" >> $GITHUB_STEP_SUMMARY
+          echo "Build completed. Build log retained as artifact." >> $GITHUB_STEP_SUMMARY
+          if command -v tail &>/dev/null; then
+            echo "\n### Last 30 lines of build output" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -30 ios/build.log >> $GITHUB_STEP_SUMMARY 2>/dev/null || true
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload build log
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: ios/build.log

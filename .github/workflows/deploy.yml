@@ -1,0 +1,56 @@
+# C10 — Deploy: Build + test, then prepare for TestFlight.
+# Choice: Manual TestFlight upload. Workflow builds and artifacts archive for manual upload.
+# Optional: fastlane can be added later (see ios/fastlane/README or repo root .cursor/Plans).
+
+name: Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-test:
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build
+        working-directory: ios
+        run: |
+          xcodebuild -scheme CatRunner \
+            -destination 'generic/platform=iOS' \
+            -configuration Release \
+            -archivePath build/CatRunner.xcarchive \
+            archive 2>&1 | tee deploy-build.log
+
+      # Test: same as test.yml — build only until C11 adds test target
+      - name: Build for test (no test target until C11)
+        working-directory: ios
+        run: |
+          xcodebuild -scheme CatRunner \
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
+            -configuration Debug \
+            build 2>&1 | tee deploy-test.log
+
+      - name: Deploy summary
+        run: |
+          echo "## Deploy summary" >> $GITHUB_STEP_SUMMARY
+          echo "**TestFlight:** Manual upload. Export \`CatRunner.xcarchive\` from \`ios/build/\` (or use Xcode Organizer) and upload to App Store Connect." >> $GITHUB_STEP_SUMMARY
+          echo "To automate: add fastlane (e.g. \`ios/fastlane\`) and call \`fastlane beta\` in this workflow." >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload archive (for manual TestFlight)
+        uses: actions/upload-artifact@v4
+        with:
+          name: CatRunner-archive
+          path: ios/build/CatRunner.xcarchive
+
+      - name: Upload build logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-logs
+          path: |
+            ios/deploy-build.log
+            ios/deploy-test.log

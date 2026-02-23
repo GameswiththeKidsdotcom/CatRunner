@@ -1,0 +1,12 @@
+# C10 — Placeholder. Manual TestFlight upload is used; add lanes (e.g. beta) when ready.
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Build and upload to TestFlight (placeholder — implement when automating)"
+  lane :beta do
+    # build_app(scheme: "CatRunner", export_method: "app-store")
+    # upload_to_testflight
+    UI.important("Use manual TestFlight upload for now. See ios/fastlane/README.md.")
+  end
+end

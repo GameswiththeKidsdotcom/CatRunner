@@ -1,0 +1,40 @@
+# C11 — CI: Run tests. CatRunnerTests target runs unit and simulation tests.
+
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run tests
+        working-directory: ios
+        run: |
+          xcodebuild -scheme CatRunner \
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
+            -configuration Debug \
+            test 2>&1 | tee test-output.log
+
+      - name: Test report
+        run: |
+          echo "## Test summary" >> $GITHUB_STEP_SUMMARY
+          if grep -q "TEST SUCCEEDED" ios/test-output.log; then
+            echo "All tests passed." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Tests failed or incomplete. See test-output.log." >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "Completed: $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload test log
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-output-log
+          path: ios/test-output.log

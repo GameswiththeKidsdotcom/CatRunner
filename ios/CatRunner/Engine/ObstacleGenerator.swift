@@ -21,8 +21,15 @@ final class ObstacleGenerator {
         self.laneCount = laneCount
     }
 
+    /// C8 — Overrides for difficulty scaling: bonus weight for instantFail type and for multi-lane span.
+    struct DifficultyOverrides {
+        let instantFailBonus: Double
+        let multiLaneBonus: Double
+    }
+
     /// Generate obstacle placements for a segment. Deterministic for same seed and config.
-    func generate(segmentDuration: TimeInterval, rng: GKRandom) -> [ObstaclePlacement] {
+    /// C8: optional difficultyOverrides bias type (instantFail) and span (multi-lane) selection.
+    func generate(segmentDuration: TimeInterval, rng: GKRandom, difficultyOverrides: DifficultyOverrides? = nil) -> [ObstaclePlacement] {
         guard !obstacleConfig.types.isEmpty, segmentDuration > 0 else { return [] }
 
         let totalCount = numberOfObstacles(segmentDuration: segmentDuration, rng: rng)
@@ -39,7 +46,8 @@ final class ObstacleGenerator {
                 count: groupSizeClamped,
                 segmentDuration: segmentDuration,
                 layout: clusterConfig.layout,
-                rng: rng
+                rng: rng,
+                difficultyOverrides: difficultyOverrides
             )
             placements.append(contentsOf: clusterPlacements)
             let remaining = totalCount - groupSizeClamped
@@ -48,12 +56,13 @@ final class ObstacleGenerator {
                     count: remaining,
                     segmentDuration: segmentDuration,
                     excludeTimeRange: clusterTimeRange(from: clusterPlacements),
-                    rng: rng
+                    rng: rng,
+                    difficultyOverrides: difficultyOverrides
                 )
                 placements.append(contentsOf: spreadPlacements)
             }
         } else {
-            placements = generateSpread(count: totalCount, segmentDuration: segmentDuration, excludeTimeRange: nil, rng: rng)
+            placements = generateSpread(count: totalCount, segmentDuration: segmentDuration, excludeTimeRange: nil, rng: rng, difficultyOverrides: difficultyOverrides)
         }
 
         return placements.sorted { $0.timeOffset < $1.timeOffset }
@@ -74,7 +83,8 @@ final class ObstacleGenerator {
         count: Int,
         segmentDuration: TimeInterval,
         excludeTimeRange: (TimeInterval, TimeInterval)?,
-        rng: GKRandom
+        rng: GKRandom,
+        difficultyOverrides: DifficultyOverrides? = nil
     ) -> [ObstaclePlacement] {
         var times: [TimeInterval] = []
         let margin = segmentDuration * 0.1
@@ -89,7 +99,7 @@ final class ObstacleGenerator {
         }
         times.sort()
         return times.compactMap { time in
-            makePlacement(timeOffset: time, rng: rng)
+            makePlacement(timeOffset: time, rng: rng, difficultyOverrides: difficultyOverrides)
         }
     }
 
@@ -99,7 +109,8 @@ final class ObstacleGenerator {
         count: Int,
         segmentDuration: TimeInterval,
         layout: String,
-        rng: GKRandom
+        rng: GKRandom,
+        difficultyOverrides: DifficultyOverrides? = nil
     ) -> [ObstaclePlacement] {
         let centerTime = segmentDuration * (0.3 + Double(rng.nextUniform()) * 0.4)
         let timeSpread = segmentDuration * 0.15
@@ -108,7 +119,7 @@ final class ObstacleGenerator {
         for i in 0..<count {
             let t = centerTime + (Double(rng.nextUniform()) - 0.5) * timeSpread
             let timeOffset = max(0, min(segmentDuration, t))
-            guard let p = makePlacement(timeOffset: timeOffset, rng: rng, layout: layout, indexInGroup: i, groupSize: count, clusterBaseLane: baseLane) else { continue }
+            guard let p = makePlacement(timeOffset: timeOffset, rng: rng, layout: layout, indexInGroup: i, groupSize: count, clusterBaseLane: baseLane, difficultyOverrides: difficultyOverrides) else { continue }
             placements.append(p)
         }
         return placements
@@ -128,11 +139,11 @@ final class ObstacleGenerator {
         layout: String? = nil,
         indexInGroup: Int = 0,
         groupSize: Int = 1,
-        clusterBaseLane: Int? = nil
+        clusterBaseLane: Int? = nil,
+        difficultyOverrides: DifficultyOverrides? = nil
     ) -> ObstaclePlacement? {
-        let typeIndex = min(Int(Double(rng.nextUniform()) * Double(obstacleConfig.types.count)), obstacleConfig.types.count - 1)
-        let typeConfig = obstacleConfig.types[typeIndex]
-        let span = typeConfig.laneSpanMin + Int(Double(rng.nextUniform()) * Double(typeConfig.laneSpanMax - typeConfig.laneSpanMin + 1))
+        let typeConfig = selectType(using: rng, difficultyOverrides: difficultyOverrides)
+        let span = selectSpan(for: typeConfig, using: rng, difficultyOverrides: difficultyOverrides)
         let spanClamped = min(max(1, span), maxSpan, laneCount)
 
         let startLane: Int
@@ -159,5 +170,47 @@ final class ObstacleGenerator {
             typeId: typeConfig.id,
             timeOffset: timeOffset
         )
+    }
+
+    /// C8 — Weighted type selection: instantFail gets extra weight when instantFailBonus > 0.
+    private func selectType(using rng: GKRandom, difficultyOverrides: DifficultyOverrides?) -> ObstacleTypeConfig {
+        let types = obstacleConfig.types
+        precondition(!types.isEmpty, "obstacleConfig.types should not be empty when generating")
+        let bonus = difficultyOverrides?.instantFailBonus ?? 0
+        var weights = types.map { _ in 1.0 }
+        for (i, t) in types.enumerated() where t.id == "instantFail" {
+            weights[i] = 1.0 + bonus
+            break
+        }
+        let total = weights.reduce(0, +)
+        let u = Double(rng.nextUniform()) * total
+        var acc = 0.0
+        for (i, w) in weights.enumerated() {
+            acc += w
+            if u <= acc { return types[i] }
+        }
+        return types[types.count - 1]
+    }
+
+    /// C8 — Span selection; when multiLaneBonus > 0, bias toward larger span.
+    private func selectSpan(for typeConfig: ObstacleTypeConfig, using rng: GKRandom, difficultyOverrides: DifficultyOverrides?) -> Int {
+        let minSpan = typeConfig.laneSpanMin
+        let maxSpan = typeConfig.laneSpanMax
+        guard maxSpan > minSpan else { return minSpan }
+        let bonus = difficultyOverrides?.multiLaneBonus ?? 0
+        let u = Double(rng.nextUniform())
+        // Bias toward max: weight for span s is 1 + bonus * (s - minSpan) / (maxSpan - minSpan)
+        var weights: [Double] = []
+        for s in minSpan...maxSpan {
+            weights.append(1.0 + bonus * Double(s - minSpan) / Double(maxSpan - minSpan))
+        }
+        let total = weights.reduce(0, +)
+        let u2 = u * total
+        var acc = 0.0
+        for (i, w) in weights.enumerated() {
+            acc += w
+            if u2 <= acc { return minSpan + i }
+        }
+        return maxSpan
     }
 }

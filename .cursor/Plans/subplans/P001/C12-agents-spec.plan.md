@@ -1,6 +1,6 @@
 # C12 — Agent Updates & SPECIFICATION.md
 
-**Next hand off:** Implement C12 after all other chunks.
+**Next hand off:** C12 complete. Invoke [Agents/planner.md](Agents/planner.md) to update Master-Plan state and set next hand off (commit or next plan).
 
 ---
 

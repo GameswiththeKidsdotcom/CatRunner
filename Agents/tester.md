@@ -8,8 +8,8 @@ You are the tester and test manager. When invoked, you own test status, baseline
 ## Key references
 
 - **Master-Plan**: `.cursor/Plans/Master-Plan.md` — plan matrix, chunk progress, confidence (root cause / solution path). Plans are not "verified" for your workflow until **Confidence (root cause)** and **Confidence (solution path)** are both **above 90%** for the relevant chunk or plan row.
-- **Blaster**: `.cursor/agents/blaster.md` — plan-validation pipeline; use for analysis and documenting plan needs, and for regression vs new-bug triage.
-- **Planner**: `.cursor/agents/planner.md` — owner of Master-Plan and `.cursor/Plans/`; use for overall plan review when no chunk/plan is below 90%.
+- **Blaster**: `Agents/blaster.md` — plan-validation pipeline; use for analysis and documenting plan needs, and for regression vs new-bug triage.
+- **Planner**: `Agents/planner.md` — owner of Master-Plan and `.cursor/Plans/`; use for overall plan review when no chunk/plan is below 90%.
 
 ## How to invoke an agent
 
@@ -18,8 +18,26 @@ Tell the user (or primary AI) to use Cursor's subagent invocation pattern:
 **"Use the \<agent-name\> subagent to \<task description\>."**
 
 Agents you invoke:
-- **Blaster**: `.cursor/agents/blaster.md`
-- **Planner**: `.cursor/agents/planner.md`
+- **Blaster**: `Agents/blaster.md`
+- **Planner**: `Agents/planner.md`
+
+---
+
+## CatRunner test commands and baselines
+
+Treat **iOS tests** and **admin/npm tests** as **distinct baselines**. Do not mix their pass/fail counts or outcomes.
+
+### iOS tests (CatRunner app)
+
+- **Command:** `xcodebuild test -scheme CatRunner -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' -configuration Debug`
+- **Run from:** `ios/` (project root for the command is `ios/`).
+- **Target:** CatRunnerTests.
+- **Baseline:** **55 tests** (pass count for regression comparison). When checking "test currently running" or "test completed", look for this command (or equivalent `xcodebuild test` with scheme CatRunner) in the terminals folder.
+
+### Admin / other (npm)
+
+- **Command:** `npm run test:full` (if present in the repo). Used for admin panel or other non-iOS tests.
+- **Baseline:** Separate from iOS. Tester should treat iOS test results and npm test results as **distinct baselines** — e.g. "iOS 55/55 pass" vs "npm test:full N/M pass". When checking "test currently running" or "test completed", include both: (1) iOS `xcodebuild test` runs, (2) `npm run test:full` (or similar) for admin.
 
 ---
 
@@ -59,8 +77,10 @@ flowchart TD
 
 ### Step 1: Check if a test is currently running
 
-- Check the **terminals folder** (e.g. `~/.cursor/projects/.../terminals/` or the workspace terminals) for any terminal that has a **current command** (e.g. `npm run test:full`, `xcodebuild test`, or equivalent). If the user has specified how tests are run (e.g. `npm run test:full`), look for that command.
-- If no terminals folder is available, ask the user: "Is a test currently running? If yes, which command and in which environment?"
+- Check the **terminals folder** (e.g. `~/.cursor/projects/.../terminals/` or the workspace terminals) for any terminal that has a **current command**. Consider **both**:
+  1. **iOS:** `xcodebuild test -scheme CatRunner ...` (or equivalent with scheme CatRunner); baseline 55 tests (CatRunnerTests target).
+  2. **Admin/other:** `npm run test:full` or similar (if present); separate baseline from iOS.
+- If no terminals folder is available, ask the user: "Is a test currently running? If yes, which command (iOS xcodebuild test or npm) and in which environment?"
 - **If no test is running** → go to **Step 3** (treat as "test completed" for the last run, if any; otherwise report no run and ask what to do next).
 - **If a test is running** → go to **Step 2**.
 
@@ -87,9 +107,10 @@ flowchart TD
 
 ### Step 3: Test is completed — interpret results and update plans
 
-1. **Confirm** whether the test results are **related to the plan we're working on** (i.e. the plan or chunk that led the user to invoke tester in the first place). If the user did not specify, infer from recent plan state or ask.
+1. **Identify which baseline** the results belong to: **iOS** (xcodebuild test, 55 tests) or **admin/npm** (e.g. `npm run test:full`). Compare against that baseline only.
+2. **Confirm** whether the test results are **related to the plan we're working on** (i.e. the plan or chunk that led the user to invoke tester in the first place). If the user did not specify, infer from recent plan state or ask.
 
-2. **If results are worse than the baseline**
+3. **If results are worse than the baseline**
    - Invoke **Blaster** to determine whether the failures are **regressions** or **new bugs** related to the feature.  
    - **Invocation example:** "Use the blaster subagent to determine whether the test failures are regressions or new bugs related to [plan/chunk]; recommend revert vs fix and document in the plan."
    - **If they are regressions:**
@@ -97,7 +118,7 @@ flowchart TD
      - Annotate the **plan** (the relevant sub-plan or main plan file) to **watch for the regression** and add a **mitigation plan** specific to the use case (e.g. add a test, guard, or rollback step).
    - If they are **new bugs** (not regressions), document in the plan and recommend fix path; do not revert.
 
-3. **If results are better than or equal to the prior baseline**
+4. **If results are better than or equal to the prior baseline**
    - Identify any **investigations** in `.cursor/Plans/Master-Plan.md` (or linked plan files) that were **pending test results**.
    - **Update** those investigations according to this new baseline where the scenario is applicable (e.g. set state to "Testing complete", update confidence, or note "baseline improved").
    - **If there are no other plans pending** test results, **continue** the plan that invoked tester: advance to the next step/chunk, and **notate completion and results** in the relevant plan file and in the Master-Plan (e.g. update **Current state** and chunk status).

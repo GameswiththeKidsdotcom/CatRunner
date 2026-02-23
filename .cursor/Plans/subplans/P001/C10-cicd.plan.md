@@ -1,6 +1,6 @@
 # C10 — CI/CD Workflows
 
-**Next hand off:** Implement C10 after C1–C8.
+**Next hand off:** Same as Master-Plan Lane A — implement C11 (Automated tests) per [C11-tests.plan.md](C11-tests.plan.md).
 
 ---
 

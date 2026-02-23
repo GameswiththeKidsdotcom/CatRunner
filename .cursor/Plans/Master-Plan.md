@@ -2,11 +2,11 @@
 
 ## Next hand off (cut & paste) — Lane A
 
-Use the builder subagent to implement C6 (Power-up spawner — max 1, free lane only). Plan file: [.cursor/Plans/subplans/P001/C6-powerup-spawner.plan.md](.cursor/Plans/subplans/P001/C6-powerup-spawner.plan.md). Spawn power-ups per config (max active, probability, placement rule freeLaneOnly). After completion, update this hand off to C7.
+P001 C1–C12 complete. To finish: (1) Run full test suite and confirm baseline. (2) Commit and push to GitHub per commit checkpoint: stage relevant files, commit with message including plan ID and description (e.g. `P001 C12: Agent updates, SPECIFICATION.md`), push to origin/main. (3) Update Master-Plan matrix row with push date and refresh next hand off. Invoke [Agents/planner.md](Agents/planner.md) after push to refresh next hand off.
 
-## Second hand off (cut & paste) — Lane B
+## Next hand off (cut & paste) — Lane B
 
-Use C9 (Admin panel scaffold). Plan file: [.cursor/Plans/subplans/P001/C9-admin-panel.plan.md](.cursor/Plans/subplans/P001/C9-admin-panel.plan.md) (or P001 chunk C9). Lane B may edit `config/` and `assets/` only; no `ios/` changes. Sprites & UI assets Lane B work is done: `config/default/assets.json` and asset directories are in place; see [sprites-ui-assets.plan.md](.cursor/Plans/subplans/P001/sprites-ui-assets.plan.md).
+No further Lane B (config/assets-only) task in current scope. C9 config/assets and P001-Assets sprite art are done; example variant added at `config/variants/easy.json`. When new config- or assets-only work is added to the plan, invoke [Agents/planner.md](Agents/planner.md) to assign the next Lane B task. Lane B may edit `config/` and `assets/` only; no `ios/` or `src/` changes.
 
 ---
 
@@ -24,6 +24,7 @@ Use C9 (Admin panel scaffold). Plan file: [.cursor/Plans/subplans/P001/C9-admin-
 |---------|------|----------|-------------|---------------|-------------|-----------------|
 | P001 | CatRunner iOS Game | 1 | iOS endless runner, VariantConfig, admin, CI/CD. See [.cursor/Plans/subplans/P001/P001-CatRunner.plan.md](.cursor/Plans/subplans/P001/P001-CatRunner.plan.md). | In progress | 92% | 88% |
 | P001-Assets | Sprites & UI assets | 1 | Asset inventory, image specs, ui-designer workflow. Sub-plan of P001. See [.cursor/Plans/subplans/P001/sprites-ui-assets.plan.md](.cursor/Plans/subplans/P001/sprites-ui-assets.plan.md). | Validated | N/A | High |
+| P001-UI-Mockups | UI mockups (Lane B) | 1 | In-game UI mockups: pixel art, Revive/Game over, store in assets/ui/. Sub-plan of P001. See [.cursor/Plans/subplans/P001/ui-mockups.plan.md](.cursor/Plans/subplans/P001/ui-mockups.plan.md). | Validated | N/A | High |
 
 ---
 
@@ -36,13 +37,13 @@ Use C9 (Admin panel scaffold). Plan file: [.cursor/Plans/subplans/P001/C9-admin-
 | C3 | SegmentGenerator (seeded, deterministic) | Done | N/A | N/A | Segment + SegmentGenerator; config loadable from JSON |
 | C4 | Obstacle types, cluster config | Done | N/A | N/A | ObstacleGenerator wired to SegmentGenerator; span ≤ 5 |
 | C5 | Path guarantee (≥1 viable lane/segment) | Done | N/A | N/A | PathGuarantee post-pass; ≥1 viable lane per segment |
-| C6 | Power-up spawner (max 1, free lane only) | Pending analysis | N/A | N/A | Depends on C5 |
-| C7 | Jump/slide, collision detection | Pending analysis | N/A | N/A | Depends on C1, C3 |
-| C8 | Difficulty scaling, scoring, revive | Pending analysis | N/A | N/A | Depends on C6, C7 |
-| C9 | Admin panel scaffold | Lane B done | N/A | N/A | config/admin.json, config/variants/, assets/ dirs; Next.js routes pending |
-| C10 | CI/CD workflows | Pending analysis | N/A | N/A | Depends on C1–C8 |
-| C11 | Automated tests | Pending analysis | N/A | N/A | Depends on C3–C8 |
-| C12 | Agent updates, SPECIFICATION.md | Pending analysis | N/A | N/A | Depends on all |
+| C6 | Power-up spawner (max 1, free lane only) | Done | N/A | N/A | PowerUpSpawner; max 1, free lane only, no overlap |
+| C7 | Jump/slide, collision detection | Done | N/A | N/A | Jump/slide, lane swap, CollisionSystem; game-over delegate for C8 |
+| C8 | Difficulty scaling, scoring, revive | Code built | N/A | N/A | DifficultyScaler, ScoreKeeper, revive stub; unit tests in CatRunnerTests (add test target to run) |
+| C9 | Admin panel scaffold | Lane B done | N/A | N/A | config/admin.json, config/variants/ (example easy.json), assets/; Next.js routes pending. |
+| C10 | CI/CD workflows | Code built | N/A | N/A | build.yml, test.yml, deploy.yml; shared scheme; deploy manual TestFlight; C11 adds test target |
+| C11 | Automated tests | Testing complete | N/A | N/A | CatRunnerTests target added; 55 tests pass; CI runs xcodebuild test |
+| C12 | Agent updates, SPECIFICATION.md | Code built | N/A | N/A | Blaster/Tester CatRunner scope; docs/SPECIFICATION.md created |
 
 ---
 
@@ -81,7 +82,7 @@ Scaffolded deliverables are grouped by repo location and owning chunk.
 | Enemies | `assets/dogs/` | C1 or C4 | Placeholder |
 | Backgrounds | `assets/backgrounds/` | C1 | Placeholder |
 | Power-ups | `assets/powerups/` or `assets/ui/` | C6 | speedBoost, shield |
-| UI | `assets/ui/` | C1 or C8 | HUD, revive, game over; see [sprites-ui-assets.plan.md](.cursor/Plans/subplans/P001/sprites-ui-assets.plan.md) |
+| UI | `assets/ui/` | C1 or C8 | HUD, revive, game over; pixel-art mockups done. Sprite art (character, obstacles, dogs, backgrounds, powerups) done per [sprites-ui-assets.plan.md](.cursor/Plans/subplans/P001/sprites-ui-assets.plan.md). |
 
 ### Admin panel (Next.js)
 

@@ -1,6 +1,6 @@
 # P001 — CatRunner iOS Game (Main Plan)
 
-**Next hand off:** Same as Master-Plan Lane A — implement C1 per [C1-bootstrap.plan.md](C1-bootstrap.plan.md).
+**Next hand off:** Same as Master-Plan Lane A — P001 C1–C12 complete. To finish: (1) Run full test suite and confirm baseline. (2) Commit and push to GitHub per commit checkpoint; update Master-Plan with push date. (3) Invoke planner after push to refresh next hand off.
 
 ---
 

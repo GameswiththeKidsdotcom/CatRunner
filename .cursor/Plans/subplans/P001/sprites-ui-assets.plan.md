@@ -1,6 +1,8 @@
 # Sprites and UI Objects — Creation Plan (P001)
 
-**Next hand off (Lane B):** Hand off to C9 when ready. Lane B deliverables done: (1) `config/default/assets.json` created with path map from §6 (C2 step 4). (2) Asset directories under `assets/` scaffolded (character, dogs, backgrounds, powerups, ui; obstacles already had README). Placeholder/final sprite generation remains optional—use ui-designer subagent as needed.
+**Status:** Pixel-art sprites in place for character (cat_run), obstacles (passable, instantFail, slowdown), dogs (dog), backgrounds (sky, ground), powerups (speedBoost, shield). No new asset keys added; paths unchanged in assets.json.
+
+**Next hand off (cut & paste) — Lane B:** No further Lane B task in current scope. When new config/assets-only work is added, invoke [Agents/planner.md](../../Agents/planner.md) to assign the next Lane B task.
 
 ---
 

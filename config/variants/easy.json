@@ -1,0 +1,33 @@
+{
+  "$schema": "../schema.json",
+  "engine": {
+    "lanes": 5,
+    "playerStartLane": 2,
+    "segmentDurationSeconds": { "min": 2.5, "max": 4 },
+    "jumpDurationSeconds": 0.5,
+    "slideDurationSeconds": 0.6,
+    "baseSpeed": 0.8,
+    "deterministicPhysics": true
+  },
+  "obstacles": {
+    "types": [
+      { "id": "passable", "laneSpan": [1, 2] },
+      { "id": "slowdown", "laneSpan": [1, 2] }
+    ],
+    "segmentDurationSeconds": 3,
+    "clusterConfig": { "enabled": false, "minGroupSize": 2, "maxGroupSize": 3, "layout": "linear" }
+  },
+  "powerUps": {
+    "types": ["speedBoost", "shield"],
+    "maxActive": 1,
+    "spawnProbability": 0.2,
+    "placementRule": "freeLaneOnly"
+  },
+  "difficultyScaling": {
+    "speedIncrementPerSegment": 0.01,
+    "multiLaneProbabilityIncrement": 0.005,
+    "instantFailProbabilityIncrement": 0.002,
+    "segmentsPerStep": 8
+  },
+  "monetization": { "reviveIAPProductId": null, "rewardedAdPlacementId": null }
+}

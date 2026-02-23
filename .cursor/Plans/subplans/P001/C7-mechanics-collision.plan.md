@@ -1,6 +1,6 @@
 # C7 — Jump/Slide & Collision Detection
 
-**Next hand off:** Implement C7 after C1 and C3.
+**Next hand off:** C7 done. Implement C8 (Difficulty scaling, scoring, revive) per [C8-difficulty-scoring.plan.md](C8-difficulty-scoring.plan.md). Then invoke [Agents/planner.md](../../../Agents/planner.md) to ensure Lane B is still the proper hand off.
 
 ---
 

@@ -1,6 +1,6 @@
 # C11 — Automated Tests
 
-**Next hand off:** Implement C11 after C3–C8.
+**Next hand off:** C11 complete. Next: implement C12 (Agent updates, SPECIFICATION.md). Plan file: [.cursor/Plans/subplans/P001/C12-agents-spec.plan.md](C12-agents-spec.plan.md). Use builder or appropriate agent; update Master-Plan hand off after completion.
 
 ---
 
@@ -16,10 +16,11 @@ Unit tests (obstacle lanes, spans, probabilities); gameplay simulation (jump/sli
 4. Performance tests: run game loop or scene for N seconds; assert FPS ≥60, memory ≤300MB (or document thresholds).
 5. Rules-to-win tests: every segment has ≥1 viable lane; power-ups spawn in free lanes only.
 
-## Validation
+## Performance thresholds (documented)
 
-- All tests pass in CI (`xcodebuild test`).
-- Regression suite catches RNG or config change that breaks determinism.
+- **FPS:** Target ≥60. Not asserted in CI (environment varies); use local/profile runs to verify.
+- **Memory:** Target ≤300MB during normal gameplay. Not asserted in CI; use Instruments or local runs to verify.
+- A performance test may run the game loop for N seconds and log FPS/memory for inspection; it does not fail the suite on threshold breach.
 
 ## Rollback
 
