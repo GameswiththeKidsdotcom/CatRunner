@@ -1,4 +1,4 @@
-# C11 — CI: Run tests. CatRunnerTests target runs unit and simulation tests.
+# C11 — CI: Run tests. CatRunnerTests (iOS unit) + CatRunnerUITests (iOS E2E J1–J5), Admin E2E (Playwright J6–J9).
 
 name: Test
 
@@ -38,3 +38,48 @@ jobs:
         with:
           name: test-output-log
           path: ios/test-output.log
+
+  admin-e2e:
+    name: Admin E2E (Playwright)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Start Next.js
+        run: npm run dev &
+        env:
+          CI: true
+
+      - name: Wait for app
+        run: |
+          for i in $(seq 1 60); do
+            code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3000 || true)
+            [ "$code" = "200" ] && break
+            sleep 2
+          done
+
+      - name: Run Admin E2E
+        run: npm run test:e2e
+        env:
+          CI: true
+          PLAYWRIGHT_BASE_URL: http://localhost:3000
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report/

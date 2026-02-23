@@ -36,6 +36,7 @@
 		T1000009 /* B2AssetLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = T2000007 /* B2AssetLoaderTests.swift */; };
 		T1000007 /* SpriteKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3000001 /* SpriteKit.framework */; };
 		T1000008 /* GameplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3000002 /* GameplayKit.framework */; };
+		U1000001 /* JourneyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = U2000001 /* JourneyTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +70,8 @@
 		T2000005 /* DifficultyScalerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DifficultyScalerTests.swift; sourceTree = "<group>"; };
 		T2000006 /* ScoreKeeperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreKeeperTests.swift; sourceTree = "<group>"; };
 		T2000007 /* B2AssetLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = B2AssetLoaderTests.swift; sourceTree = "<group>"; };
+		U0000001 /* CatRunnerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CatRunnerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		U2000001 /* JourneyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneyTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +101,7 @@
 			children = (
 				B2000002 /* CatRunner */,
 				T3000001 /* CatRunnerTests */,
+				U3000001 /* CatRunnerUITests */,
 				B2000003 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -120,8 +124,17 @@
 			children = (
 				A0000001 /* CatRunner.app */,
 				T0000001 /* CatRunnerTests.xctest */,
+				U0000001 /* CatRunnerUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		U3000001 /* CatRunnerUITests */ = {
+			isa = PBXGroup;
+			children = (
+				U2000001 /* JourneyTests.swift */,
+			);
+			path = CatRunnerUITests;
 			sourceTree = "<group>";
 		};
 		T3000001 /* CatRunnerTests */ = {
@@ -205,6 +218,22 @@
 			productReference = T0000001 /* CatRunnerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		U4000001 /* CatRunnerUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = U6000001 /* Build configuration list for PBXNativeTarget "CatRunnerUITests" */;
+			buildPhases = (
+				U4000002 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				U4000003 /* PBXTargetDependency */,
+			);
+			name = CatRunnerUITests;
+			productName = CatRunnerUITests;
+			productReference = U0000001 /* CatRunnerUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -238,6 +267,7 @@
 			targets = (
 				C1000001 /* CatRunner */,
 				T4000001 /* CatRunnerTests */,
+				U4000001 /* CatRunnerUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -276,10 +306,22 @@
 			target = C1000001 /* CatRunner */;
 			targetProxy = T5000001 /* PBXContainerItemProxy */;
 		};
+		U4000003 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C1000001 /* CatRunner */;
+			targetProxy = U5000001 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXContainerItemProxy section */
 		T5000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D1000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C1000001;
+			remoteInfo = CatRunner;
+		};
+		U5000001 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D1000001 /* Project object */;
 			proxyType = 1;
@@ -324,6 +366,14 @@
 				T1000005 /* DifficultyScalerTests.swift in Sources */,
 				T1000006 /* ScoreKeeperTests.swift in Sources */,
 				T1000009 /* B2AssetLoaderTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		U4000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				U1000001 /* JourneyTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -478,6 +528,52 @@
 			};
 			name = Release;
 		};
+		U7000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.catrunner.game.CatRunnerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = CatRunner;
+			};
+			name = Debug;
+		};
+		U7000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.catrunner.game.CatRunnerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = CatRunner;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -504,6 +600,15 @@
 			buildConfigurations = (
 				E1000005 /* Debug */,
 				E1000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		U6000001 /* Build configuration list for PBXNativeTarget "CatRunnerUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				U7000001 /* Debug */,
+				U7000002 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

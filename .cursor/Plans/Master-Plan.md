@@ -6,7 +6,7 @@
 
 **(2) logic-test — done.** Re-validation complete; [logic-test-revive-playagain-2026-02-23.md](.cursor/Plans/subplans/P001/logic-test-revive-playagain-2026-02-23.md) updated. **Investigator review complete:** High confidence, handoff ready; only gap: CTA labels vs spec (Revive/Done/Play again vs "Watch ad"/"No thanks") — document in spec or align UI (Lane A or product).
 
-**Next:** CTA label gap **is** documented in [docs/SPECIFICATION.md](docs/SPECIFICATION.md) §1 (Revive); optional alignment remains Lane A/product. **Next action:** When ready, continue **iOS E2E (J1–J5)** per [e2e-spec-journeys.plan.md](.cursor/Plans/subplans/P001/e2e-spec-journeys.plan.md) and [Agents/e2e-harness.md](Agents/e2e-harness.md): native stack (XCUITest), journey map J1–J5, viewport/device matrix from Investigation 4. Commit plan updates and push when verified. Use **Planner** to refresh hand offs after completion.
+**Next:** **(3) iOS E2E (J1–J5) — done.** XCUITest in `ios/CatRunnerUITests/JourneyTests.swift`; iPhone 16 (Investigation 4); 6 journey tests; CI runs with unit tests in `test` job. **Next action:** When verified, commit plan updates and push; use **Planner** to refresh hand offs.
 
 ## Next hand off (cut & paste) — Lane B
 
@@ -17,7 +17,7 @@ Lane B complete for current initiatives (Scroller 10s S1, Many-buildings BG1+BG2
 ## Concurrent agents (max 2)
 
 - **Lane A** edits `ios/` only. **Lane B** edits `config/` and `assets/` only (and may invoke ui-designer for asset images). No file overlap; both may run in parallel.
-- **Hand-offs:** Lane A = P001-E2E ui-test + logic-test done; E2E in CI; next optional CTA alignment or iOS E2E (J1–J5). Lane B = complete (S1 + BG1+BG2); no current task. No file overlap.
+- **Hand-offs:** Lane A = P001-E2E ui-test + logic-test + iOS E2E (J1–J5) done; E2E in CI. Lane B = complete (S1 + BG1+BG2); no current task. No file overlap.
 - When both lanes touch the same area (e.g. C3 and C7 both touch Engine), run sequentially.
 - **Asset path and image spec:** Only [sprites-ui-assets.plan.md](.cursor/Plans/subplans/P001/sprites-ui-assets.plan.md) defines the asset inventory and `assets.json` path map; C2 creates the file, C9/admin consume it.
 

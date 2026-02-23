@@ -34,6 +34,20 @@
                ReferencedContainer = "container:CatRunner.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "U4000001"
+               BuildableName = "CatRunnerUITests.xctest"
+               BlueprintName = "CatRunnerUITests"
+               ReferencedContainer = "container:CatRunner.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -50,6 +64,16 @@
                BlueprintIdentifier = "T4000001"
                BuildableName = "CatRunnerTests.xctest"
                BlueprintName = "CatRunnerTests"
+               ReferencedContainer = "container:CatRunner.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "U4000001"
+               BuildableName = "CatRunnerUITests.xctest"
+               BlueprintName = "CatRunnerUITests"
                ReferencedContainer = "container:CatRunner.xcodeproj">
             </BuildableReference>
          </TestableReference>

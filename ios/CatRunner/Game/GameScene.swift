@@ -117,6 +117,17 @@ class GameScene: SKScene {
         addChild(segmentStrip)
         addPlayer()
         startSegment()
+        triggerGameOverForE2EIfRequested()
+    }
+
+    /// E2E only: when launched with -ForceGameOver, trigger game over after a short delay so J3/J4/J5 are deterministic.
+    private func triggerGameOverForE2EIfRequested() {
+        guard ProcessInfo.processInfo.arguments.contains("ForceGameOver") else { return }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self, !self.gameOverRequested else { return }
+            self.gameOverRequested = true
+            self.gameDelegate?.gameSceneDidRequestGameOver(self)
+        }
     }
 
     /// B5 — Create background layer (zPosition < 5) with sky and ground from assetConfig; vertical tiling for scroll.
