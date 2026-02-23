@@ -3,5 +3,6 @@
   "schemaPath": "config/schema.json",
   "assetsPath": "config/default/assets.json",
   "variantsDir": "config/variants",
-  "ciTrigger": ".github/workflows/ — use workflow_dispatch or push to trigger builds."
+  "ciTrigger": ".github/workflows/ — use workflow_dispatch or push to trigger builds.",
+  "ciWorkflowUrl": ""
 }

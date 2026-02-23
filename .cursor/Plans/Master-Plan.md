@@ -2,11 +2,11 @@
 
 ## Next hand off (cut & paste) — Lane A
 
-P001 C1–C12 complete. To finish: (1) Run full test suite and confirm baseline. (2) Commit and push to GitHub per commit checkpoint: stage relevant files, commit with message including plan ID and description (e.g. `P001 C12: Agent updates, SPECIFICATION.md`), push to origin/main. (3) Update Master-Plan matrix row with push date and refresh next hand off. Invoke [Agents/planner.md](Agents/planner.md) after push to refresh next hand off.
+C9 Next.js admin routes are complete. For the next Lane A task: invoke [Agents/planner.md](Agents/planner.md) and ask for the next task.
 
 ## Next hand off (cut & paste) — Lane B
 
-No further Lane B (config/assets-only) task in current scope. C9 config/assets and P001-Assets sprite art are done; example variant added at `config/variants/easy.json`. When new config- or assets-only work is added to the plan, invoke [Agents/planner.md](Agents/planner.md) to assign the next Lane B task. Lane B may edit `config/` and `assets/` only; no `ios/` or `src/` changes.
+No Lane B task in current scope (C9 config/assets and P001-Assets sprite art are done). To get a Lane B task: invoke [Agents/planner.md](Agents/planner.md) and ask for the next config- or assets-only work. **Lane B may edit `config/` and `assets/` only** (and may use ui-designer for images); no `ios/` or `src/` changes.
 
 ---
 
@@ -22,9 +22,16 @@ No further Lane B (config/assets-only) task in current scope. C9 config/assets a
 
 | Plan ID | Name | Priority | Description | Current state | Conf (root) | Conf (solution) |
 |---------|------|----------|-------------|---------------|-------------|-----------------|
-| P001 | CatRunner iOS Game | 1 | iOS endless runner, VariantConfig, admin, CI/CD. See [.cursor/Plans/subplans/P001/P001-CatRunner.plan.md](.cursor/Plans/subplans/P001/P001-CatRunner.plan.md). | In progress | 92% | 88% |
+| P001 | CatRunner iOS Game | 1 | iOS endless runner, VariantConfig, admin, CI/CD. See [.cursor/Plans/subplans/P001/P001-CatRunner.plan.md](.cursor/Plans/subplans/P001/P001-CatRunner.plan.md). | Complete. **Pushed 2026-02-23.** | 92% | 88% |
 | P001-Assets | Sprites & UI assets | 1 | Asset inventory, image specs, ui-designer workflow. Sub-plan of P001. See [.cursor/Plans/subplans/P001/sprites-ui-assets.plan.md](.cursor/Plans/subplans/P001/sprites-ui-assets.plan.md). | Validated | N/A | High |
 | P001-UI-Mockups | UI mockups (Lane B) | 1 | In-game UI mockups: pixel art, Revive/Game over, store in assets/ui/. Sub-plan of P001. See [.cursor/Plans/subplans/P001/ui-mockups.plan.md](.cursor/Plans/subplans/P001/ui-mockups.plan.md). | Validated | N/A | High |
+| P001-C9-NextJS | C9 Admin Next.js routes | 1 | Admin panel UI: config editor, asset upload, variant list, CI trigger. Sub-plan of P001. See [.cursor/Plans/subplans/P001/C9-admin-panel.plan.md](.cursor/Plans/subplans/P001/C9-admin-panel.plan.md). | **Complete.** Next.js routes built; paths from config/admin.json. | N/A | High |
+
+---
+
+## Pending / missed work (audit)
+
+- None. C9 Next.js admin routes are implemented (`src/app/admin/`).
 
 ---
 
@@ -40,7 +47,7 @@ No further Lane B (config/assets-only) task in current scope. C9 config/assets a
 | C6 | Power-up spawner (max 1, free lane only) | Done | N/A | N/A | PowerUpSpawner; max 1, free lane only, no overlap |
 | C7 | Jump/slide, collision detection | Done | N/A | N/A | Jump/slide, lane swap, CollisionSystem; game-over delegate for C8 |
 | C8 | Difficulty scaling, scoring, revive | Code built | N/A | N/A | DifficultyScaler, ScoreKeeper, revive stub; unit tests in CatRunnerTests (add test target to run) |
-| C9 | Admin panel scaffold | Lane B done | N/A | N/A | config/admin.json, config/variants/ (example easy.json), assets/; Next.js routes pending. |
+| C9 | Admin panel scaffold | Done | N/A | N/A | config/admin.json, config/variants/, assets/; Next.js admin routes (config editor, asset upload, variant list, CI trigger) built. |
 | C10 | CI/CD workflows | Code built | N/A | N/A | build.yml, test.yml, deploy.yml; shared scheme; deploy manual TestFlight; C11 adds test target |
 | C11 | Automated tests | Testing complete | N/A | N/A | CatRunnerTests target added; 55 tests pass; CI runs xcodebuild test |
 | C12 | Agent updates, SPECIFICATION.md | Code built | N/A | N/A | Blaster/Tester CatRunner scope; docs/SPECIFICATION.md created |
@@ -88,7 +95,7 @@ Scaffolded deliverables are grouped by repo location and owning chunk.
 
 | Item | Path / scope | Chunk | Notes |
 |------|----------------|-------|--------|
-| Admin routes | `src/app/admin/` | C9 | Config editor, asset upload |
+| Admin routes | `src/app/admin/` | C9 | Config editor, asset upload, variant list, CI trigger (paths from config/admin.json) |
 | Config editor | Page for `config/default/variant.json` | C9 | Validate with schema |
 | Asset upload UI | Page to upload into `assets/*` | C9 | |
 | Variant list | Page listing variants | C9 | |
@@ -133,6 +140,8 @@ Scaffolded deliverables are grouped by repo location and owning chunk.
 ---
 
 ## Features for planner
+
+Features are maintained in this section. An optional `features-for-planner.md` at `.cursor/Plans/` may be used if a separate doc is needed (planner owns both).
 
 - **CatRunner**: 1-player endless runner; 5 lanes; procedural segments; single avatar.
 - **Scope**: iOS (Swift + SpriteKit), in-repo VariantConfig, Next.js admin scaffold, GitHub Actions CI/CD.

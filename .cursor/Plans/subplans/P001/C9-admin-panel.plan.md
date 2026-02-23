@@ -1,6 +1,6 @@
 # C9 — Admin Panel Scaffold
 
-**Next hand off:** Implement C9 Next.js routes (config/ and assets/ ready per Lane B).
+**Next hand off:** Same as Master-Plan Lane A. C9 Next.js admin routes are complete. For next task invoke [Agents/planner.md](../../../Agents/planner.md).
 
 ---
 
@@ -10,17 +10,17 @@ Next.js admin: config editor for variant.json, asset upload UI, variant list, CI
 
 ## Lane B (config/ and assets/ only) — Done
 
-- **config/admin.json** — Manifest for admin panel: `defaultVariantPath`, `schemaPath`, `assetsPath`, `variantsDir`, `ciTrigger`. Admin app should read this for paths and CI doc.
+- **config/admin.json** — Manifest for admin panel: `defaultVariantPath`, `schemaPath`, `assetsPath`, `variantsDir`, `ciTrigger`, optional `ciWorkflowUrl`. Admin app reads this for paths and CI.
 - **config/variants/** — Directory for optional variant overrides; variant list = default + variants/*.
-- **assets/** — All path targets from `config/default/assets.json` scaffolded: character/, dogs/, backgrounds/, powerups/, ui/ (obstacles/ already existed). Asset upload can write into these paths.
+- **assets/** — All path targets from `config/default/assets.json` scaffolded: character/, dogs/, backgrounds/, powerups/, ui/ (obstacles/ already existed). Asset upload writes into these paths.
 
-## Steps (remaining: Next.js / src — other lane)
+## Steps — Done
 
-1. Add admin routes under `src/app/admin/` (or repurpose root Next.js). Read paths from `config/admin.json`.
-2. Config editor: page/component to edit `config/default/variant.json` (form or JSON editor); validate with `config/schema.json`; save = document "commit to repo" or local file write for dev.
-3. Asset upload: page to upload files into paths defined in `config/default/assets.json` (asset inventory and path map: [sprites-ui-assets.plan.md](sprites-ui-assets.plan.md)). Allow updating path mapping only when adding new asset keys.
-4. Variant list: page listing `config/default` and `config/variants/*`; show active variant.
-5. CI trigger: link to GitHub Actions workflow (e.g. workflow_dispatch) or docs for manual `git push`.
+1. **Done.** Admin routes under `src/app/admin/`. Paths from `config/admin.json` via `src/lib/admin-config.ts`.
+2. **Done.** Config editor at `/admin/config`: loads `config/default/variant.json`, validates on load and on save with `config/schema.json`; save writes to default variant path.
+3. **Done.** Asset upload at `/admin/assets`: uploads into paths from `config/default/assets.json`; directory targets (e.g. appIcon) excluded from dropdown and rejected by API.
+4. **Done.** Variant list at `/admin/variants`: default + `config/variants/*`; CI trigger text from admin.json.
+5. **Done.** CI trigger at `/admin/ci`: docs and optional `ciWorkflowUrl` link to GitHub Actions.
 
 ## Validation
 
