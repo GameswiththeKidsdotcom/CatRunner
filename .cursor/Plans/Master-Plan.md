@@ -2,7 +2,7 @@
 
 ## Next hand off (cut & paste) — Lane A
 
-P002 Blaster pipeline complete (Steps 1–5; chunks V1–V4 validated; see [P002-vertical-runner-viewport.plan.md](.cursor/Plans/subplans/P002/P002-vertical-runner-viewport.plan.md)). **Commit** plan updates (`.cursor/Plans/` — P002 chunk sub-plans and Master-Plan) to repo. Then: **next Lane A priority** — run P001-E2E-Journeys investigations and/or invoke ui-test (Admin) and logic-test per [e2e-spec-journeys.plan.md](.cursor/Plans/subplans/P001/e2e-spec-journeys.plan.md), or pick next plan from Plan Matrix. Lane A may edit ios/ only. Reference: [Agents/planner.md](Agents/planner.md), [Agents/ui-test.md](Agents/ui-test.md), [Agents/logic-test.md](Agents/logic-test.md).
+P002 plan updates committed. P001-E2E investigations 1–4 done (findings: [e2e-investigation-findings-2026-02-23.md](.cursor/Plans/subplans/P001/e2e-investigation-findings-2026-02-23.md)). **Next Lane A priority:** (1) Invoke **ui-test** for Admin E2E (Playwright, J6–J9) per [e2e-spec-journeys.plan.md](.cursor/Plans/subplans/P001/e2e-spec-journeys.plan.md); (2) Invoke **logic-test** for state/rules (revive, play again) per §6.1; (3) Optionally in ios/: add "Play again" CTA and accessibility identifiers (see findings). Lane A may edit ios/ only. Reference: [Agents/planner.md](Agents/planner.md), [Agents/ui-test.md](Agents/ui-test.md), [Agents/logic-test.md](Agents/logic-test.md).
 
 ## Next hand off (cut & paste) — Lane B
 
