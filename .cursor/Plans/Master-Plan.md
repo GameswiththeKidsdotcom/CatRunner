@@ -2,7 +2,11 @@
 
 ## Next hand off (cut & paste) — Lane A
 
-P002 plan updates committed. P001-E2E investigations 1–4 done (findings: [e2e-investigation-findings-2026-02-23.md](.cursor/Plans/subplans/P001/e2e-investigation-findings-2026-02-23.md)). **Next Lane A priority:** (1) Invoke **ui-test** for Admin E2E (Playwright, J6–J9) per [e2e-spec-journeys.plan.md](.cursor/Plans/subplans/P001/e2e-spec-journeys.plan.md); (2) Invoke **logic-test** for state/rules (revive, play again) per §6.1; (3) Optionally in ios/: add "Play again" CTA and accessibility identifiers (see findings). Lane A may edit ios/ only. Reference: [Agents/planner.md](Agents/planner.md), [Agents/ui-test.md](Agents/ui-test.md), [Agents/logic-test.md](Agents/logic-test.md).
+**(1) ui-test (Admin E2E) — done.** Playwright E2E for J6–J9 in `e2e/admin/journeys.spec.ts`; viewport projects desktop-1280 and desktop-1440 per Investigation 4; `playwright.config.ts` added; `npm run test:e2e` (20 passed, 2 skipped). **CI:** `npm run test:e2e` runs in GitHub Actions (job `admin-e2e` in [.github/workflows/test.yml](.github/workflows/test.yml)). See [e2e-spec-journeys.plan.md](.cursor/Plans/subplans/P001/e2e-spec-journeys.plan.md) for full hand off.
+
+**(2) logic-test — done.** Re-validation complete; [logic-test-revive-playagain-2026-02-23.md](.cursor/Plans/subplans/P001/logic-test-revive-playagain-2026-02-23.md) updated. **Investigator review complete:** High confidence, handoff ready; only gap: CTA labels vs spec (Revive/Done/Play again vs "Watch ad"/"No thanks") — document in spec or align UI (Lane A or product).
+
+**Next:** CTA label gap **is** documented in [docs/SPECIFICATION.md](docs/SPECIFICATION.md) §1 (Revive); optional alignment remains Lane A/product. **Next action:** When ready, continue **iOS E2E (J1–J5)** per [e2e-spec-journeys.plan.md](.cursor/Plans/subplans/P001/e2e-spec-journeys.plan.md) and [Agents/e2e-harness.md](Agents/e2e-harness.md): native stack (XCUITest), journey map J1–J5, viewport/device matrix from Investigation 4. Commit plan updates and push when verified. Use **Planner** to refresh hand offs after completion.
 
 ## Next hand off (cut & paste) — Lane B
 
@@ -13,7 +17,7 @@ Lane B complete for current initiatives (Scroller 10s S1, Many-buildings BG1+BG2
 ## Concurrent agents (max 2)
 
 - **Lane A** edits `ios/` only. **Lane B** edits `config/` and `assets/` only (and may invoke ui-designer for asset images). No file overlap; both may run in parallel.
-- **Hand-offs:** Lane A = P002 Blaster complete; commit plan updates then P001-E2E or next priority. Lane B = complete (S1 + BG1+BG2); no current task. No file overlap.
+- **Hand-offs:** Lane A = P001-E2E ui-test + logic-test done; E2E in CI; next optional CTA alignment or iOS E2E (J1–J5). Lane B = complete (S1 + BG1+BG2); no current task. No file overlap.
 - When both lanes touch the same area (e.g. C3 and C7 both touch Engine), run sequentially.
 - **Asset path and image spec:** Only [sprites-ui-assets.plan.md](.cursor/Plans/subplans/P001/sprites-ui-assets.plan.md) defines the asset inventory and `assets.json` path map; C2 creates the file, C9/admin consume it.
 
