@@ -2,7 +2,7 @@
 
 ## Next hand off (cut & paste) — Lane A
 
-BG4 complete (2026-02-23). Validation: 5-iPhone simulator matrix (4/5 builds; 58/58 tests), ui-test journey documented, optional screenshot deferred. See [BG4-validation-2026-02-23.md](.cursor/Plans/subplans/Many-buildings-bg/BG4-validation-2026-02-23.md). Next: Commit S4+BG3+BG4 and update plan state; or invoke Planner to refresh Master-Plan and next hand-offs. Reference: [Agents/tester.md](Agents/tester.md), [Agents/planner.md](Agents/planner.md).
+S4+BG3+BG4 committed 2026-02-23. Next: Invoke Planner to refresh Master-Plan and next hand-offs; or proceed with P002 (vertical runner, viewport). Reference: [Agents/planner.md](Agents/planner.md).
 
 ## Next hand off (cut & paste) — Lane B
 
@@ -41,7 +41,7 @@ If Scroller 10s S1 not done: set engine.segmentDurationSeconds to "min": 10, "ma
 | S1 | Config: segment duration ≥10s, optional scrollerLoop | Pending | B | variant.json (+ schema if scrollerLoop) |
 | S2 | GameScene: 10s fallback + loop branch (no addSegmentCompleted on restart) | Done (pushed 2026-02-23) | A | GameScene.swift |
 | S3 | refreshSegmentSprites: 44pt max scaling, aspect ratio preserved | Done (pushed 2026-02-23) | A | GameScene.swift |
-| S4 | Validation: manual 10s + loop + sizing; unit tests | Done | A | Simulator + 58 tests; 2026-02-23 |
+| S4 | Validation: manual 10s + loop + sizing; unit tests | Done (pushed 2026-02-23) | A | Simulator + 58 tests |
 
 **P001-CatWorld-Assets phases (Lane B, ui-designer):**
 
@@ -71,15 +71,15 @@ If Scroller 10s S1 not done: set engine.segmentDurationSeconds to "min": 10, "ma
 |-------|-------------|-------|------|------|
 | BG1 | Ui-designer: image prompt + Canva skill + GenerateImage; implementation spec | Pending | B | Invoke ui-designer per plan |
 | BG2 | Save sky.png, ground.png to assets/backgrounds/; update README/VISION if needed | Pending | B | assets/ only |
-| BG3 | B5: background layer + vertical tiling in GameScene; runway band aligns with lanes | Done | A | GameScene.swift; 2026-02-23 |
-| BG4 | Validation: 5-iPhone simulator, ui-test journey, screenshot baseline | Done | A + ui-test | 2026-02-23; see BG4-validation-2026-02-23.md |
+| BG3 | B5: background layer + vertical tiling in GameScene; runway band aligns with lanes | Done (pushed 2026-02-23) | A | GameScene.swift |
+| BG4 | Validation: 5-iPhone simulator, ui-test journey, screenshot baseline | Done (pushed 2026-02-23) | A + ui-test | See BG4-validation-2026-02-23.md |
 
 ---
 
 ## Pending / missed work (audit)
 
-- **Scroller-10s (Lane A + Lane B):** S2 and S3 done (pushed 2026-02-23). Lane A: S4 validation (simulator + tests). Lane B: S1 (config segment duration, optional scrollerLoop). See [Scroller-10s-loop-and-sizing.plan.md](.cursor/Plans/subplans/Scroller-10s-loop-and-sizing.plan.md) and Master-Plan hand-offs above.
-- **Many-buildings-bg (Lane A + Lane B):** Scrolling rooftop background (many buildings, tileable), dog/boxes on runway; BG1 (ui-designer) → BG2 (save assets) → BG3 (B5 in GameScene) → BG4 (validation). Lane B: BG1+BG2 (assets/). Lane A: BG3+BG4 (ios/). See [Many-buildings-bg.plan.md](.cursor/Plans/subplans/Many-buildings-bg/Many-buildings-bg.plan.md).
+- **Scroller-10s (Lane A + Lane B):** S2, S3, S4 done (pushed 2026-02-23). Lane B: S1 (config segment duration, optional scrollerLoop). See [Scroller-10s-loop-and-sizing.plan.md](.cursor/Plans/subplans/Scroller-10s-loop-and-sizing.plan.md) and Master-Plan hand-offs above.
+- **Many-buildings-bg (Lane A + Lane B):** BG3+BG4 done (pushed 2026-02-23). Lane B: BG1+BG2 (ui-designer → save sky.png, ground.png to assets/backgrounds/). See [Many-buildings-bg.plan.md](.cursor/Plans/subplans/Many-buildings-bg/Many-buildings-bg.plan.md).
 - **P002 (Lane A):** Vertical runner, avatar/enemy visibility, viewport scaling (last 5 iPhones), then Blaster and Planner. See [P002-vertical-runner-viewport.plan.md](.cursor/Plans/subplans/P002/P002-vertical-runner-viewport.plan.md).
 - **P001-CatWorld-Assets:** A1–A7 complete. Copy `assets/reference/appIcon_catworld_1024.png` to `ios/.../AppIcon.appiconset/` (Lane A or user) to finish app icon.
 - **P001-Asset-Integration:** B1–B4 done (bundle, loader, player, obstacle/power-up sprites; iOS 58/58 pass). Optional B5 (backgrounds). Lane A. See [asset-integration.plan.md](.cursor/Plans/subplans/P001/asset-integration.plan.md).
