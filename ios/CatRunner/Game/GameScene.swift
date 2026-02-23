@@ -6,6 +6,7 @@
 //  C7 — Jump/slide and collision per config; input (swipe up/down/left/right); game loop runs CollisionSystem;
 //       instant-fail/power-up/slowdown via delegate for C8. Revive flow is C8.
 //  B4 — Obstacle and power-up sprites from B2 asset loader; segment strip below player.
+//  B5 — Background layer (sky + ground) with vertical tiling; zPosition < segment strip.
 //  P002 — Vertical runner (Temple Run style): scroll axis = y; player in lower third; obstacles move top → bottom.
 //
 
@@ -80,6 +81,17 @@ class GameScene: SKScene {
     /// C7 — Power-up already collected this segment (avoid double-collect).
     private var powerUpCollectedInSegment: Bool = false
 
+    /// B5 — Background layer (sky + ground); zPosition below segment strip. Tiled vertically; positions updated from segment scroll.
+    private let backgroundLayer = SKNode()
+    /// B5 — Sky tile nodes for vertical tiling (scroll with segment).
+    private var skyTileNodes: [SKSpriteNode] = []
+    /// B5 — Ground tile nodes for vertical tiling (scroll with segment).
+    private var groundTileNodes: [SKSpriteNode] = []
+    /// B5 — Height of one sky tile (for tiling).
+    private var skyTileHeight: CGFloat = 0
+    /// B5 — Height of one ground tile (for tiling).
+    private var groundTileHeight: CGFloat = 0
+
     /// B4 — Container for obstacle and power-up sprites; z-order below player. Cleared when segment advances.
     private let segmentStrip = SKNode()
     /// B4 — Sprites for current segment obstacles; positions updated each frame.
@@ -98,12 +110,80 @@ class GameScene: SKScene {
         loadEngineConfig()
         assetConfig = AssetConfig.load(fromBundle: .main, subdirectory: "config/default")
         layoutLanes()
+        setupBackgroundLayer()
         drawLaneLines()
         segmentStrip.name = "segmentStrip"
         segmentStrip.zPosition = 5
         addChild(segmentStrip)
         addPlayer()
         startSegment()
+    }
+
+    /// B5 — Create background layer (zPosition < 5) with sky and ground from assetConfig; vertical tiling for scroll.
+    private func setupBackgroundLayer() {
+        backgroundLayer.name = "backgroundLayer"
+        backgroundLayer.zPosition = 0
+        addChild(backgroundLayer)
+
+        let sceneW = size.width
+        let sceneH = size.height
+        let scrollRange = CGFloat(segmentDurationForTiling) * SegmentScrollSpeed
+        let totalHeight = sceneH + scrollRange
+
+        if let skyTex = assetConfig?.texture(forKey: "backgrounds.sky"), skyTex.size().height > 0 {
+            let texSize = skyTex.size()
+            skyTileHeight = texSize.height
+            let tileW = max(texSize.width, sceneW)
+            let tileH = texSize.height
+            let nTiles = Int(ceil(totalHeight / tileH)) + 2
+            for i in 0..<nTiles {
+                let node = SKSpriteNode(texture: skyTex, color: .clear, size: CGSize(width: tileW, height: tileH))
+                node.anchorPoint = CGPoint(x: 0.5, y: 0)
+                node.name = "sky_\(i)"
+                node.zPosition = 0
+                node.position = CGPoint(x: size.width / 2, y: CGFloat(i) * tileH)
+                backgroundLayer.addChild(node)
+                skyTileNodes.append(node)
+            }
+        }
+
+        if let groundTex = assetConfig?.texture(forKey: "backgrounds.ground"), groundTex.size().height > 0 {
+            let texSize = groundTex.size()
+            groundTileHeight = texSize.height
+            let tileW = max(texSize.width, sceneW)
+            let tileH = texSize.height
+            let nTiles = Int(ceil(totalHeight / tileH)) + 2
+            for i in 0..<nTiles {
+                let node = SKSpriteNode(texture: groundTex, color: .clear, size: CGSize(width: tileW, height: tileH))
+                node.anchorPoint = CGPoint(x: 0.5, y: 0)
+                node.name = "ground_\(i)"
+                node.zPosition = 1
+                node.position = CGPoint(x: size.width / 2, y: CGFloat(i) * tileH)
+                backgroundLayer.addChild(node)
+                groundTileNodes.append(node)
+            }
+        }
+    }
+
+    /// B5 — Update background tile positions for vertical scroll (same speed as segment strip). Tiles placed in world Y; scroll offset moves them down.
+    private func updateBackgroundPositions() {
+        let scrollOffset = CGFloat(segmentTime) * SegmentScrollSpeed
+        let centerX = size.width / 2
+
+        for (i, node) in skyTileNodes.enumerated() where skyTileHeight > 0 {
+            let worldY = CGFloat(i) * skyTileHeight - scrollOffset
+            node.position = CGPoint(x: centerX, y: worldY)
+        }
+
+        for (i, node) in groundTileNodes.enumerated() where groundTileHeight > 0 {
+            let worldY = CGFloat(i) * groundTileHeight - scrollOffset
+            node.position = CGPoint(x: centerX, y: worldY)
+        }
+    }
+
+    /// B5 — Segment duration (seconds) used to size tiling (e.g. 10–12 s). Fallback when no config.
+    private var segmentDurationForTiling: TimeInterval {
+        engineConfig?.segmentDurationConfig.maxDurationSeconds ?? 12
     }
 
     /// Load variant.json into engineConfig when available.
@@ -386,6 +466,7 @@ class GameScene: SKScene {
             return
         }
 
+        updateBackgroundPositions()
         updateSegmentSpritePositions()
 
         guard let player = playerNode else { return }

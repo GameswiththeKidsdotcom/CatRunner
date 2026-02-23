@@ -3,11 +3,15 @@
 //  CatRunner
 //
 //  C1 — Xcode Bootstrap. C8 — GameSceneDelegate: revive offer and resume.
+//  P002 — Design size and aspectFit so full gameplay area (avatar, lanes) is visible on all phones.
 //
 
 import UIKit
 import SpriteKit
 import GameplayKit
+
+/// P002 — Design size (portrait) for consistent layout; aspectFit scales to fit all iPhones.
+private let DesignSize = CGSize(width: 393, height: 852)
 
 class GameViewController: UIViewController {
 
@@ -21,8 +25,8 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
 
         if let view = self.view as? SKView {
-            let scene = GameScene(size: view.bounds.size)
-            scene.scaleMode = .resizeFill
+            let scene = GameScene(size: DesignSize)
+            scene.scaleMode = .aspectFit
             scene.gameDelegate = self
             gameScene = scene
             view.presentScene(scene)

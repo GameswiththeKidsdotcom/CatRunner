@@ -2,17 +2,18 @@
 
 ## Next hand off (cut & paste) — Lane A
 
-C9 Next.js admin routes are complete. For the next Lane A task: invoke [Agents/planner.md](Agents/planner.md) and ask for the next task.
+BG4 complete (2026-02-23). Validation: 5-iPhone simulator matrix (4/5 builds; 58/58 tests), ui-test journey documented, optional screenshot deferred. See [BG4-validation-2026-02-23.md](.cursor/Plans/subplans/Many-buildings-bg/BG4-validation-2026-02-23.md). Next: Commit S4+BG3+BG4 and update plan state; or invoke Planner to refresh Master-Plan and next hand-offs. Reference: [Agents/tester.md](Agents/tester.md), [Agents/planner.md](Agents/planner.md).
 
 ## Next hand off (cut & paste) — Lane B
 
-No Lane B task in current scope (C9 config/assets and P001-Assets sprite art are done). To get a Lane B task: invoke [Agents/planner.md](Agents/planner.md) and ask for the next config- or assets-only work. **Lane B may edit `config/` and `assets/` only** (and may use ui-designer for images); no `ios/` or `src/` changes.
+If Scroller 10s S1 not done: set engine.segmentDurationSeconds to "min": 10, "max": 12 and optional engine.scrollerLoop in config per [Scroller-10s-loop-and-sizing.plan.md](.cursor/Plans/subplans/Scroller-10s-loop-and-sizing.plan.md). Then execute Many-buildings BG1+BG2 (Lane B): invoke ui-designer to create scrolling rooftop background asset(s) (many buildings, tileable) per [Many-buildings-bg.plan.md](.cursor/Plans/subplans/Many-buildings-bg/Many-buildings-bg.plan.md) and canva-ui-design skill; save sky.png and ground.png to assets/backgrounds/, update README/VISION if needed. Lane B edits config/ and assets/ only. Reference: [Agents/planner.md](Agents/planner.md), [Agents/ui-designer.md](Agents/ui-designer.md).
 
 ---
 
 ## Concurrent agents (max 2)
 
 - **Lane A** edits `ios/` only. **Lane B** edits `config/` and `assets/` only (and may invoke ui-designer for asset images). No file overlap; both may run in parallel.
+- **Hand-offs:** Lane A = Scroller 10s S4 (validation) then Many-buildings BG3 (B5 ios/). Lane B = Scroller 10s S1 (config/) then Many-buildings BG1+BG2 (assets/). No file overlap.
 - When both lanes touch the same area (e.g. C3 and C7 both touch Engine), run sequentially.
 - **Asset path and image spec:** Only [sprites-ui-assets.plan.md](.cursor/Plans/subplans/P001/sprites-ui-assets.plan.md) defines the asset inventory and `assets.json` path map; C2 creates the file, C9/admin consume it.
 
@@ -22,16 +23,66 @@ No Lane B task in current scope (C9 config/assets and P001-Assets sprite art are
 
 | Plan ID | Name | Priority | Description | Current state | Conf (root) | Conf (solution) |
 |---------|------|----------|-------------|---------------|-------------|-----------------|
-| P001 | CatRunner iOS Game | 1 | iOS endless runner, VariantConfig, admin, CI/CD. See [.cursor/Plans/subplans/P001/P001-CatRunner.plan.md](.cursor/Plans/subplans/P001/P001-CatRunner.plan.md). | Complete. **Pushed 2026-02-23.** | 92% | 88% |
+| P001 | CatRunner iOS Game | 1 | iOS endless runner, VariantConfig, admin, CI/CD. See [.cursor/Plans/subplans/P001/P001-CatRunner.plan.md](.cursor/Plans/subplans/P001/P001-CatRunner.plan.md). | Complete. **Pushed 2026-02-23.** | 92% | 93% |
 | P001-Assets | Sprites & UI assets | 1 | Asset inventory, image specs, ui-designer workflow. Sub-plan of P001. See [.cursor/Plans/subplans/P001/sprites-ui-assets.plan.md](.cursor/Plans/subplans/P001/sprites-ui-assets.plan.md). | Validated | N/A | High |
 | P001-UI-Mockups | UI mockups (Lane B) | 1 | In-game UI mockups: pixel art, Revive/Game over, store in assets/ui/. Sub-plan of P001. See [.cursor/Plans/subplans/P001/ui-mockups.plan.md](.cursor/Plans/subplans/P001/ui-mockups.plan.md). | Validated | N/A | High |
 | P001-C9-NextJS | C9 Admin Next.js routes | 1 | Admin panel UI: config editor, asset upload, variant list, CI trigger. Sub-plan of P001. See [.cursor/Plans/subplans/P001/C9-admin-panel.plan.md](.cursor/Plans/subplans/P001/C9-admin-panel.plan.md). | **Complete.** Next.js routes built; paths from config/admin.json. | N/A | High |
+| P001-CatWorld-Assets | Cat world asset replacement (Lane B) | 1 | Replace placeholder/pixel-art assets with cat-world art (soft cozy 2D, rooftops at night). Sub-plan of P001. See [.cursor/Plans/subplans/P001/CatWorld-assets.plan.md](.cursor/Plans/subplans/P001/CatWorld-assets.plan.md). Phases A1–A7: character, obstacles, enemies, backgrounds, power-ups, UI, app icon. | **Complete.** | N/A | High |
+| P001-Asset-Integration | iOS asset bundle and visuals | 1 | Integrate config + assets into app bundle and render character/obstacles/power-ups from assets.json. Sub-plan of P001. See [.cursor/Plans/subplans/P001/asset-integration.plan.md](.cursor/Plans/subplans/P001/asset-integration.plan.md). Chunks B1–B4; optional B5. | B4 verified; iOS 58/58 pass. Optional B5. | N/A | High |
+| P001-E2E-Journeys | E2E spec assessment and user-journey skeleton | 1 | Spec assessment, journey skeleton (J1–J5 iOS, J6–J9 Admin), investigation plans and question sets. Aligned with logic-test (§6.1), ui-test (§6.2), Blaster (§7). See [.cursor/Plans/subplans/P001/e2e-spec-journeys.plan.md](.cursor/Plans/subplans/P001/e2e-spec-journeys.plan.md). | Validated | N/A | High |
+| P002 | Lane A Vertical Runner & Viewport | 1 | Vertical Temple Run-style runner (swipe left/right lanes), avatar/enemy visibility, viewport scaling for last 5 iPhones; then Blaster and Planner. See [.cursor/Plans/subplans/P002/P002-vertical-runner-viewport.plan.md](.cursor/Plans/subplans/P002/P002-vertical-runner-viewport.plan.md). | Validated | High | High |
+| Scroller-10s | Scroller 10s loop and avatar sizing | 1 | 10s segment, seamless loop (same segment repeats), dog/boxes as obstacles, 44pt sprite scaling. Blaster complete; chunks S1–S4. See [.cursor/Plans/subplans/Scroller-10s-loop-and-sizing.plan.md](.cursor/Plans/subplans/Scroller-10s-loop-and-sizing.plan.md). | Test plan ready | 92% | 92% |
+| Many-buildings-bg | Many-buildings scrolling background and sprite integration | 1 | Scrolling rooftop background (many buildings, tileable), dog/boxes integrate on runway; ui-designer + canva-ui-design; B5 (background layer + tiling). See [.cursor/Plans/subplans/Many-buildings-bg/Many-buildings-bg.plan.md](.cursor/Plans/subplans/Many-buildings-bg/Many-buildings-bg.plan.md). | Validated | N/A | High |
+
+**Scroller-10s chunks (Lane A = ios/, Lane B = config/):**
+
+| Chunk | Description | State | Lane | Note |
+|-------|-------------|-------|------|------|
+| S1 | Config: segment duration ≥10s, optional scrollerLoop | Pending | B | variant.json (+ schema if scrollerLoop) |
+| S2 | GameScene: 10s fallback + loop branch (no addSegmentCompleted on restart) | Done (pushed 2026-02-23) | A | GameScene.swift |
+| S3 | refreshSegmentSprites: 44pt max scaling, aspect ratio preserved | Done (pushed 2026-02-23) | A | GameScene.swift |
+| S4 | Validation: manual 10s + loop + sizing; unit tests | Done | A | Simulator + 58 tests; 2026-02-23 |
+
+**P001-CatWorld-Assets phases (Lane B, ui-designer):**
+
+| Phase | Description | State | Sub-plan |
+|-------|-------------|-------|----------|
+| A1 | Character: cat_run.png | Done | [CatWorld-A1-character.plan.md](.cursor/Plans/subplans/P001/CatWorld-A1-character.plan.md) |
+| A2 | Obstacles: passable, instantFail, slowdown | Done | [CatWorld-A2-obstacles.plan.md](.cursor/Plans/subplans/P001/CatWorld-A2-obstacles.plan.md) |
+| A3 | Enemies: dog.png | Done | [CatWorld-A3-enemies.plan.md](.cursor/Plans/subplans/P001/CatWorld-A3-enemies.plan.md) |
+| A4 | Backgrounds: sky.png, ground.png | Done | [CatWorld-A4-backgrounds.plan.md](.cursor/Plans/subplans/P001/CatWorld-A4-backgrounds.plan.md) |
+| A5 | Power-ups: speedBoost, shield | Done | [CatWorld-A5-powerups.plan.md](.cursor/Plans/subplans/P001/CatWorld-A5-powerups.plan.md) |
+| A6 | UI: scorePanel, gameOver, revivePanel | Done | [CatWorld-A6-ui.plan.md](.cursor/Plans/subplans/P001/CatWorld-A6-ui.plan.md) |
+| A7 | App icon 1024×1024 (save to assets/reference; copy to ios/ by user or Lane A) | Done | [CatWorld-A7-appicon.plan.md](.cursor/Plans/subplans/P001/CatWorld-A7-appicon.plan.md) |
+
+**P001-Asset-Integration chunks (Lane A):**
+
+| Chunk | Description | State | Note |
+|-------|-------------|-------|------|
+| B1 | Config and assets in app bundle | Done | variant.json, assets.json, assets/* in bundle |
+| B2 | Asset loader (assets.json → textures) | Done | assets.json loaded; character.run → SKTexture; GameScene holds assetConfig |
+| B3 | Player texture from character.run | Done | B2 loader; GameScene → PlayerNode(texture:) |
+| B4 | Obstacle and power-up sprites | Done | B2 loader; segment strip; obstacle/power-up textures in lanes |
+| B5 | Backgrounds (sky, ground) | Done | B2 loader; backgroundLayer + vertical tiling in GameScene (BG3) |
+
+**Many-buildings-bg chunks (Lane A = ios/, Lane B = assets/ + ui-designer):**
+
+| Chunk | Description | State | Lane | Note |
+|-------|-------------|-------|------|------|
+| BG1 | Ui-designer: image prompt + Canva skill + GenerateImage; implementation spec | Pending | B | Invoke ui-designer per plan |
+| BG2 | Save sky.png, ground.png to assets/backgrounds/; update README/VISION if needed | Pending | B | assets/ only |
+| BG3 | B5: background layer + vertical tiling in GameScene; runway band aligns with lanes | Done | A | GameScene.swift; 2026-02-23 |
+| BG4 | Validation: 5-iPhone simulator, ui-test journey, screenshot baseline | Done | A + ui-test | 2026-02-23; see BG4-validation-2026-02-23.md |
 
 ---
 
 ## Pending / missed work (audit)
 
-- None. C9 Next.js admin routes are implemented (`src/app/admin/`).
+- **Scroller-10s (Lane A + Lane B):** S2 and S3 done (pushed 2026-02-23). Lane A: S4 validation (simulator + tests). Lane B: S1 (config segment duration, optional scrollerLoop). See [Scroller-10s-loop-and-sizing.plan.md](.cursor/Plans/subplans/Scroller-10s-loop-and-sizing.plan.md) and Master-Plan hand-offs above.
+- **Many-buildings-bg (Lane A + Lane B):** Scrolling rooftop background (many buildings, tileable), dog/boxes on runway; BG1 (ui-designer) → BG2 (save assets) → BG3 (B5 in GameScene) → BG4 (validation). Lane B: BG1+BG2 (assets/). Lane A: BG3+BG4 (ios/). See [Many-buildings-bg.plan.md](.cursor/Plans/subplans/Many-buildings-bg/Many-buildings-bg.plan.md).
+- **P002 (Lane A):** Vertical runner, avatar/enemy visibility, viewport scaling (last 5 iPhones), then Blaster and Planner. See [P002-vertical-runner-viewport.plan.md](.cursor/Plans/subplans/P002/P002-vertical-runner-viewport.plan.md).
+- **P001-CatWorld-Assets:** A1–A7 complete. Copy `assets/reference/appIcon_catworld_1024.png` to `ios/.../AppIcon.appiconset/` (Lane A or user) to finish app icon.
+- **P001-Asset-Integration:** B1–B4 done (bundle, loader, player, obstacle/power-up sprites; iOS 58/58 pass). Optional B5 (backgrounds). Lane A. See [asset-integration.plan.md](.cursor/Plans/subplans/P001/asset-integration.plan.md).
 
 ---
 
@@ -39,8 +90,8 @@ No Lane B task in current scope (C9 config/assets and P001-Assets sprite art are
 
 | Chunk | Description | State | Conf (root) | Conf (solution) | Note |
 |-------|-------------|-------|-------------|-----------------|------|
-| C1 | Xcode scaffold, 5 lanes, player at lane 2 | Done | 95% | 95% | Builds and runs on simulator |
-| C2 | VariantConfig loader, JSON parsing | Done | N/A | N/A | Schema + variant.json in place; no loader yet |
+| C1 - Perfected | Xcode scaffold, 5 lanes, player at lane 2 | Done | 95% | 95% | Steps and validation clear; rollback defined; build verified. |
+| C2 - Perfected | VariantConfig loader, JSON parsing | Done | 95% | 95% | Steps and validation clear; rollback defined; build verified. |
 | C3 | SegmentGenerator (seeded, deterministic) | Done | N/A | N/A | Segment + SegmentGenerator; config loadable from JSON |
 | C4 | Obstacle types, cluster config | Done | N/A | N/A | ObstacleGenerator wired to SegmentGenerator; span ≤ 5 |
 | C5 | Path guarantee (≥1 viable lane/segment) | Done | N/A | N/A | PathGuarantee post-pass; ≥1 viable lane per segment |
@@ -48,9 +99,9 @@ No Lane B task in current scope (C9 config/assets and P001-Assets sprite art are
 | C7 | Jump/slide, collision detection | Done | N/A | N/A | Jump/slide, lane swap, CollisionSystem; game-over delegate for C8 |
 | C8 | Difficulty scaling, scoring, revive | Code built | N/A | N/A | DifficultyScaler, ScoreKeeper, revive stub; unit tests in CatRunnerTests (add test target to run) |
 | C9 | Admin panel scaffold | Done | N/A | N/A | config/admin.json, config/variants/, assets/; Next.js admin routes (config editor, asset upload, variant list, CI trigger) built. |
-| C10 | CI/CD workflows | Code built | N/A | N/A | build.yml, test.yml, deploy.yml; shared scheme; deploy manual TestFlight; C11 adds test target |
+| C10 | CI/CD workflows | Done | N/A | N/A | build.yml, test.yml, deploy.yml; shared scheme; deploy manual TestFlight; CI runs build + test on push/PR |
 | C11 | Automated tests | Testing complete | N/A | N/A | CatRunnerTests target added; 55 tests pass; CI runs xcodebuild test |
-| C12 | Agent updates, SPECIFICATION.md | Code built | N/A | N/A | Blaster/Tester CatRunner scope; docs/SPECIFICATION.md created |
+| C12 | Agent updates, SPECIFICATION.md | Done | N/A | N/A | Blaster/Tester CatRunner scope; docs/SPECIFICATION.md created |
 
 ---
 
@@ -69,6 +120,7 @@ Scaffolded deliverables are grouped by repo location and owning chunk.
 | Asset catalog | `ios/CatRunner/Assets.xcassets/` | C1 | App icon, placeholders |
 | Info.plist | `ios/CatRunner/Info.plist` | C1 | |
 | Test target | `ios/CatRunnerTests/` | C11 | XCTest |
+| Config + assets in bundle | Copied from repo config/default, assets/ | B1 | For asset loader and visuals (P001-Asset-Integration) |
 
 ### Config (`config/`)
 
@@ -89,7 +141,7 @@ Scaffolded deliverables are grouped by repo location and owning chunk.
 | Enemies | `assets/dogs/` | C1 or C4 | Placeholder |
 | Backgrounds | `assets/backgrounds/` | C1 | Placeholder |
 | Power-ups | `assets/powerups/` or `assets/ui/` | C6 | speedBoost, shield |
-| UI | `assets/ui/` | C1 or C8 | HUD, revive, game over; pixel-art mockups done. Sprite art (character, obstacles, dogs, backgrounds, powerups) done per [sprites-ui-assets.plan.md](.cursor/Plans/subplans/P001/sprites-ui-assets.plan.md). |
+| UI | `assets/ui/` | C1 or C8 | HUD, revive, game over; pixel-art mockups done. Cat-world replacement in progress per [CatWorld-assets.plan.md](.cursor/Plans/subplans/P001/CatWorld-assets.plan.md) (A1–A7). |
 
 ### Admin panel (Next.js)
 
@@ -136,6 +188,13 @@ Scaffolded deliverables are grouped by repo location and owning chunk.
 | C10 | `.github/workflows/build.yml`, `test.yml`, `deploy.yml` |
 | C11 | `ios/CatRunnerTests/` — unit, simulation, regression, performance |
 | C12 | `docs/SPECIFICATION.md`; updates to `Agents/blaster.md`, `Agents/tester.md` |
+
+---
+
+## Plan reviews (Blaster standards)
+
+- **2026-02-23:** [Blaster-Plan-Review.md](Blaster-Plan-Review.md) — Review of all plans against Blaster standards (confidence gates, chunk Confidence + Note, Detailed Design/Best Routes, perfected marking). Gaps and recommended actions documented there.
+- **E2E plan:** [e2e-spec-journeys.plan.md](subplans/P001/e2e-spec-journeys.plan.md) reviewed with planner and Blaster; added to Plan Matrix as P001-E2E-Journeys. Plan defines journey skeleton (J1–J9), four investigation question sets, logic-test validation targets (§6.1), ui-test scope and tooling (§6.2), and Blaster pipeline alignment for CatRunner scope (§7). Next: resolve investigations then invoke ui-test (Admin) and logic-test (state/rules) per plan.
 
 ---
 

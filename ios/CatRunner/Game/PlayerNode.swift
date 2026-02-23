@@ -32,10 +32,20 @@ final class PlayerNode: SKSpriteNode {
     /// Vertical position at rest (lane Y); used to restore after jump.
     var restPositionY: CGFloat = 0
 
-    init() {
-        super.init(texture: nil, color: .systemTeal, size: PlayerNode.defaultSize)
+    /// B3 — Designated: optional texture (nil → color fill), color, size 44×44. Convenience inits delegate here.
+    override init(texture: SKTexture?, color: SKColor, size: CGSize) {
+        super.init(texture: texture, color: color, size: size)
         name = "player"
         zPosition = 10
+    }
+
+    convenience init() {
+        self.init(texture: nil, color: .systemTeal, size: PlayerNode.defaultSize)
+    }
+
+    /// B3 — Create player with optional texture (e.g. character.run). Nil → teal placeholder; size 44×44.
+    convenience init(texture: SKTexture?) {
+        self.init(texture: texture, color: .systemTeal, size: PlayerNode.defaultSize)
     }
 
     required init?(coder aDecoder: NSCoder) {

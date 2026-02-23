@@ -13,6 +13,7 @@ import GameplayKit
 /// Generates segments with duration in [config.min, config.max] and obstacles via ObstacleGenerator.
 /// Same seed + same config → identical segment layout. C5: path guarantee applied as a post-pass (no extra RNG).
 /// C6: optional power-up (max 1 per segment, free lane only) via PowerUpSpawner when powerUpConfig present.
+/// P002: optional enemy (e.g. dog) per segment; deterministic from same RNG; visual-only for first slice.
 final class SegmentGenerator {
 
     private let durationConfig: SegmentDurationConfig
@@ -67,7 +68,17 @@ final class SegmentGenerator {
         let guaranteed = PathGuarantee.ensurePathGuarantee(obstacles: obstacles, laneCount: laneCount)
         let segmentBase = Segment(durationSeconds: duration, seed: seed, obstacles: guaranteed)
         let powerUp = powerUpSpawner?.generate(for: segmentBase, rng: rng)
-        return Segment(durationSeconds: duration, seed: seed, obstacles: guaranteed, powerUp: powerUp)
+        let enemy = randomEnemyPlacement(duration: duration, laneCount: laneCount, rng: rng)
+        return Segment(durationSeconds: duration, seed: seed, obstacles: guaranteed, powerUp: powerUp, enemy: enemy)
+    }
+
+    /// P002 — Optional enemy per segment (deterministic from rng). ~35% chance; lane and timeOffset in safe range.
+    private func randomEnemyPlacement(duration: TimeInterval, laneCount: Int, rng: GKRandom) -> EnemyPlacement? {
+        guard laneCount > 0, rng.nextUniform() < 0.35 else { return nil }
+        let laneIndex = rng.nextInt(upperBound: laneCount)
+        let t = 0.2 + 0.6 * Double(rng.nextUniform())
+        let timeOffset = t * duration
+        return EnemyPlacement(laneIndex: laneIndex, typeId: "dog", timeOffset: timeOffset)
     }
 
     /// Duration in [min, max] from config; deterministic given rng state.

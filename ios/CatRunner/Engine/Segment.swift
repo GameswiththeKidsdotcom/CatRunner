@@ -9,6 +9,7 @@ import Foundation
 
 /// A single procedural segment. Same seed + same config → identical segment.
 /// C6: may contain at most one power-up (powerUp), placed in a free lane only and not overlapping obstacles.
+/// P002: optional enemy placement (lane + timeOffset) for visual; collision not required for first slice.
 struct Segment: Equatable {
     /// Duration of this segment in seconds (within config min...max).
     let durationSeconds: TimeInterval
@@ -19,13 +20,23 @@ struct Segment: Equatable {
     private let _obstacles: [ObstaclePlacement]
     /// C6 — At most one power-up per segment; nil if none spawned. Free lane only; never overlaps obstacles.
     let powerUp: PowerUpPlacement?
+    /// P002 — Optional enemy in segment (e.g. dog); visual-only for first slice.
+    let enemy: EnemyPlacement?
 
-    init(durationSeconds: TimeInterval, seed: UInt64, obstacles: [ObstaclePlacement] = [], powerUp: PowerUpPlacement? = nil) {
+    init(durationSeconds: TimeInterval, seed: UInt64, obstacles: [ObstaclePlacement] = [], powerUp: PowerUpPlacement? = nil, enemy: EnemyPlacement? = nil) {
         self.durationSeconds = durationSeconds
         self.seed = seed
         self._obstacles = obstacles
         self.powerUp = powerUp
+        self.enemy = enemy
     }
+}
+
+/// P002 — Placement of one enemy in a segment (lane, type id, time offset). Visual-only until collision spec defined.
+struct EnemyPlacement: Equatable {
+    let laneIndex: Int
+    let typeId: String
+    let timeOffset: TimeInterval
 }
 
 /// Placement of one power-up in a segment (C6): lane index, type id, time offset. Max 1 per segment; free lane only; no overlap with obstacles.
