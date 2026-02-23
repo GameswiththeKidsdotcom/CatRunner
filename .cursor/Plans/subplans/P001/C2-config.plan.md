@@ -1,6 +1,6 @@
-# C2 — VariantConfig Schema & Default JSON
+# C2 — VariantConfig Schema & Default JSON - Perfected
 
-**Next hand off:** Same as Master-Plan Lane B.
+**Next hand off:** Same as Master-Plan Lane A — Execute P002 per [P002-vertical-runner-viewport.plan.md](../../P002/P002-vertical-runner-viewport.plan.md). C2 is complete (Perfected). Lane B: invoke Planner to assign.
 
 ---
 
@@ -28,3 +28,4 @@ Add `config/default/variant.json` and `config/schema.json` so engine and admin c
 
 - **Confidence (root cause):** 95%
 - **Confidence (solution path):** 95%
+- **Note:** Steps and validation clear; rollback defined; build verified.

@@ -1,7 +1,7 @@
 # Blaster Step 2 — UI/UX & Viewport Test Plan
 
 **Initiative:** Scroller 10s Loop and Avatar-Proportional Sizing  
-**Reference:** [Scroller-10s-loop-and-sizing.plan.md](Scroller-10s-loop-and-sizing.plan.md), [ios/P002-VIEWPORT.md](../ios/P002-VIEWPORT.md), [Agents/ui-test.md](../Agents/ui-test.md)
+**Reference:** [Scroller-10s-loop-and-sizing.plan.md](Scroller-10s-loop-and-sizing.plan.md), [P002-VIEWPORT.md](../z-P002/P002-VIEWPORT.md), [Agents/ui-test.md](../../../../Agents/ui-test.md)
 
 ---
 

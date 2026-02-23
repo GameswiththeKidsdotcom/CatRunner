@@ -1,8 +1,8 @@
 # Many-Buildings Background and Dog/Boxes Integration
 
-**Next hand off (cut & paste) — Lane A:** BG4 complete (2026-02-23). Validation: 5-iPhone simulator matrix (4/5 builds OK; 58/58 tests on 16e, 16, 16 Pro Max), ui-test journey documented, optional screenshot baseline deferred. See [BG4-validation-2026-02-23.md](./BG4-validation-2026-02-23.md). Next: Commit S4+BG3+BG4 and update plan state; or invoke Planner to refresh Master-Plan and next hand-offs. Reference: [Agents/tester.md](../../../Agents/tester.md), [Agents/planner.md](../../../Agents/planner.md).
+**Next hand off (cut & paste) — Lane A:** BG3+BG4 committed 2026-02-23. Lane A complete for Many-buildings-bg. Next per Master-Plan: P002 (vertical runner, viewport). Reference: [Agents/planner.md](../../../../Agents/planner.md).
 
-**Next hand off (cut & paste) — Lane B:** If Scroller 10s S1 not done: set engine.segmentDurationSeconds and optional scrollerLoop in config per [Scroller-10s-loop-and-sizing.plan.md](../Scroller-10s-loop-and-sizing.plan.md). Then execute Many-buildings BG1+BG2 (Lane B): invoke ui-designer to create scrolling rooftop background asset(s) (many buildings, tileable) per this plan and [.cursor/skills/canva-ui-design/SKILL.md](../../../.cursor/skills/canva-ui-design/SKILL.md); save sky.png and ground.png to assets/backgrounds/, update README/VISION if needed. Lane B edits config/ and assets/ only. Reference: [Agents/planner.md](../../../Agents/planner.md), [Agents/ui-designer.md](../../../Agents/ui-designer.md).
+**Next hand off (cut & paste) — Lane B:** Lane B complete for this plan (BG1+BG2 done). See Master-Plan for next Lane B.
 
 ---
 
@@ -10,7 +10,7 @@
 
 1. **Background image:** One (or more) background asset that shows **many buildings** — a long rooftop run so the image itself reads as multiple buildings and scrolls smoothly. Tileable for vertical runner (10+ s scroll).
 2. **Integration:** Dog and boxes (obstacles) must **integrate smoothly** with the scrolling background: same world (rooftops at night), same palette and soft 2D style, and a clear "runway" so sprites sit visually on the same plane.
-3. **Process:** Use [Agents/ui-designer.md](../../../Agents/ui-designer.md) and [.cursor/skills/canva-ui-design/SKILL.md](../../../.cursor/skills/canva-ui-design/SKILL.md) for image prompts and implementation spec.
+3. **Process:** Use [Agents/ui-designer.md](../../../../Agents/ui-designer.md) and [.cursor/skills/canva-ui-design/SKILL.md](../../../../.cursor/skills/canva-ui-design/SKILL.md) for image prompts and implementation spec.
 
 ---
 
@@ -24,16 +24,16 @@
 | **White space** | **Lane band** (where cat, dog, boxes appear) is not crowded — buildings and detail recede so sprites "sit" on a clear roof plane. Denser detail in distance (skyline) is fine. |
 | **Contrast** | Building silhouettes and neon are distinct in value from the **runway** so the 44pt cat, dog, and obstacle sprites remain the focus and integrate without blending into the bg. |
 
-Reference: [.cursor/skills/canva-ui-design/SKILL.md](../../../.cursor/skills/canva-ui-design/SKILL.md).
+Reference: [.cursor/skills/canva-ui-design/SKILL.md](../../../../.cursor/skills/canva-ui-design/SKILL.md).
 
 ---
 
 ## 2. Background Image: "Many Buildings"
 
 - **Content:** The image should depict **many buildings** — a continuous rooftop skyline (multiple roof lines, ledges, distant towers, neon signs) so that when the asset scrolls (tiled vertically), it reads as the cat running across many rooftops, not a single static screen.
-- **Technical:** Tileable **vertically** (vertical runner: 200 pt/s × 10–12 s = 2000–2400 pt). Design viewport width 393 pt ([P002-VIEWPORT.md](../../../ios/P002-VIEWPORT.md)). Suggested tile height: ~400–500 pt (e.g. 800–1000 px at @2x) so 4–6 tiles cover one segment; seams must be invisible when tiled.
+- **Technical:** Tileable **vertically** (vertical runner: 200 pt/s × 10–12 s = 2000–2400 pt). Design viewport width 393 pt ([P002-VIEWPORT.md](../z-P002/P002-VIEWPORT.md)). Suggested tile height: ~400–500 pt (e.g. 800–1000 px at @2x) so 4–6 tiles cover one segment; seams must be invisible when tiled.
 - **Lane band for integration:** A clear horizontal "runway" band (roof ledges/platforms) where the 5 lanes sit. This band should have **consistent value and less busy detail** so the overlaid dog and box sprites (44pt max) read clearly and feel on the same plane. Buildings and sky above/below can be denser.
-- **Style:** Per [CAT-WORLD-VISION.md](../../../assets/CAT-WORLD-VISION.md): soft cozy 2D, night blues/purples, neon accents; rooftop night. Must match existing [assets/reference/cat-world-hero-mockup.png](../../../assets/reference/cat-world-hero-mockup.png) style.
+- **Style:** Per [CAT-WORLD-VISION.md](../../../../assets/CAT-WORLD-VISION.md): soft cozy 2D, night blues/purples, neon accents; rooftop night. Must match existing [assets/reference/cat-world-hero-mockup.png](../../../../assets/reference/cat-world-hero-mockup.png) style.
 
 **Deliverable:** Two files (sky.png + ground.png) per resolved decision: both show many buildings and tile vertically; ground = runway band. See §11.
 
@@ -41,12 +41,12 @@ Reference: [.cursor/skills/canva-ui-design/SKILL.md](../../../.cursor/skills/can
 
 ## 3. Dog and Boxes: Smooth Integration with Scrolling Background
 
-- **Palette:** Dog and obstacle art already follow [CAT-WORLD-VISION.md](../../../assets/CAT-WORLD-VISION.md). No change to sprite assets unless ui-designer recommends small tint/shadow tweaks.
-- **Scale:** Cat and sprites are 44pt max in code ([GameScene.swift](../../../ios/CatRunner/Game/GameScene.swift) `SegmentSpriteMaxDimension`). Background runway band should read as same scale.
+- **Palette:** Dog and obstacle art already follow [CAT-WORLD-VISION.md](../../../../assets/CAT-WORLD-VISION.md). No change to sprite assets unless ui-designer recommends small tint/shadow tweaks.
+- **Scale:** Cat and sprites are 44pt max in code ([GameScene.swift](../../../../ios/CatRunner/Game/GameScene.swift) `SegmentSpriteMaxDimension`). Background runway band should read as same scale.
 - **Composition:** Background has a **single clear runway band**; dog and boxes drawn by the game on that band (zPosition above background). No competing foreground detail in that band.
 - **Implementation (B5):** GameScene adds `backgroundLayer` (zPosition < 5), vertical tiling; segment strip (zPosition 5) so sprites draw on top and scroll in lockstep with background.
 
-Reference: [B5-backgrounds.plan.md](../P001/B5-backgrounds.plan.md).
+Reference: [B5-backgrounds.plan.md](../../subplans/P001/B5-backgrounds.plan.md).
 
 ---
 
@@ -81,7 +81,7 @@ Reference: [B5-backgrounds.plan.md](../P001/B5-backgrounds.plan.md).
 
 - **Asset:** Many buildings; tileable vertically; runway band clear; style matches cat-world; dimensions match spec.
 - **Integration:** In simulator, after B5: background scrolls; dog and boxes on runway; no palette/scale clash; cat remains focal.
-- **Ui-test:** 5-iPhone matrix per [P002-VIEWPORT.md](../../../ios/P002-VIEWPORT.md); journeys §10.
+- **Ui-test:** 5-iPhone matrix per [P002-VIEWPORT.md](../z-P002/P002-VIEWPORT.md); journeys §10.
 
 ---
 
@@ -115,19 +115,19 @@ Reference: [B5-backgrounds.plan.md](../P001/B5-backgrounds.plan.md).
 
 **Implementation spec (required):** Layout (runway position, tile dimensions); colors (tokens/hex); spacing (runway height in pt); components (background layer, sky + ground nodes, tiling repeat height); dev note for B5.
 
-Reference: [Agents/ui-designer.md](../../../Agents/ui-designer.md).
+Reference: [Agents/ui-designer.md](../../../../Agents/ui-designer.md).
 
 ---
 
 ## 10. Ui-test plan for this initiative
 
-**Scope:** E2E and viewport verification of scrolling many-buildings background and dog/boxes integration. iOS-only; 5-iPhone matrix per [P002-VIEWPORT.md](../../../ios/P002-VIEWPORT.md).
+**Scope:** E2E and viewport verification of scrolling many-buildings background and dog/boxes integration. iOS-only; 5-iPhone matrix per [P002-VIEWPORT.md](../z-P002/P002-VIEWPORT.md).
 
 **User journeys:** (1) Gameplay with scrolling background — launch → play → background visible and scrolling, cat in lane, obstacles/dog on runway, no overflow. (2) Integration check — dog/boxes on runway, no palette clash, cat focal. (3) Contrast and readability.
 
 **Test design:** Simulator matrix; optional screenshot baseline per viewport after B5; parameterized over [Small, Standard, Large] or full 5 devices.
 
-Reference: [Agents/ui-test.md](../../../Agents/ui-test.md). Update [Master-Plan.md](../../Master-Plan.md) when tests are designed or complete.
+Reference: [Agents/ui-test.md](../../../../Agents/ui-test.md). Update [Master-Plan.md](../../Master-Plan.md) when tests are designed or complete.
 
 ---
 

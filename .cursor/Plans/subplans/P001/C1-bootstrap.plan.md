@@ -1,6 +1,6 @@
-# C1 — Xcode Bootstrap
+# C1 — Xcode Bootstrap - Perfected
 
-**Next hand off:** Same as Master-Plan Lane A — implement C1; then update hand off to C2.
+**Next hand off:** Same as Master-Plan Lane A — Execute P002 per [P002-vertical-runner-viewport.plan.md](../../P002/P002-vertical-runner-viewport.plan.md). C1 is complete (Perfected).
 
 ---
 
@@ -32,3 +32,4 @@ Create Xcode project scaffold: iOS/SpriteKit app at `ios/CatRunner` with 5-lane 
 
 - **Confidence (root cause):** 95%
 - **Confidence (solution path):** 95%
+- **Note:** Steps and validation clear; rollback defined; build verified.

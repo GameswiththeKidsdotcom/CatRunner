@@ -1,6 +1,6 @@
 # P002 — Lane A Vertical Runner & Viewport
 
-**Next hand off (cut & paste) — Lane A:** P002 Blaster pipeline complete (Steps 1–5; chunks V1–V4 validated). **Commit** plan updates (`.cursor/Plans/` — P002 chunk sub-plans and Master-Plan) to repo. Then: **next Lane A priority** — run P001-E2E-Journeys investigations and/or invoke ui-test (Admin) and logic-test per [e2e-spec-journeys.plan.md](../P001/e2e-spec-journeys.plan.md), or pick next plan from Plan Matrix. Lane A may edit ios/ only. Reference: [Agents/planner.md](../../../Agents/planner.md), [Agents/ui-test.md](../../../Agents/ui-test.md), [Agents/logic-test.md](../../../Agents/logic-test.md).
+**Next hand off (cut & paste) — Lane A:** P002 Blaster pipeline complete (Steps 1–5; chunks V1–V4 validated). **Commit** plan updates (`.cursor/Plans/` — P002 chunk sub-plans and Master-Plan) to repo. Then: **next Lane A priority** — run P001-E2E-Journeys investigations and/or invoke ui-test (Admin) and logic-test per [e2e-spec-journeys.plan.md](../../subplans/P001/e2e-spec-journeys.plan.md), or pick next plan from Plan Matrix. Lane A may edit ios/ only. Reference: [Agents/planner.md](../../../../Agents/planner.md), [Agents/ui-test.md](../../../../Agents/ui-test.md), [Agents/logic-test.md](../../../../Agents/logic-test.md).
 
 ---
 
@@ -10,10 +10,10 @@ Convert the game from horizontal scrolling to a vertical Temple Run-style runner
 
 ## Current state (post-implementation)
 
-- **Scroll axis:** [GameScene.swift](../../../ios/CatRunner/Game/GameScene.swift) uses **vertical** scroll: obstacles, power-ups, and enemies move in **y** via `yOffset = (timeOffset - segmentTime) * SegmentScrollSpeed`; `node.position = CGPoint(x: centerX, y: laneY + yOffset)`. Player at `laneY = size.height * 0.28` (lower third); lane lines from `laneY` to top.
+- **Scroll axis:** [GameScene.swift](../../../../ios/CatRunner/Game/GameScene.swift) uses **vertical** scroll: obstacles, power-ups, and enemies move in **y** via `yOffset = (timeOffset - segmentTime) * SegmentScrollSpeed`; `node.position = CGPoint(x: centerX, y: laneY + yOffset)`. Player at `laneY = size.height * 0.28` (lower third); lane lines from `laneY` to top.
 - **Input:** Swipe left/right = lane change, up/down = jump/slide (unchanged).
-- **Avatar visibility:** [GameViewController.swift](../../../ios/CatRunner/GameViewController.swift) uses design size 393×852 and `scaleMode = .aspectFit` so the full gameplay area is visible on all phones.
-- **Enemies:** [Segment.swift](../../../ios/CatRunner/Engine/Segment.swift) has optional `enemy: EnemyPlacement?`; [SegmentGenerator.swift](../../../ios/CatRunner/Engine/SegmentGenerator.swift) has `randomEnemyPlacement` (~35% per segment); GameScene creates and positions enemy sprites from `assetConfig?.texture(forKey: "enemies.dog")`.
+- **Avatar visibility:** [GameViewController.swift](../../../../ios/CatRunner/GameViewController.swift) uses design size 393×852 and `scaleMode = .aspectFit` so the full gameplay area is visible on all phones.
+- **Enemies:** [Segment.swift](../../../../ios/CatRunner/Engine/Segment.swift) has optional `enemy: EnemyPlacement?`; [SegmentGenerator.swift](../../../../ios/CatRunner/Engine/SegmentGenerator.swift) has `randomEnemyPlacement` (~35% per segment); GameScene creates and positions enemy sprites from `assetConfig?.texture(forKey: "enemies.dog")`.
 
 ---
 
@@ -27,7 +27,7 @@ Convert the game from horizontal scrolling to a vertical Temple Run-style runner
 - **Player position:** Place player in lower third (e.g. `laneY = size.height * 0.28`). Adjust lane line vertical extent (above player to top of screen).
 - **Segment strip:** Keep one strip; only position update logic changes (y-based). Collision and segment-time logic unchanged.
 
-**Files:** [GameScene.swift](../../../ios/CatRunner/Game/GameScene.swift) — `layoutLanes()`, `updateSegmentSpritePositions()`.
+**Files:** [GameScene.swift](../../../../ios/CatRunner/Game/GameScene.swift) — `layoutLanes()`, `updateSegmentSpritePositions()`.
 
 **Validation:** Run in simulator; obstacles/power-ups move vertically toward player; swipe left/right changes lane; no new test failures.
 
@@ -35,11 +35,11 @@ Convert the game from horizontal scrolling to a vertical Temple Run-style runner
 
 ## 2. Avatar and enemy visibility
 
-**Avatar:** Use a **design size** (e.g. 393×852 pt portrait) and `scaleMode = .aspectFit` in [GameViewController.swift](../../../ios/CatRunner/Game/GameViewController.swift) so the full gameplay area is visible on all phones. [GameScene.swift](../../../ios/CatRunner/Game/GameScene.swift) layout already uses `size`; player and lanes stay in view.
+**Avatar:** Use a **design size** (e.g. 393×852 pt portrait) and `scaleMode = .aspectFit` in [GameViewController.swift](../../../../ios/CatRunner/Game/GameViewController.swift) so the full gameplay area is visible on all phones. [GameScene.swift](../../../../ios/CatRunner/Game/GameScene.swift) layout already uses `size`; player and lanes stay in view.
 
 **Enemies:** Add optional enemy placement to `Segment` (lane + timeOffset); in GameScene create sprite from `assetConfig?.texture(forKey: "enemies.dog")` and move with same y-scroll as obstacles. Option A: extend Segment and generator with optional enemy; GameScene adds enemy sprite(s) to segment strip. Visual-only for first slice if spec does not define enemy collision yet.
 
-**Files:** GameViewController (design size, aspectFit), GameScene (layout, enemy sprite create/update), [Segment.swift](../../../ios/CatRunner/Engine/Segment.swift) (optional enemy placement), segment generator if present.
+**Files:** GameViewController (design size, aspectFit), GameScene (layout, enemy sprite create/update), [Segment.swift](../../../../ios/CatRunner/Engine/Segment.swift) (optional enemy placement), segment generator if present.
 
 **Validation:** Simulator shows avatar and (when enabled) enemy sprites; no regression in existing tests.
 
@@ -96,7 +96,7 @@ Convert the game from horizontal scrolling to a vertical Temple Run-style runner
 
 ## Blaster Step 2 — Test plans and infrastructure
 
-- **ui-test:** Done. Alignment and layout criteria + 5-iPhone viewport matrix defined in [P002-VIEWPORT.md](../../../ios/P002-VIEWPORT.md); validation in [P002-viewport-validation-2026-02-23.md](../../../ios/P002-viewport-validation-2026-02-23.md) (build + 58/58 unit tests on SE and Pro Max). E2E/viewports covered.
+- **ui-test:** Done. Alignment and layout criteria + 5-iPhone viewport matrix defined in [P002-VIEWPORT.md](P002-VIEWPORT.md); validation in [P002-viewport-validation-2026-02-23.md](P002-viewport-validation-2026-02-23.md) (build + 58/58 unit tests on SE and Pro Max). E2E/viewports covered.
 - **logic-test:** Game logic (vertical scroll, lane change, collision, segment time) covered by existing CatRunnerTests (58 tests); vertical runner does not add new state machines—only visual/layout. Test plan: maintain unit tests on segment positioning and collision; viewport matrix is layout, not logic. Captured.
 - **infrastructure:** iOS only; no new hosting or persistence. Build and test via xcodebuild on 5 simulators; CI can use same destinations. Zero additional cost; offline-first unchanged. Captured.
 

@@ -8,11 +8,11 @@ Alignment and layout criteria for the vertical runner; viewport matrix for last 
 
 ## Deliverables
 
-1. **Alignment criteria:** Player in view, lanes visible, obstacles/enemies in correct vertical band, aspect fit (see ios/P002-VIEWPORT.md).
+1. **Alignment criteria:** Player in view, lanes visible, obstacles/enemies in correct vertical band, aspect fit (see [P002-VIEWPORT.md](P002-VIEWPORT.md)).
 2. **5-iPhone matrix:** Small (iPhone SE 3rd), Standard (iPhone 15), Standard-alt (iPhone 14), Large (15 Plus), Max (15 Pro Max). Build + unit tests on simulators.
 3. **Verification:** Simulator matrix and/or XCTest UI tests; optional screenshot per device.
 
-**Reference:** Agents/ui-test.md; ios/P002-VIEWPORT.md; ios/P002-viewport-validation-2026-02-23.md.
+**Reference:** [Agents/ui-test.md](../../../../Agents/ui-test.md); [P002-VIEWPORT.md](P002-VIEWPORT.md); [P002-viewport-validation-2026-02-23.md](P002-viewport-validation-2026-02-23.md).
 
 ## Validation
 

@@ -3,7 +3,7 @@ name: E2E spec assessment and journeys
 overview: Assess the specification, create a skeleton of E2E user journeys per feature (iOS game and Admin), list what must be answered before building E2E, and add investigation plans and question sets. Aligned with logic-test, ui-test, and Blaster (CatRunner scope).
 ---
 
-**Next hand off (cut & paste):** Investigations 1–4 done; findings in [e2e-investigation-findings-2026-02-23.md](e2e-investigation-findings-2026-02-23.md). **(1) ui-test (Admin E2E) — done.** **(2) logic-test — done;** CTA gap in [docs/SPECIFICATION.md](../../../docs/SPECIFICATION.md) §1. **(3) iOS E2E (J1–J5) — done. Pushed 2026-02-23.** XCUITest in `ios/CatRunnerUITests/JourneyTests.swift`; iPhone 16; 6 tests; CI runs with unit tests. **Next:** No current E2E task; next priority TBD by Planner. Keep Master-Plan and this prompt in sync per [Agents/planner.md](../../../Agents/planner.md).
+**Next hand off (cut & paste):** Investigations 1–4 done; findings in [e2e-investigation-findings-2026-02-23.md](e2e-investigation-findings-2026-02-23.md). **(1) ui-test (Admin E2E) — done.** **(2) logic-test — done;** CTA gap in [docs/SPECIFICATION.md](../../../docs/SPECIFICATION.md) §1. **(3) iOS E2E (J1–J5) — done. Pushed 2026-02-23.** XCUITest in `ios/CatRunnerUITests/JourneyTests.swift`; iPhone 16; 6 tests; CI runs with unit tests. **Next:** If plan doc updates in `.cursor/Plans/` are uncommitted, commit and push; then invoke **Planner** to refresh hand offs. No current E2E task; next priority TBD by Planner. Keep Master-Plan and this prompt in sync per [Agents/planner.md](../../../Agents/planner.md).
 
 ---
 

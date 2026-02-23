@@ -1,8 +1,8 @@
 # Scroller 10s Loop and Avatar-Proportional Sizing
 
-**Next hand off (cut & paste) — Lane A:** S4 validation complete (2026-02-23): code has 10s fallback, scrollerLoop restart, 44pt scaling; iOS 58/58 pass. Simulator check: segment ≥10s, same segment on wrap, sprites ≤44pt. Next: commit S4 or proceed per Master-Plan.
+**Next hand off (cut & paste) — Lane A:** S4 committed 2026-02-23. Lane A complete for Scroller-10s. Next per Master-Plan: P002 (vertical runner, viewport).
 
-**Next hand off (cut & paste) — Lane B:** Execute S1 per this plan. In config/default/variant.json set engine.segmentDurationSeconds to "min": 10, "max": 12; optionally add engine.scrollerLoop. Lane B may edit config/ and assets/ only. Reference: [Agents/planner.md](../../Agents/planner.md).
+**Next hand off (cut & paste) — Lane B:** Lane B complete for this plan (S1 done). See Master-Plan for next Lane B.
 
 **Blaster pipeline:** Complete. All chunks ≥90%; ready for build.
 
@@ -12,24 +12,24 @@
 
 - **Duration:** Scroller lasts at least 10 seconds per cycle.
 - **Wrap:** The same cycle repeats seamlessly (same segment content when the segment ends).
-- **Content:** Dog (enemy) and obstacle "boxes" (passable, instantFail, slowdown) are the obstacles; already used in [GameScene](ios/CatRunner/Game/GameScene.swift) and [SegmentGenerator](ios/CatRunner/Engine/SegmentGenerator.swift).
+- **Content:** Dog (enemy) and obstacle "boxes" (passable, instantFail, slowdown) are the obstacles; already used in [GameScene](../../../../ios/CatRunner/Game/GameScene.swift) and [SegmentGenerator](../../../../ios/CatRunner/Engine/SegmentGenerator.swift).
 - **Sizing (ui-designer):** All obstacle and dog sprites are sized relative to the avatar (44×44 pt) so scale and visual hierarchy are consistent (Canva: focal point = avatar; secondary = obstacles/enemy).
 
 ## 1. Segment duration >= 10 seconds
 
-- **Config (Lane B or shared):** In [config/default/variant.json](config/default/variant.json), set `engine.segmentDurationSeconds` so each segment is at least 10s, e.g. `"min": 10, "max": 12` (or `10` and `10` for a fixed 10s loop).
-- **Fallback (ios/):** When variant is not loaded, the fallback in [GameScene.startSegment()](ios/CatRunner/Game/GameScene.swift) uses a hardcoded 3s segment; change that to 10s so the "no config" case also has a 10s scroller.
+- **Config (Lane B or shared):** In [config/default/variant.json](../../../../config/default/variant.json), set `engine.segmentDurationSeconds` so each segment is at least 10s, e.g. `"min": 10, "max": 12` (or `10` and `10` for a fixed 10s loop).
+- **Fallback (ios/):** When variant is not loaded, the fallback in [GameScene.startSegment()](../../../../ios/CatRunner/Game/GameScene.swift) uses a hardcoded 3s segment; change that to 10s so the "no config" case also has a 10s scroller.
 
 ## 2. Scroller "wraps perfectly" (seamless loop)
 
 - **Idea:** When the current segment ends, restart the **same** segment (same seed and duration) instead of advancing to a new one.
-- **Implementation (ios/):** In [GameScene](ios/CatRunner/Game/GameScene.swift): introduce scroller loop flag (config preferred, or constant for MVP). When true, on segment end call restart with same seed; do **not** call `scoreKeeper.addSegmentCompleted()` on restart. When false, current behavior (advance to next segment, add score).
+- **Implementation (ios/):** In [GameScene](../../../../ios/CatRunner/Game/GameScene.swift): introduce scroller loop flag (config preferred, or constant for MVP). When true, on segment end call restart with same seed; do **not** call `scoreKeeper.addSegmentCompleted()` on restart. When false, current behavior (advance to next segment, add score).
 - **Files:** GameScene — `advanceToNextSegment()`, optional `startSegment(useSeed: UInt64?)` or branch in update.
 
 ## 3. Dog and boxes as obstacles; sizing to avatar
 
 - **Content:** Dog and boxes already used; no new asset keys.
-- **Sizing:** In [GameScene.refreshSegmentSprites()](ios/CatRunner/Game/GameScene.swift): scale obstacle and enemy sprites so max dimension = 44pt, preserve aspect ratio (see Detailed Design). Placeholder stays 40×40.
+- **Sizing:** In [GameScene.refreshSegmentSprites()](../../../../ios/CatRunner/Game/GameScene.swift): scale obstacle and enemy sprites so max dimension = 44pt, preserve aspect ratio (see Detailed Design). Placeholder stays 40×40.
 
 ## 4. Validation
 
