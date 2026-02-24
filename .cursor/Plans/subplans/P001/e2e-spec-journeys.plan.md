@@ -3,7 +3,9 @@ name: E2E spec assessment and journeys
 overview: Assess the specification, create a skeleton of E2E user journeys per feature (iOS game and Admin), list what must be answered before building E2E, and add investigation plans and question sets. Aligned with logic-test, ui-test, and Blaster (CatRunner scope).
 ---
 
-**Next hand off (cut & paste):** Current priority is **Master-Plan Tier 1 (testing improvements)** — see [Master-Plan.md](../../Master-Plan.md) "Next hand off — Lane A". E2E (J1–J5 iOS, J6–J9 Admin) and CTA alignment are done. Tier 1: fix `test:full` (Vitest exclude e2e/), align SPECIFICATION.md §7 baseline count; Tester for baseline. Keep Master-Plan and this prompt in sync per [Agents/planner.md](../../../Agents/planner.md).
+**Next hand off (cut & paste):** Tier 4 done (2026-02-24). See [Master-Plan.md](../../Master-Plan.md) "Next hand off — Lane A". E2E (J1–J5 iOS, J6–J9 Admin) and Tiers 1–4 complete. Keep Master-Plan and this prompt in sync per [Agents/planner.md](../../../Agents/planner.md).
+
+**Path to archive (supporting docs):** When E2E work is fully closed and Tier 2–4 no longer need [e2e-investigation-findings-2026-02-23.md](e2e-investigation-findings-2026-02-23.md), move that doc to `subplans/P001/zz-archive/`. This plan remains active for reference until all journey work is complete.
 
 ---
 

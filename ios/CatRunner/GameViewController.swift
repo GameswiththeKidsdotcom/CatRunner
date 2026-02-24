@@ -69,9 +69,12 @@ extension GameViewController: GameSceneDelegate {
             preferredStyle: .alert
         )
         alert.view.accessibilityIdentifier = "GameOverAlert"
-        alert.addAction(UIAlertAction(title: "Watch ad", style: .default) { [weak scene] _ in
-            scene?.resumeFromCheckpoint()
-        })
+        // Tier 2: Show "Watch ad" only when variant has revive IAP/ad. First-revive-only (SPEC §1): only once per run.
+        if scene.isReviveMonetizationConfigured && !scene.hasRevivedThisRun {
+            alert.addAction(UIAlertAction(title: "Watch ad", style: .default) { [weak scene] _ in
+                scene?.resumeFromCheckpoint()
+            })
+        }
         alert.addAction(UIAlertAction(title: "Play again", style: .default) { [weak self] _ in
             self?.startNewGame()
         })

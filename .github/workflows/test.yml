@@ -39,6 +39,37 @@ jobs:
           name: test-output-log
           path: ios/test-output.log
 
+  # Tier 3 — Optional second simulator for viewport coverage (P002 matrix).
+  test-ios-se:
+    name: iOS tests (iPhone SE)
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run tests on iPhone SE (3rd generation)
+        working-directory: ios
+        run: |
+          xcodebuild -scheme CatRunner \
+            -destination 'platform=iOS Simulator,name=iPhone SE (3rd generation),OS=latest' \
+            -configuration Debug \
+            test 2>&1 | tee test-output-se.log
+
+      - name: Test report (SE)
+        run: |
+          echo "## Test summary (iPhone SE)" >> $GITHUB_STEP_SUMMARY
+          if grep -q "TEST SUCCEEDED" ios/test-output-se.log; then
+            echo "All tests passed on iPhone SE." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Tests failed or incomplete. See test-output-se.log." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload test log (SE)
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-output-log-se
+          path: ios/test-output-se.log
+
   admin-e2e:
     name: Admin E2E (Playwright)
     runs-on: ubuntu-latest

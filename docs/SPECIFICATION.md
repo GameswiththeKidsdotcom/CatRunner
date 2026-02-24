@@ -14,8 +14,8 @@ This document is the **single source of truth** for the CatRunner game. It is li
   - **passable:** No game over; may affect scoring or visuals as defined.
   - **slowdown:** Slows the player; no instant game over.
   - **Power-ups:** speedBoost, shield; effects apply to the single player only.
-- **Revive:** On first game-over, player may revive (IAP or rewarded ad per monetization config); after that, game over is final. **CTA labels (aligned):** Revive dialog uses "Watch ad" / "No thanks" / "Play again" in spec, E2E journeys, and iOS (`GameViewController.swift`). Logic-test and E2E assert on these labels.
-- **Scoring:** Score increases over time/distance; difficulty scaling applies (speed, obstacle probabilities).
+- **Revive:** On first game-over, player may revive (IAP or rewarded ad per monetization config); after that, game over is final. **CTA labels (aligned):** "Watch ad" / "No thanks" / "Play again" in spec, E2E journeys, and iOS (`GameViewController.swift`). **Revive vs monetization (Tier 2):** When variant `monetization.reviveIAPProductId` or `rewardedAdPlacementId` is set (non-null, non-empty), the game-over dialog includes "Watch ad"; when both are null or empty, the dialog shows only "Play again" and "No thanks". Logic-test and E2E assert on these labels.
+- **Scoring:** Score increases over time/distance; difficulty scaling applies (speed, obstacle probabilities). **Score display:** Score and high score are shown **in the game-over alert** and **in-game score HUD** (Tier 4: top of scene, "Score: X | High: Y", updated each frame).
 - **Difficulty scaling:** Config-driven (speed increment per segment, multi-lane and instantFail probability increments, segments per step).
 
 ---
@@ -66,14 +66,16 @@ Default variant: **`config/default/variant.json`**.
 - **Variant list:** List variants (e.g. `config/variants/`) and select/default variant.
 - **CI trigger:** Link or trigger to GitHub Actions (e.g. workflow_dispatch or push). Admin manifest: **`config/admin.json`** (paths, schema, variants dir, CI trigger reference).
 
-See Master-Plan § Admin panel and C9 sub-plan for scaffold details.
+**Admin config save semantics (Tier 2):** The config editor uses the API at `src/app/api/admin/config/`. **GET** reads the default variant from the path given in `config/admin.json` (`defaultVariantPath`, typically `config/default/variant.json`), resolved from the process working directory (repo root when running Next.js). **PUT** accepts a JSON body, validates it against `config/schema.json` (via Ajv); if valid, overwrites the default variant file with the body (pretty-printed JSON). No git commit or push is performed; save is a local file write only. The iOS app loads the default variant from the app bundle at build time, so changes saved in admin take effect only after a new build that copies `config/default/` into the bundle. No authentication is applied to admin routes in the current implementation.
+
+See Master-Plan § Admin panel and C9 sub-plan for scaffold details. See [docs/admin-config-save.md](admin-config-save.md) for detailed save semantics.
 
 ---
 
 ## 6. CI/CD steps
 
 - **build.yml:** Build iOS app (xcodebuild); shared scheme **CatRunner**.
-- **test.yml:** Run tests: `xcodebuild test -scheme CatRunner -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' -configuration Debug` (from `ios/`); scheme runs CatRunnerTests (58) + CatRunnerUITests (6). See §7 for baseline.
+- **test.yml:** Run tests: `xcodebuild test -scheme CatRunner -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' -configuration Debug` (from `ios/`); scheme runs CatRunnerTests (58) + CatRunnerUITests (7). See §7 for baseline.
 - **deploy.yml:** Deploy to TestFlight (manual trigger); same scheme.
 
 All workflows under **`.github/workflows/`**.
@@ -83,7 +85,7 @@ All workflows under **`.github/workflows/`**.
 ## 7. Testing requirements
 
 - **Target:** CatRunnerTests (XCTest; unit, simulation, regression, optional performance) and CatRunnerUITests (XCUITest; E2E journeys J1–J5). Both run via scheme CatRunner.
-- **Baseline:** **64 tests** (58 CatRunnerTests + 6 CatRunnerUITests) — pass count for CI and regression comparison.
+- **Baseline:** **65 tests** (58 CatRunnerTests + 7 CatRunnerUITests) — pass count for CI and regression comparison. (J4a, J4c may skip when monetization not configured.)
 - **FPS/memory:** Targets documented in C11 plan: FPS ≥60, memory ≤300MB during normal gameplay; **not asserted in CI** (environment varies); use local/profile runs or Instruments to verify.
 
 ---
@@ -100,6 +102,7 @@ All workflows under **`.github/workflows/`**.
 - **reviveIAPProductId:** Optional IAP product ID for revive; nullable in schema.
 - **rewardedAdPlacementId:** Optional rewarded ad placement ID for revive; nullable in schema.
 - Placeholder for future IAP and rewarded ads; no implementation required in current spec beyond config and revive flow stub.
+- **Implementation (Tier 2):** The game-over dialog branches on monetization: if at least one of these IDs is set (non-null, non-empty), the "Watch ad" CTA is shown; otherwise only "Play again" and "No thanks" are shown. IAP/ad playback is not implemented; "Watch ad" currently resumes from checkpoint (stub).
 
 ---
 

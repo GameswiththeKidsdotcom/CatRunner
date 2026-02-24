@@ -1,6 +1,6 @@
 # P001 — CatRunner iOS Game (Main Plan)
 
-**Next hand off:** Same as Master-Plan Lane A — No current Lane A task; next priority TBD by Planner (e.g. optional CTA label alignment per [docs/SPECIFICATION.md](../../../docs/SPECIFICATION.md) §1, or next initiative). E2E scope: [e2e-spec-journeys.plan.md](e2e-spec-journeys.plan.md). Lane A may edit ios/ only.
+**Next hand off:** Same as Master-Plan Lane A — Next priority: **Tier 3 (Scalability for App Store)** per [Master-Plan.md](../../Master-Plan.md). E2E scope: [e2e-spec-journeys.plan.md](e2e-spec-journeys.plan.md). Lane A may edit ios/ only. Path to archive for each sub-plan: see Master-Plan § Path to archive (per plan).
 
 ---
 

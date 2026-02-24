@@ -47,7 +47,7 @@ final class JourneyTests: XCTestCase {
         app.launch()
         let alert = app.alerts["Game Over"]
         XCTAssertTrue(alert.waitForExistence(timeout: 5), "J3: Game Over / Revive dialog should appear")
-        XCTAssertTrue(app.buttons["Watch ad"].exists, "J3: Watch ad button present")
+        // Tier 2: With monetization configured, "Watch ad" is present; with default (both IDs null), only Play again + No thanks.
         XCTAssertTrue(app.buttons["Play again"].exists, "J3: Play again button present")
         XCTAssertTrue(app.buttons["No thanks"].exists, "J3: No thanks button present")
     }
@@ -59,6 +59,10 @@ final class JourneyTests: XCTestCase {
         app.launch()
         let alert = app.alerts["Game Over"]
         XCTAssertTrue(alert.waitForExistence(timeout: 5))
+        // Tier 2: Watch ad only when variant has revive IAP or rewarded ad; skip when not configured.
+        guard app.buttons["Watch ad"].exists else {
+            throw XCTSkip("J4a: Watch ad not shown when monetization not configured (default variant)")
+        }
         app.buttons["Watch ad"].tap()
         let gameView = app.otherElements["GameView"]
         XCTAssertTrue(gameView.waitForExistence(timeout: 3), "J4a: After Watch ad, game scene should be visible again")
@@ -73,6 +77,25 @@ final class JourneyTests: XCTestCase {
         XCTAssertFalse(alert.waitForExistence(timeout: 2), "J4b: After No thanks, alert should dismiss")
         let gameView = app.otherElements["GameView"]
         XCTAssertTrue(gameView.exists, "J4b: Game view still present after No thanks (no new run)")
+    }
+
+    /// J4 second game-over path (first-revive-only): after one revive, second game over must not show "Watch ad".
+    func testJ4c_SecondGameOver_NoWatchAd() throws {
+        app.launchArguments = ["ForceGameOver", "ForceSecondGameOver"]
+        app.launch()
+        let alert = app.alerts["Game Over"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 5), "J4c: First game-over alert should appear")
+        guard app.buttons["Watch ad"].exists else {
+            throw XCTSkip("J4c: Watch ad not shown (monetization not configured); need it to test second-game-over path")
+        }
+        app.buttons["Watch ad"].tap()
+        let gameView = app.otherElements["GameView"]
+        XCTAssertTrue(gameView.waitForExistence(timeout: 3), "J4c: After Watch ad, game scene should be visible again")
+        let secondAlert = app.alerts["Game Over"]
+        XCTAssertTrue(secondAlert.waitForExistence(timeout: 5), "J4c: Second game-over alert should appear")
+        XCTAssertFalse(app.buttons["Watch ad"].exists, "J4c: Second game over must not show Watch ad (first-revive-only)")
+        XCTAssertTrue(app.buttons["Play again"].exists, "J4c: Play again present on second game over")
+        XCTAssertTrue(app.buttons["No thanks"].exists, "J4c: No thanks present on second game over")
     }
 
     // MARK: - J5 — Game over → play again

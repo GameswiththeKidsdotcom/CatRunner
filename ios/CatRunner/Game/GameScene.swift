@@ -78,6 +78,16 @@ class GameScene: SKScene {
     var currentScore: Int { scoreKeeper.currentScore }
     var highScore: Int { scoreKeeper.highScore }
 
+    /// First-revive-only (SPEC §1): true after user has used "Watch ad" this run; gates second "Watch ad" offer. Reset on new run (new GameScene).
+    private(set) var hasRevivedThisRun: Bool = false
+
+    /// Tier 2 — True when variant has at least one revive monetization option (IAP or rewarded ad). When false, game-over dialog omits "Watch ad".
+    var isReviveMonetizationConfigured: Bool {
+        guard let mon = engineConfig?.monetization else { return false }
+        return (mon.reviveIAPProductId != nil && !(mon.reviveIAPProductId?.isEmpty ?? true))
+            || (mon.rewardedAdPlacementId != nil && !(mon.rewardedAdPlacementId?.isEmpty ?? true))
+    }
+
     /// C7 — Power-up already collected this segment (avoid double-collect).
     private var powerUpCollectedInSegment: Bool = false
 
@@ -105,6 +115,9 @@ class GameScene: SKScene {
     private var touchStartPosition: CGPoint?
     private let swipeMinDistance: CGFloat = 30
 
+    /// Tier 4 — In-game score HUD (read-only). Shown during gameplay; game-over alert also shows score.
+    private let scoreHUDLabel = SKLabelNode(fontNamed: "AvenirNext-Medium")
+
     override func didMove(to view: SKView) {
         backgroundColor = SKColor(red: 0.15, green: 0.15, blue: 0.2, alpha: 1)
         loadEngineConfig()
@@ -116,14 +129,39 @@ class GameScene: SKScene {
         segmentStrip.zPosition = 5
         addChild(segmentStrip)
         addPlayer()
+        setupScoreHUD()
         startSegment()
         triggerGameOverForE2EIfRequested()
     }
 
-    /// E2E only: when launched with -ForceGameOver, trigger game over after a short delay so J3/J4/J5 are deterministic.
+    /// Tier 4 — In-game score HUD at top of scene. Updated each frame in update().
+    private func setupScoreHUD() {
+        scoreHUDLabel.name = "scoreHUD"
+        scoreHUDLabel.fontSize = 20
+        scoreHUDLabel.fontColor = .white
+        scoreHUDLabel.horizontalAlignmentMode = .center
+        scoreHUDLabel.verticalAlignmentMode = .top
+        scoreHUDLabel.position = CGPoint(x: size.width / 2, y: size.height - 24)
+        scoreHUDLabel.zPosition = 100
+        addChild(scoreHUDLabel)
+        updateScoreHUD()
+    }
+
+    private func updateScoreHUD() {
+        scoreHUDLabel.text = "Score: \(currentScore) | High: \(highScore)"
+    }
+
+    /// E2E only: when launched with -ForceGameOver, trigger game over after a short delay so J3/J4/J5 are deterministic. ForceSecondGameOver: also trigger again after 4s for J4 second-game-over path.
     private func triggerGameOverForE2EIfRequested() {
-        guard ProcessInfo.processInfo.arguments.contains("ForceGameOver") else { return }
+        let args = ProcessInfo.processInfo.arguments
+        guard args.contains("ForceGameOver") else { return }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self, !self.gameOverRequested else { return }
+            self.gameOverRequested = true
+            self.gameDelegate?.gameSceneDidRequestGameOver(self)
+        }
+        guard args.contains("ForceSecondGameOver") else { return }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) { [weak self] in
             guard let self = self, !self.gameOverRequested else { return }
             self.gameOverRequested = true
             self.gameDelegate?.gameSceneDidRequestGameOver(self)
@@ -288,8 +326,9 @@ class GameScene: SKScene {
         refreshSegmentSprites()
     }
 
-    /// C8 — Resume from last checkpoint after revive. Clears game over, restores segment and player.
+    /// C8 — Resume from last checkpoint after revive. Clears game over, restores segment and player. First-revive-only: marks hasRevivedThisRun.
     func resumeFromCheckpoint() {
+        hasRevivedThisRun = true
         gameOverRequested = false
         currentSegmentIndex = checkpointSegmentIndex
         if let config = engineConfig {
@@ -455,6 +494,7 @@ class GameScene: SKScene {
     // MARK: - C7 Game loop and collision
 
     override func update(_ currentTime: TimeInterval) {
+        updateScoreHUD()
         let delta: TimeInterval
         if let last = lastUpdateTime {
             delta = currentTime - last

@@ -31,13 +31,13 @@ Treat **iOS tests** and **admin/npm tests** as **distinct baselines**. Do not mi
 
 - **Command:** `xcodebuild test -scheme CatRunner -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' -configuration Debug`
 - **Run from:** `ios/` (project root for the command is `ios/`).
-- **Targets:** CatRunnerTests (58) + CatRunnerUITests (6).
-- **Baseline:** **64 tests** (58 + 6; pass count for regression comparison). When checking "test currently running" or "test completed", look for this command (or equivalent `xcodebuild test` with scheme CatRunner) in the terminals folder.
+- **Targets:** CatRunnerTests (58) + CatRunnerUITests (7).
+- **Baseline:** **65 tests** (58 + 7; pass count for regression comparison; J4a/J4c may skip when monetization not configured). When checking "test currently running" or "test completed", look for this command (or equivalent `xcodebuild test` with scheme CatRunner) in the terminals folder.
 
 ### Admin / other (npm)
 
 - **Command:** `npm run test:full` (if present in the repo). Used for admin panel or other non-iOS tests.
-- **Baseline:** Separate from iOS. Tester should treat iOS test results and npm test results as **distinct baselines** — e.g. "iOS 64/64 pass" vs "npm test:full N/M pass". When checking "test currently running" or "test completed", include both: (1) iOS `xcodebuild test` runs, (2) `npm run test:full` (or similar) for admin.
+- **Baseline:** Separate from iOS. Tester should treat iOS test results and npm test results as **distinct baselines** — e.g. "iOS 65/65 pass" (or with skips) vs "npm test:full N/M pass". When checking "test currently running" or "test completed", include both: (1) iOS `xcodebuild test` runs, (2) `npm run test:full` (or similar) for admin.
 
 ---
 
@@ -78,7 +78,7 @@ flowchart TD
 ### Step 1: Check if a test is currently running
 
 - Check the **terminals folder** (e.g. `~/.cursor/projects/.../terminals/` or the workspace terminals) for any terminal that has a **current command**. Consider **both**:
-  1. **iOS:** `xcodebuild test -scheme CatRunner ...` (or equivalent with scheme CatRunner); baseline 64 tests (CatRunnerTests + CatRunnerUITests).
+  1. **iOS:** `xcodebuild test -scheme CatRunner ...` (or equivalent with scheme CatRunner); baseline 65 tests (CatRunnerTests + CatRunnerUITests).
   2. **Admin/other:** `npm run test:full` or similar (if present); separate baseline from iOS.
 - If no terminals folder is available, ask the user: "Is a test currently running? If yes, which command (iOS xcodebuild test or npm) and in which environment?"
 - **If no test is running** → go to **Step 3** (treat as "test completed" for the last run, if any; otherwise report no run and ask what to do next).
@@ -107,7 +107,7 @@ flowchart TD
 
 ### Step 3: Test is completed — interpret results and update plans
 
-1. **Identify which baseline** the results belong to: **iOS** (xcodebuild test, 64 tests) or **admin/npm** (e.g. `npm run test:full`). Compare against that baseline only.
+1. **Identify which baseline** the results belong to: **iOS** (xcodebuild test, 65 tests) or **admin/npm** (e.g. `npm run test:full`). Compare against that baseline only.
 2. **Confirm** whether the test results are **related to the plan we're working on** (i.e. the plan or chunk that led the user to invoke tester in the first place). If the user did not specify, infer from recent plan state or ask.
 
 3. **If results are worse than the baseline**
