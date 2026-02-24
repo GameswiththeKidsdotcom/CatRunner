@@ -15,7 +15,7 @@ This document is the **single source of truth** for the CatRunner game. It is li
   - **slowdown:** Slows the player; no instant game over.
   - **Power-ups:** speedBoost, shield; effects apply to the single player only.
 - **Revive:** On first game-over, player may revive (IAP or rewarded ad per monetization config); after that, game over is final. **CTA labels (aligned):** "Watch ad" / "No thanks" / "Play again" in spec, E2E journeys, and iOS (`GameViewController.swift`). **Revive vs monetization (Tier 2):** When variant `monetization.reviveIAPProductId` or `rewardedAdPlacementId` is set (non-null, non-empty), the game-over dialog includes "Watch ad"; when both are null or empty, the dialog shows only "Play again" and "No thanks". Logic-test and E2E assert on these labels.
-- **Scoring:** Score increases over time/distance; difficulty scaling applies (speed, obstacle probabilities). **Score display:** Score and high score are shown **in the game-over alert** and **in-game score HUD** (Tier 4: top of scene, "Score: X | High: Y", updated each frame).
+- **Scoring:** Score increases over time/distance; difficulty scaling applies (speed, obstacle probabilities). **Score display:** Score and high score are shown **in the game-over alert** and **in-game score HUD** (Tier 4: top of scene, "Score: X | High: Y", updated each frame). The in-game score HUD respects the safe area on notched and Dynamic Island devices so it remains visible below the notch or island. When the player beats their previous high score during a run, an in-game "New high score!" cue is shown once, and the game-over alert title shows "New record!" with the score and high score.
 - **Difficulty scaling:** Config-driven (speed increment per segment, multi-lane and instantFail probability increments, segments per step).
 
 ---
@@ -85,7 +85,7 @@ All workflows under **`.github/workflows/`**.
 ## 7. Testing requirements
 
 - **Target:** CatRunnerTests (XCTest; unit, simulation, regression, optional performance) and CatRunnerUITests (XCUITest; E2E journeys J1–J5). Both run via scheme CatRunner.
-- **Baseline:** **65 tests** (58 CatRunnerTests + 7 CatRunnerUITests) — pass count for CI and regression comparison. (J4a, J4c may skip when monetization not configured.)
+- **Baseline:** **65 tests** (58 CatRunnerTests + 7 CatRunnerUITests) — pass count for CI and regression comparison. (J4a, J4c may skip when monetization not configured.) The in-game score HUD is positioned to respect the safe area on notched/Dynamic Island devices; this is covered by GameSceneSafeAreaTests and manual validation.
 - **FPS/memory:** Targets documented in C11 plan: FPS ≥60, memory ≤300MB during normal gameplay; **not asserted in CI** (environment varies); use local/profile runs or Instruments to verify.
 
 ---

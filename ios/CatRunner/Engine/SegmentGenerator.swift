@@ -55,7 +55,8 @@ final class SegmentGenerator {
     /// C5: path guarantee applied after obstacle generation (pure function of obstacles + laneCount; no extra RNG).
     /// C6: at most one power-up per segment, same RNG used so determinism preserved.
     /// C8: segmentIndex used for difficulty scaling (speed multiplier shortens duration; probability overrides for obstacles).
-    func generateSegment(seed: UInt64, segmentIndex: Int = 0) -> Segment {
+    /// DifficultySpawnRamp: elapsedTimeAtSegmentStart used to compute spawn rate and target obstacle count when difficultyScaler present.
+    func generateSegment(seed: UInt64, segmentIndex: Int = 0, elapsedTimeAtSegmentStart: TimeInterval? = nil) -> Segment {
         let rng = GKMersenneTwisterRandomSource(seed: seed)
         var duration = randomDuration(using: rng)
         var difficultyOverrides: ObstacleGenerator.DifficultyOverrides? = nil
@@ -64,7 +65,15 @@ final class SegmentGenerator {
             duration = duration / speedMult
             difficultyOverrides = ObstacleGenerator.DifficultyOverrides(instantFailBonus: instantFailBonus, multiLaneBonus: multiLaneBonus)
         }
-        let obstacles = obstacleGenerator.generate(segmentDuration: duration, rng: rng, difficultyOverrides: difficultyOverrides)
+        let avgDuration = (durationConfig.minDurationSeconds + durationConfig.maxDurationSeconds) / 2
+        let elapsed = elapsedTimeAtSegmentStart ?? Double(segmentIndex) * avgDuration
+        let targetObstacleCount: Int? = difficultyScaler.map { scaler in
+            let rate = scaler.spawnRate(elapsedSeconds: elapsed)
+            let expected = rate * duration
+            let cap = max(0, Int(duration * 2))
+            return max(0, min(Int(expected.rounded()), cap))
+        }
+        let obstacles = obstacleGenerator.generate(segmentDuration: duration, rng: rng, difficultyOverrides: difficultyOverrides, targetObstacleCount: targetObstacleCount)
         let guaranteed = PathGuarantee.ensurePathGuarantee(obstacles: obstacles, laneCount: laneCount)
         let segmentBase = Segment(durationSeconds: duration, seed: seed, obstacles: guaranteed)
         let powerUp = powerUpSpawner?.generate(for: segmentBase, rng: rng)

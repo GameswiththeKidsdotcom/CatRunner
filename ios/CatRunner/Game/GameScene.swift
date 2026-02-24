@@ -71,12 +71,24 @@ class GameScene: SKScene {
     /// C8 — Checkpoint for revive: segment index and seed to restore same segment.
     private var checkpointSegmentIndex: Int = 0
     private var checkpointSegmentSeed: UInt64 = 0
+    /// DifficultySpawnRamp — Total elapsed game time (seconds); drives spawn rate. Reset on new run; restored on revive.
+    private var totalElapsedTime: TimeInterval = 0
+    /// DifficultySpawnRamp — Elapsed time at checkpoint (for revive); restored to totalElapsedTime on resumeFromCheckpoint.
+    private var checkpointElapsedTime: TimeInterval = 0
+
+    /// Logic-test (DifficultySpawnRamp): Read-only access for tests to assert totalElapsedTime / checkpoint after revive, advance, restart.
+    internal var totalElapsedTimeForTesting: TimeInterval { totalElapsedTime }
+    internal var checkpointElapsedTimeForTesting: TimeInterval { checkpointElapsedTime }
+    internal func advanceToNextSegmentForTesting() { advanceToNextSegment() }
+    internal func restartCurrentSegmentForTesting() { restartCurrentSegment() }
 
     /// C8 — Score and high score; multiplier from power-up (e.g. speedBoost).
     private let scoreKeeper = ScoreKeeper()
     /// Expose current score and high score for UI.
     var currentScore: Int { scoreKeeper.currentScore }
     var highScore: Int { scoreKeeper.highScore }
+    /// P003 Chunk 2 — True when this run beat the previous high score; used for game-over "New record!" alert.
+    var didBeatHighScoreThisRun: Bool { scoreKeeper.didBeatHighScoreThisRun }
 
     /// First-revive-only (SPEC §1): true after user has used "Watch ad" this run; gates second "Watch ad" offer. Reset on new run (new GameScene).
     private(set) var hasRevivedThisRun: Bool = false
@@ -117,6 +129,10 @@ class GameScene: SKScene {
 
     /// Tier 4 — In-game score HUD (read-only). Shown during gameplay; game-over alert also shows score.
     private let scoreHUDLabel = SKLabelNode(fontNamed: "AvenirNext-Medium")
+    /// P003 Chunk 1 — Top safe area margin in scene coords (e.g. below Dynamic Island). Fallback until VC sets it.
+    private var topSafeAreaMargin: CGFloat = 24
+    /// P003 Chunk 2 — One-time in-game "New high score!" celebration; shown once per run when score beats previous high.
+    private var hasShownNewHighScoreCelebration: Bool = false
 
     override func didMove(to view: SKView) {
         backgroundColor = SKColor(red: 0.15, green: 0.15, blue: 0.2, alpha: 1)
@@ -134,21 +150,55 @@ class GameScene: SKScene {
         triggerGameOverForE2EIfRequested()
     }
 
-    /// Tier 4 — In-game score HUD at top of scene. Updated each frame in update().
+    /// P003 Chunk 1 — In-scene offset (pt) from safe-area bottom to HUD (label top).
+    private static let scoreHUDInsetBelowMargin: CGFloat = 24
+
+    /// Tier 4 — In-game score HUD at top of scene. P003: position uses topSafeAreaMargin. Updated each frame in update().
     private func setupScoreHUD() {
         scoreHUDLabel.name = "scoreHUD"
         scoreHUDLabel.fontSize = 20
         scoreHUDLabel.fontColor = .white
         scoreHUDLabel.horizontalAlignmentMode = .center
         scoreHUDLabel.verticalAlignmentMode = .top
-        scoreHUDLabel.position = CGPoint(x: size.width / 2, y: size.height - 24)
+        applyScoreHUDPosition()
         scoreHUDLabel.zPosition = 100
         addChild(scoreHUDLabel)
         updateScoreHUD()
     }
 
+    /// P003 Chunk 1 — Set top safe area margin (scene coords) and update HUD position. Call from VC in viewDidLayoutSubviews.
+    func setTopSafeAreaMargin(_ margin: CGFloat) {
+        topSafeAreaMargin = margin
+        if scoreHUDLabel.parent != nil {
+            applyScoreHUDPosition()
+        }
+    }
+
+    /// P003 Chunk 1 — HUD y = top of scene minus safe margin minus inset.
+    private func applyScoreHUDPosition() {
+        scoreHUDLabel.position = CGPoint(x: size.width / 2, y: size.height - topSafeAreaMargin - Self.scoreHUDInsetBelowMargin)
+    }
+
     private func updateScoreHUD() {
         scoreHUDLabel.text = "Score: \(currentScore) | High: \(highScore)"
+    }
+
+    /// P003 Chunk 2 — Show one-time "New high score!" label below score HUD; fades out after 2.5s.
+    private func showNewHighScoreCelebration() {
+        let label = SKLabelNode(fontNamed: "AvenirNext-Bold")
+        label.name = "newHighScoreCelebration"
+        label.text = "New high score!"
+        label.fontSize = 24
+        label.fontColor = .yellow
+        label.horizontalAlignmentMode = .center
+        label.verticalAlignmentMode = .top
+        label.position = CGPoint(x: size.width / 2, y: scoreHUDLabel.position.y - 28)
+        label.zPosition = 99
+        addChild(label)
+        let wait = SKAction.wait(forDuration: 2.5)
+        let fadeOut = SKAction.fadeOut(withDuration: 0.5)
+        let remove = SKAction.removeFromParent()
+        label.run(SKAction.sequence([wait, fadeOut, remove]))
     }
 
     /// E2E only: when launched with -ForceGameOver, trigger game over after a short delay so J3/J4/J5 are deterministic. ForceSecondGameOver: also trigger again after 4s for J4 second-game-over path.
@@ -281,13 +331,17 @@ class GameScene: SKScene {
         playerNode = player
     }
 
-    /// Start or restart current segment. C8: uses segment index for difficulty; saves checkpoint for revive.
+    /// Start or restart current segment. C8: uses segment index for difficulty; saves checkpoint for revive. DifficultySpawnRamp: passes totalElapsedTime for spawn rate.
     private func startSegment() {
         powerUpCollectedInSegment = false
+        if currentSegmentIndex == 0 {
+            totalElapsedTime = 0
+        }
+        checkpointElapsedTime = totalElapsedTime
         if let config = engineConfig {
             let generator = SegmentGenerator(engineConfig: config)
             let seed = UInt64(bitPattern: Int64(currentSegmentIndex))
-            currentSegment = generator.generateSegment(seed: seed, segmentIndex: currentSegmentIndex)
+            currentSegment = generator.generateSegment(seed: seed, segmentIndex: currentSegmentIndex, elapsedTimeAtSegmentStart: totalElapsedTime)
             checkpointSegmentIndex = currentSegmentIndex
             checkpointSegmentSeed = seed
         } else {
@@ -299,14 +353,15 @@ class GameScene: SKScene {
         refreshSegmentSprites()
     }
 
-    /// C8 — Advance to next segment (called when segment time exceeds duration).
+    /// C8 — Advance to next segment (called when segment time exceeds duration). DifficultySpawnRamp: add current segment duration to totalElapsedTime before starting next.
     private func advanceToNextSegment() {
+        totalElapsedTime += currentSegment?.durationSeconds ?? 0
         scoreKeeper.addSegmentCompleted()
         currentSegmentIndex += 1
         startSegment()
     }
 
-    /// Scroller 10s — Restart same segment (same seed); do not call addSegmentCompleted or increment segment index.
+    /// Scroller 10s — Restart same segment (same seed); do not call addSegmentCompleted or increment segment index. DifficultySpawnRamp: do not add segment duration to totalElapsedTime.
     private func restartCurrentSegment() {
         guard let segment = currentSegment else { return }
         powerUpCollectedInSegment = false
@@ -314,7 +369,7 @@ class GameScene: SKScene {
         let idx = currentSegmentIndex
         if let config = engineConfig {
             let generator = SegmentGenerator(engineConfig: config)
-            currentSegment = generator.generateSegment(seed: seed, segmentIndex: idx)
+            currentSegment = generator.generateSegment(seed: seed, segmentIndex: idx, elapsedTimeAtSegmentStart: totalElapsedTime)
         } else {
             let obs = ObstaclePlacement(startLane: 2, laneSpan: 1, typeId: "passable", timeOffset: 1.0)
             let enemy = EnemyPlacement(laneIndex: 0, typeId: "dog", timeOffset: 1.5)
@@ -326,14 +381,15 @@ class GameScene: SKScene {
         refreshSegmentSprites()
     }
 
-    /// C8 — Resume from last checkpoint after revive. Clears game over, restores segment and player. First-revive-only: marks hasRevivedThisRun.
+    /// C8 — Resume from last checkpoint after revive. Clears game over, restores segment and player. First-revive-only: marks hasRevivedThisRun. DifficultySpawnRamp: restore totalElapsedTime from checkpoint so spawn rate stays correct.
     func resumeFromCheckpoint() {
         hasRevivedThisRun = true
         gameOverRequested = false
+        totalElapsedTime = checkpointElapsedTime
         currentSegmentIndex = checkpointSegmentIndex
         if let config = engineConfig {
             let generator = SegmentGenerator(engineConfig: config)
-            currentSegment = generator.generateSegment(seed: checkpointSegmentSeed, segmentIndex: checkpointSegmentIndex)
+            currentSegment = generator.generateSegment(seed: checkpointSegmentSeed, segmentIndex: checkpointSegmentIndex, elapsedTimeAtSegmentStart: totalElapsedTime)
         }
         segmentTime = 0
         refreshSegmentSprites()
@@ -491,10 +547,24 @@ class GameScene: SKScene {
         _ = player.moveToLane(next, laneCount: laneCount, xPosition: laneXPosition(for: next))
     }
 
+    /// E2E / accessibility: tap-to-move lane left. Used by LaneTapLeft overlay in GameViewController.
+    func moveLaneLeft() {
+        triggerLaneLeft()
+    }
+
+    /// E2E / accessibility: tap-to-move lane right. Used by LaneTapRight overlay in GameViewController.
+    func moveLaneRight() {
+        triggerLaneRight()
+    }
+
     // MARK: - C7 Game loop and collision
 
     override func update(_ currentTime: TimeInterval) {
         updateScoreHUD()
+        if didBeatHighScoreThisRun, !hasShownNewHighScoreCelebration {
+            hasShownNewHighScoreCelebration = true
+            showNewHighScoreCelebration()
+        }
         let delta: TimeInterval
         if let last = lastUpdateTime {
             delta = currentTime - last

@@ -2,15 +2,49 @@
 
 ## Next hand off (cut & paste) — Lane A
 
-**No mandatory Lane A task.**
+**Top 10 plan executed (2026-02-24):** App icon copied; DifficultySpawnRamp C1–C6 done; Revive/play-again unit tests; Tier 2 doc in zz-archive; features-for-planner.md created.
 
-**Optional Lane A:** 5-iPhone E2E matrix (per e2e-spec-journeys Investigation 4); lane accessibility IDs for E2E selectors. Plan: [e2e-spec-journeys.plan.md](.cursor/Plans/subplans/P001/e2e-spec-journeys.plan.md).
+**Lane A (2026-02-24):** Full test suite run (npm run test:full + iOS). Logic-Test checklist for DifficultySpawnRamp completed per [docs/testing/logic-test/difficulty-spawn-rate-ramp-test-plan.md](docs/testing/logic-test/difficulty-spawn-rate-ramp-test-plan.md): items 1–9 done; checklist at [difficulty-spawn-rate-ramp-logic-test-checklist.md](docs/testing/logic-test/difficulty-spawn-rate-ramp-logic-test-checklist.md). Added SegmentGeneratorTests (items 6–7), DifficultySpawnRampGameSceneTests (items 8–9), GameScene test hooks (totalElapsedTimeForTesting, advanceToNextSegmentForTesting, etc.). Baseline: 75 unit + 8 UI (2 skipped); all pass.
 
-**P001-SpecGaps — done (2026-02-24, pushed 2026-02-24):** First-revive-only implemented; 65 tests pass. Full plan: [P001-SpecGaps-ideation-to-impl.plan.md](.cursor/Plans/subplans/P001/P001-SpecGaps-ideation-to-impl.plan.md).
+**Next priority — Lane A:** Commit and push when ready (no new regressions).
 
 ## Next hand off (cut & paste) — Lane B
 
-No conflict-free Lane B task assigned. Lane B may edit **config/** and **assets/** only. When Planner defines new config or asset work (e.g. new variant, asset refresh, or doc under config/assets), add a cut-and-paste prompt here. Current initiatives (Scroller 10s S1, Many-buildings BG1+BG2) are complete.
+**App icon asset — done (2026-02-24).** Verified and corrected `assets/reference/appIcon_catworld_1024.png` to 1024×1024 (was 1376×768; resized with `sips -z 1024 1024`). Source ready for Lane A or user to copy to `ios/CatRunner/Assets.xcassets/AppIcon.appiconset/AppIcon.png`.
+
+**Asset-based overlays — done (2026-02-24).** `assets/ui/gameOver.png`, `revivePanel.png`, and `scorePanel.png` verified and resized to match implementation-spec: 9:16 (720×1280) for overlays, ~9:1 (720×80) for score strip. implementation-spec and README updated (dimensions, CAT-WORLD-VISION style). Config already references paths in `config/default/assets.json`. No ios/ change.
+
+**Next priority — Lane B:** Other backlog items or invoke planner when new config/asset work is added. No asset work pending.
+
+---
+
+## Optional and deferred work (backlog)
+
+When picking up the next larger task, consider these optional items so they are not lost. Complete at any time; order below is by lane and then by area.
+
+**Lane B:** Lane B may pick up any deferred or optional item below that is **config/ or assets/ only**, when it **does not conflict with current Lane A focus** (no shared files, no dependency on in-progress Lane A work). When Lane A is focused on a given plan (e.g. P003 Chunk 2), Lane B can run in parallel on the Lane B rows in this backlog.
+
+**Lane A (optional / deferred)**
+
+| Item | Reference / plan | Note |
+|------|------------------|------|
+| 5-iPhone E2E matrix (CI job for SE, 14, 15, 16, 16 Pro Max) | [e2e-spec-journeys.plan.md](.cursor/Plans/subplans/P001/e2e-spec-journeys.plan.md) Investigation 4 | **Done (2026-02-24).** Job `test-ios-matrix` in test.yml; verified [optional-lane-a-verification.plan.md](.cursor/Plans/subplans/P001/optional-lane-a-verification.plan.md). |
+| Lane accessibility IDs for E2E selectors | Same as above | **Done (2026-02-24).** LaneTapLeft/LaneTapRight, GameView, GameOverAlert; testJ2_LaneTapRegions; verified same plan. |
+| "New high score!" celebration (in-game / game-over) | [P003-ScoreHUD-SafeArea.plan.md](.cursor/Plans/subplans/P003/P003-ScoreHUD-SafeArea.plan.md) Chunk 2 | **Done (2026-02-24).** |
+| Spec/docs update (SPEC §1/§7, Master-Plan note) | P003 Chunk 3 | **Done (2026-02-24).** |
+| App icon copy to AppIcon.appiconset | Pending work below | **Done (2026-02-24).** Copied to `ios/CatRunner/Assets.xcassets/AppIcon.appiconset/AppIcon.png`. |
+| Revive/play-again unit tests | Tier 1 optional | **Done (2026-02-24).** RevivePlayAgainTests.swift (hasRevivedThisRun, resumeFromCheckpoint, isReviveMonetizationConfigured). |
+| Fastlane + deploy.yml enhancements; second simulator in CI | Tier 3 optional | Already present per History; enhancements optional. |
+| Tier 2 completion doc in zz-archive | Path to archive table | **Done (2026-02-24).** [Tier2-defect-remediation-done.md](.cursor/Plans/subplans/P001/zz-archive/Tier2-defect-remediation-done.md) in zz-archive. |
+| features-for-planner.md at .cursor/Plans/ | Features for planner § | **Done (2026-02-24).** [features-for-planner.md](.cursor/Plans/features-for-planner.md) created. |
+
+**Lane B (optional / deferred — when no conflict with current Lane A focus)**
+
+| Item | Reference / plan | Note |
+|------|------------------|------|
+| Ensure app icon asset in assets/reference | **Done (2026-02-24);** [CatWorld-A7-appicon.plan.md](.cursor/Plans/subplans/P001/zz-archive/CatWorld-A7-appicon.plan.md) | Verified and resized to 1024×1024. Lane A or user copies to ios/ AppIcon.appiconset. |
+| Asset-based overlays (game-over / revive) | Spec gaps §; assets/ui implementation-spec | **Done (2026-02-24).** gameOver.png, revivePanel.png, scorePanel.png at 9:16 and 9:1; spec/README updated. No ios/ change. |
+| New variant or asset refresh | Master-Plan "Next hand off — Lane B" | When Planner defines config or asset work (e.g. new variant, asset refresh, doc under config or assets), Lane B picks it up; no conflict with Lane A if scope is config/ and assets/ only. |
 
 ---
 
@@ -18,7 +52,7 @@ No conflict-free Lane B task assigned. Lane B may edit **config/** and **assets/
 
 **(1) ui-test (Admin E2E) — done.** Playwright E2E for J6–J9 in `e2e/admin/journeys.spec.ts`; viewport projects desktop-1280 and desktop-1440; `npm run test:e2e` (20 passed, 2 skipped); CI job `admin-e2e` in [.github/workflows/test.yml](.github/workflows/test.yml). **(2) logic-test — done.** [logic-test-revive-playagain-2026-02-23.md](.cursor/Plans/subplans/P001/logic-test-revive-playagain-2026-02-23.md) updated; high confidence; CTA label alignment done. **(3) iOS E2E (J1–J5) — done. Pushed 2026-02-23.** XCUITest in `ios/CatRunnerUITests/JourneyTests.swift`; iPhone 16; 6 tests; CI runs with unit tests. **(4) CTA label alignment — done (2026-02-23).** iOS alert labels in `GameViewController.swift` and JourneyTests aligned to "Watch ad"/"No thanks"/"Play again" per [docs/SPECIFICATION.md](docs/SPECIFICATION.md) §1; spec and plan docs updated. No current mandatory Lane A task.
 
-**(5) Tier 1 (Testing improvements) — done (2026-02-23).** (1) `npm run test:full` fixed: Vitest excludes `e2e/` ([vitest.config.ts](vitest.config.ts)); `test:full` runs unit only (1 test pass). (2) Baseline aligned: clean iOS run = 64 tests (58 CatRunnerTests + 6 CatRunnerUITests); [docs/SPECIFICATION.md](docs/SPECIFICATION.md) §7 and [Agents/tester.md](Agents/tester.md) updated to 64.
+**(5) Tier 1 (Testing improvements) — done (2026-02-23).** (1) `npm run test:full` fixed: Vitest excludes `e2e/` ([vitest.config.ts](vitest.config.ts)); `test:full` runs unit only (1 test pass). (2) Baseline aligned: clean iOS run = 65 tests (58 CatRunnerTests + 7 CatRunnerUITests); [docs/SPECIFICATION.md](docs/SPECIFICATION.md) §7 and [Agents/tester.md](Agents/tester.md) updated to 65.
 
 **(5) Tier 2 (Defect remediation) — done (2026-02-23).** (1) Revive vs monetization: doc in SPECIFICATION.md §1 and §9; minimal branch in iOS — `GameScene.isReviveMonetizationConfigured`, "Watch ad" only when variant has IAP or rewarded ad ID. (2) Admin config save: SPECIFICATION.md §5 subsection + [docs/admin-config-save.md](docs/admin-config-save.md). (3) Score in alert only: documented in SPECIFICATION.md §1 (no in-game HUD; Tier 4 optional). Plan: [tier2-defect-remediation-2026-02-23.md](.cursor/Plans/subplans/P001/tier2-defect-remediation-2026-02-23.md).
 
@@ -27,6 +61,16 @@ No conflict-free Lane B task assigned. Lane B may edit **config/** and **assets/
 **(7) P001-SpecGaps (first-revive-only) — done (2026-02-24). Pushed 2026-02-24.** GameScene.hasRevivedThisRun; VC gates "Watch ad" when true; set on revive, reset on new run. E2E J4c (second game-over path); 65 tests pass (58 unit + 7 UI). Logic-Test handoff per e2e-spec-journeys §6.1. Plans: [P001-SpecGaps-ideation-to-impl.plan.md](.cursor/Plans/subplans/P001/P001-SpecGaps-ideation-to-impl.plan.md), [spec-gaps-first-revive-only.plan.md](.cursor/Plans/subplans/P001/spec-gaps-first-revive-only.plan.md).
 
 **(8) Tier 4 (New feature build-out) — done (2026-02-24). Pushed 2026-02-24.** Monetization stub (C8): confirmed (SPEC §9; "Watch ad" resumes from checkpoint); C8 Build Chunk Progress set to Done. In-game score HUD: added in GameScene (scoreHUDLabel at top, "Score: X | High: Y", updated each frame). Logic-Test §6.1 first-revive-only re-validation: completed and documented in logic-test-revive-playagain doc. Optional B5: [asset-integration.plan.md](.cursor/Plans/subplans/P001/zz-archive/asset-integration.plan.md) moved to zz-archive (B5 satisfied by BG3). Deferred: 5-iPhone E2E, lane accessibility IDs.
+
+**(9) P003 Chunk 1 (Score HUD Safe Area) — done (2026-02-24).** GameViewController.viewDidLayoutSubviews computes topMarginScene (view→scene for aspectFit), calls gameScene?.setTopSafeAreaMargin(topMarginScene). GameScene: topSafeAreaMargin, setTopSafeAreaMargin(_:), applyScoreHUDPosition(); setupScoreHUD() uses margin. GameSceneSafeAreaTests added. 59 unit + 8 UI tests (2 skipped) pass; npm run test:full pass. Manual validation done (user confirmed looks good on iPhone 16 Plus and iPhone SE).
+
+**(10) P003 Chunk 3 (Spec/docs update) — done (2026-02-24).** SPECIFICATION.md §1 (score display) and §7 (testing/baseline) updated to note that the in-game score HUD respects the safe area on notched/Dynamic Island devices. Master-Plan Next hand off and P003 row updated; Score HUD safe area (Chunk 1) noted done in History and Plan Matrix.
+
+**(11) P003 Chunk 2 ("New high score!" celebration) — done (2026-02-24).** ScoreKeeper.didBeatHighScoreThisRun set when currentScore exceeds highScore, cleared on resetCurrentRun. GameScene: one-time in-game "New high score!" label (below score HUD, 2.5s then fade out); didBeatHighScoreThisRun exposed for VC. GameViewController: game-over alert title "New record!" when scene.didBeatHighScoreThisRun. ScoreKeeperTests: testDidBeatHighScoreThisRunSetWhenCurrentExceedsHigh, testDidBeatHighScoreThisRunNotSetWhenNotExceedingHigh. SPEC §1 updated. 61 unit + 8 UI (2 skipped) pass; npm run test:full pass.
+
+**(12) Lane B — App icon source asset (2026-02-24).** Verified `assets/reference/appIcon_catworld_1024.png`; was 1376×768, resized to 1024×1024 with `sips -z 1024 1024`. Source exists for Lane A or user to copy to `ios/CatRunner/Assets.xcassets/AppIcon.appiconset/AppIcon.png`. Reference: [CatWorld-A7-appicon.plan.md](.cursor/Plans/subplans/P001/zz-archive/CatWorld-A7-appicon.plan.md).
+
+**(13) Optional Lane A — 5-iPhone E2E matrix + lane accessibility IDs (2026-02-24).** Read-only verification: job `test-ios-matrix` in [.github/workflows/test.yml](.github/workflows/test.yml) runs unit + UI on iPhone SE (3rd gen), 14, 15, 16, 16 Pro Max (fail-fast: false). LaneTapLeft/LaneTapRight, GameView, GameOverAlert in GameViewController; testJ2_LaneTapRegions_ExistAndTappable in JourneyTests. No code changes; plan [optional-lane-a-verification.plan.md](.cursor/Plans/subplans/P001/optional-lane-a-verification.plan.md).
 
 Completed items are listed here; update Next hand off above when a tier or task is done.
 
@@ -75,6 +119,27 @@ Archived plans live under `.cursor/Plans/zz-archives/` (folder names start with 
 | Scroller-10s | Scroller 10s loop and avatar sizing | 1 | 10s segment, seamless loop (same segment repeats), dog/boxes as obstacles, 44pt sprite scaling. Blaster complete; chunks S1–S4. See [.cursor/Plans/zz-archives/zz-Scroller-10s/Scroller-10s-loop-and-sizing.plan.md](.cursor/Plans/zz-archives/zz-Scroller-10s/Scroller-10s-loop-and-sizing.plan.md). | Complete (S1–S4; S1 config done, S2–S4 pushed 2026-02-23). | 92% | 92% |
 | Many-buildings-bg | Many-buildings scrolling background and sprite integration | 1 | Scrolling rooftop background (many buildings, tileable), dog/boxes integrate on runway; ui-designer + canva-ui-design; B5 (background layer + tiling). See [.cursor/Plans/zz-archives/zz-Many-buildings-bg/Many-buildings-bg.plan.md](.cursor/Plans/zz-archives/zz-Many-buildings-bg/Many-buildings-bg.plan.md). | Complete (BG1–BG4; BG1+BG2 assets done, BG3+BG4 pushed 2026-02-23). | N/A | High |
 | P001-SpecGaps | Spec gaps — ideation through implementation | 1 | One remaining spec violation (first-revive-only per SPEC §1); detailed plan from ideation through implementation. See [P001-SpecGaps-ideation-to-impl.plan.md](.cursor/Plans/subplans/P001/P001-SpecGaps-ideation-to-impl.plan.md); build chunk: [spec-gaps-first-revive-only.plan.md](.cursor/Plans/subplans/P001/spec-gaps-first-revive-only.plan.md). | **Complete (2026-02-24). Pushed 2026-02-24.** Code + E2E J4c + 65 tests. Logic-Test handoff per §6.1. | 95% | 95% |
+| P003 | Score HUD Safe Area and High-Score Paradigm | 1 | Fix score HUD covered by Dynamic Island/notch (iPhone 15 Plus etc.); safe-area-aware HUD position. Details in [P003-ScoreHUD-SafeArea.plan.md](.cursor/Plans/subplans/P003/P003-ScoreHUD-SafeArea.plan.md); Chunk 1: [Chunk1-SafeArea-Fix.plan.md](.cursor/Plans/subplans/P003/Chunk1-SafeArea-Fix.plan.md). | Chunks 1, 2, 3 done (2026-02-24). **Next:** optional backlog (5-iPhone E2E, lane IDs, etc.). | 95% | 93% |
+| DifficultySpawnRamp | Difficulty spawn rate ramp (1 per 5s, +0.1 every 5s) | 1 | Time-based obstacle spawn rate; config + Engine + GameScene + tests. Main plan: [difficulty-spawn-rate-ramp.plan.md](.cursor/Plans/difficulty-spawn-rate-ramp.plan.md). Details and chunks C1–C6 in sub-plans under `.cursor/Plans/subplans/DifficultySpawnRamp/`. | **C1–C6 + Logic-Test done (2026-02-24).** 75 unit + 8 UI tests pass. Checklist: [difficulty-spawn-rate-ramp-logic-test-checklist.md](docs/testing/logic-test/difficulty-spawn-rate-ramp-logic-test-checklist.md). Ready to commit and push. | 95% | 95% |
+
+**DifficultySpawnRamp Build Chunk Progress (Lane A):**
+
+| Chunk | Description | State | Conf (root) | Conf (solution) | Note |
+|-------|-------------|-------|-------------|-----------------|------|
+| C1 | Config: variant.json + schema (initialSpawnIntervalSeconds, spawnRateIncrementPerFiveSeconds) | **Done (2026-02-24)** | N/A | 95% | Optional fields; rollback clear. |
+| C2 | Engine types + DifficultyScaler.spawnRate(elapsedSeconds:) | **Done (2026-02-24)** | N/A | 95% | Decode defaults; formula specified. |
+| C3 | ObstacleGenerator.generate(..., targetObstacleCount:) | **Done (2026-02-24)** | N/A | 93% | Clamp and path guarantee noted. |
+| C4 | SegmentGenerator elapsedTimeAtSegmentStart, rate × duration | **Done (2026-02-24)** | N/A | 92% | Rounding to be fixed in impl. |
+| C5 | GameScene totalElapsedTime, checkpointElapsedTime, advance/revive/restart | **Done (2026-02-24)** | N/A | 94% | All branches covered. |
+| C6 | Tests: spawnRate, target count, regression | **Done (2026-02-24)** | N/A | 91% | DifficultyScalerTests spawnRate; ObstaclePlacementTests targetObstacleCount; 69 unit tests. |
+
+**P003 Build Chunk Progress (Lane A):**
+
+| Chunk | Description | State | Conf (root) | Conf (solution) | Note |
+|-------|-------------|-------|-------------|-----------------|------|
+| Chunk 1 | Safe-area fix: VC topMarginScene + GameScene setTopSafeAreaMargin + HUD position | **Done (2026-02-24)** | 95% | 93% | [Chunk1-SafeArea-Fix.plan.md](.cursor/Plans/subplans/P003/Chunk1-SafeArea-Fix.plan.md). Unit test + full suite pass. |
+| Chunk 2 | "New high score!" celebration (in-game / game-over) | **Done (2026-02-24)** | N/A | 90% | ScoreKeeper.didBeatHighScoreThisRun; in-game label; VC "New record!" alert; SPEC §1. |
+| Chunk 3 | Spec/docs update (SPEC §1/§7, Master-Plan note) | **Done (2026-02-24)** | N/A | 92% | SPEC §1/§7 + Master-Plan updated; Chunk 1 noted done. |
 
 **Scroller-10s chunks (Lane A = ios/, Lane B = config/):**
 
@@ -133,7 +198,7 @@ Archived plans live under `.cursor/Plans/zz-archives/` (folder names start with 
 - **Many-buildings-bg (Lane A + Lane B):** BG1–BG4 complete (Lane B BG1+BG2 done; BG3+BG4 pushed 2026-02-23). See [Many-buildings-bg.plan.md](.cursor/Plans/zz-archives/zz-Many-buildings-bg/Many-buildings-bg.plan.md).
 - **P002 (Lane A):** Vertical runner, avatar/enemy visibility, viewport scaling (last 5 iPhones) done; viewport ui-test complete; **Blaster pipeline complete** (V1–V4). See [P002-vertical-runner-viewport.plan.md](.cursor/Plans/zz-archives/zz-P002/P002-vertical-runner-viewport.plan.md).
 - **P001-E2E-Journeys:** Admin E2E (J6–J9 Playwright) + iOS E2E (J1–J5 XCUITest) complete and pushed 2026-02-23. See [e2e-spec-journeys.plan.md](.cursor/Plans/subplans/P001/e2e-spec-journeys.plan.md).
-- **P001-CatWorld-Assets:** A1–A7 complete. Copy `assets/reference/appIcon_catworld_1024.png` to `ios/.../AppIcon.appiconset/` (Lane A or user) to finish app icon.
+- **P001-CatWorld-Assets:** A1–A7 complete. Lane B ensured `assets/reference/appIcon_catworld_1024.png` exists at 1024×1024 (2026-02-24). Copy to `ios/.../AppIcon.appiconset/` (Lane A or user) to finish app icon in Xcode.
 - **P001-Asset-Integration:** B1–B5 done; plan moved to zz-archive 2026-02-24. See [asset-integration.plan.md](.cursor/Plans/subplans/P001/zz-archive/asset-integration.plan.md).
 
 ---

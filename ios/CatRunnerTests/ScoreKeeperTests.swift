@@ -58,6 +58,34 @@ final class ScoreKeeperTests: XCTestCase {
         defaults.removeObject(forKey: ScoreKeeper.highScoreUserDefaultsKey)
     }
 
+    // P003 Chunk 2 — "New high score!" celebration: didBeatHighScoreThisRun set when current exceeds high, cleared on reset.
+    func testDidBeatHighScoreThisRunSetWhenCurrentExceedsHigh() {
+        let defaults = UserDefaults(suiteName: "ScoreKeeperTests")!
+        defaults.removeObject(forKey: ScoreKeeper.highScoreUserDefaultsKey)
+        let keeper = ScoreKeeper(userDefaults: defaults)
+        keeper.pointsPerSegment = 100
+        XCTAssertFalse(keeper.didBeatHighScoreThisRun)
+        keeper.addSegmentCompleted()
+        XCTAssertTrue(keeper.didBeatHighScoreThisRun)
+        keeper.addSegmentCompleted()
+        XCTAssertTrue(keeper.didBeatHighScoreThisRun)
+        keeper.resetCurrentRun()
+        XCTAssertFalse(keeper.didBeatHighScoreThisRun)
+        defaults.removeObject(forKey: ScoreKeeper.highScoreUserDefaultsKey)
+    }
+
+    func testDidBeatHighScoreThisRunNotSetWhenNotExceedingHigh() {
+        let defaults = UserDefaults(suiteName: "ScoreKeeperTests")!
+        defaults.set(500, forKey: ScoreKeeper.highScoreUserDefaultsKey)
+        let keeper = ScoreKeeper(userDefaults: defaults)
+        keeper.pointsPerSegment = 100
+        keeper.addSegmentCompleted()
+        keeper.addSegmentCompleted()
+        XCTAssertEqual(keeper.highScore, 500)
+        XCTAssertFalse(keeper.didBeatHighScoreThisRun)
+        defaults.removeObject(forKey: ScoreKeeper.highScoreUserDefaultsKey)
+    }
+
     func testAddTimeScoreIncrements() {
         let keeper = ScoreKeeper(userDefaults: .standard)
         keeper.addTimeScore(deltaTime: 1.0, pointsPerSecond: 10)

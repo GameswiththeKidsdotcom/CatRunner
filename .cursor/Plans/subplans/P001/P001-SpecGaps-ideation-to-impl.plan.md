@@ -3,7 +3,7 @@ name: P001-SpecGaps — Ideation through implementation
 overview: Detailed plan from ideation (spec vs app gap analysis + ideation review) through implementation for the one remaining spec violation (first-revive-only) and optional Tier 4 items. Baked into Master-Plan; Lane A (ios/) only for code.
 ---
 
-**Next hand off (cut & paste):** First-revive-only **complete.** Next = **Tier 4** per Master-Plan. Invoke **Logic-Test** for state-machine validation per [e2e-spec-journeys.plan.md](e2e-spec-journeys.plan.md) §6.1 (allowed moves, unreachable states, state consistency after revive and second game over). Then execute Tier 4 (Monetization stub C8; in-game score HUD if not in Tier 2; optional 5-iPhone E2E, lane accessibility IDs).
+**Next hand off (cut & paste):** First-revive-only **complete.** Tier 4 **complete** (2026-02-24) per Master-Plan. Logic-Test §6.1 invoked and documented in [logic-test-revive-playagain-2026-02-23.md](zz-archive/logic-test-revive-playagain-2026-02-23.md). **Next — Lane A:** No mandatory task. Optional: 5-iPhone E2E matrix, lane accessibility IDs (see Master-Plan "Next hand off — Lane A").
 
 ---
 
@@ -30,12 +30,12 @@ overview: Detailed plan from ideation (spec vs app gap analysis + ideation revie
 | **1 — Ideation** | Gap analysis (spec vs app) + ideation review (Quick MVP / Scalable / Innovative). Quick MVP chosen: fix spec violation + doc. | Reference: spec vs app feature gaps plan (gap analysis); [Agents/ideation.md](../../../Agents/ideation.md) three approaches (Quick MVP chosen). | Done |
 | **2 — First-revive-only (build)** | Implement hasRevivedThisRun; gate "Watch ad"; reset on new run. | [spec-gaps-first-revive-only.plan.md](spec-gaps-first-revive-only.plan.md) | **Done** (2026-02-24) |
 | **3 — Test checkpoint** | Logic-Test + E2E J4 second-game-over path; 65 tests (58 unit + 7 UI). | Same sub-plan § Validation | **Done** (65 tests pass; J4c added; Logic-Test handoff below) |
-| **4 — Deferred (Tier 4)** | In-game score HUD, asset-based game-over/revive overlays (implementation-spec). | Not started; listed in Master-Plan Tier 4. | Deferred |
+| **4 — Tier 4** | Monetization stub C8; in-game score HUD; optional 5-iPhone E2E, lane accessibility IDs. | Master-Plan Tier 4 row | **Done** (2026-02-24) |
 
 ## Master-Plan and hand off
 
 - This plan is registered in the Master-Plan Plan Matrix as **P001-SpecGaps**.
-- **Next hand off — Lane A:** **Tier 4** (see Master-Plan). Invoke Logic-Test per §6.1 for first-revive-only state machine; then execute Tier 4 deliverables.
+- **Next hand off — Lane A:** Tier 4 done. Logic-Test §6.1 complete (logic-test-revive-playagain doc). No mandatory Lane A task; optional items in Master-Plan.
 - **Lane B:** No change (config/assets only).
 
 ## Risks and rollback
@@ -45,8 +45,8 @@ overview: Detailed plan from ideation (spec vs app gap analysis + ideation revie
 
 ## Checkpoint delegation
 
-- **After first-revive-only code and 64 tests pass:** Invoke **Logic-Test** agent to validate revive/game-over state machine per [e2e-spec-journeys.plan.md](e2e-spec-journeys.plan.md) §6.1 (allowed moves, no unreachable states, state consistency after revive and play again).
-- **E2E:** Lane A (or Tester) adds/updates J4 in `ios/CatRunnerUITests/JourneyTests.swift` for second game-over path (no "Watch ad"); run CatRunnerUITests as part of 64-test suite.
+- **After first-revive-only code and 65 tests pass:** Invoke **Logic-Test** agent per [e2e-spec-journeys.plan.md](e2e-spec-journeys.plan.md) §6.1. **Done:** Documented in [logic-test-revive-playagain-2026-02-23.md](zz-archive/logic-test-revive-playagain-2026-02-23.md).
+- **E2E:** J4c in `ios/CatRunnerUITests/JourneyTests.swift` covers second game-over path (no "Watch ad"); CatRunnerUITests part of 65-test suite (58 unit + 7 UI).
 
 ## References
 

@@ -70,6 +70,48 @@ jobs:
           name: test-output-log-se
           path: ios/test-output-se.log
 
+  # E2E Investigation 4 — 5-iPhone viewport matrix (e2e-spec-journeys.plan.md).
+  test-ios-matrix:
+    name: iOS E2E matrix (${{ matrix.device }})
+    runs-on: macos-14
+    strategy:
+      fail-fast: false
+      matrix:
+        device:
+          - "iPhone SE (3rd generation)"
+          - "iPhone 14"
+          - "iPhone 15"
+          - "iPhone 16"
+          - "iPhone 16 Pro Max"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run tests on ${{ matrix.device }}
+        working-directory: ios
+        env:
+          DESTINATION: "platform=iOS Simulator,name=${{ matrix.device }},OS=latest"
+        run: |
+          xcodebuild -scheme CatRunner \
+            -destination "$DESTINATION" \
+            -configuration Debug \
+            test 2>&1 | tee test-output-matrix.log
+
+      - name: Test report (${{ matrix.device }})
+        run: |
+          echo "## iOS E2E matrix: ${{ matrix.device }}" >> $GITHUB_STEP_SUMMARY
+          if grep -q "TEST SUCCEEDED" ios/test-output-matrix.log; then
+            echo "All tests passed." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Tests failed or incomplete. See test-output-matrix.log." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload test log (${{ matrix.device }})
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-output-${{ matrix.device }}
+          path: ios/test-output-matrix.log
+
   admin-e2e:
     name: Admin E2E (Playwright)
     runs-on: ubuntu-latest

@@ -49,4 +49,11 @@ struct DifficultyScaler {
             instantFailProbabilityBonus(forSegmentIndex: segmentIndex)
         )
     }
+
+    /// DifficultySpawnRamp — Spawn rate (obstacles per second) at given elapsed game time.
+    /// rate = 1/initialSpawnIntervalSeconds + (elapsedSeconds/5) * spawnRateIncrementPerFiveSeconds, clamped to ≥ 0.
+    func spawnRate(elapsedSeconds: TimeInterval) -> Double {
+        let rate = (1.0 / config.initialSpawnIntervalSeconds) + (elapsedSeconds / 5.0) * config.spawnRateIncrementPerFiveSeconds
+        return max(0, rate)
+    }
 }

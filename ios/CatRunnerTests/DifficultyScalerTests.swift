@@ -14,7 +14,9 @@ final class DifficultyScalerTests: XCTestCase {
         speedIncrementPerSegment: 0.02,
         multiLaneProbabilityIncrement: 0.01,
         instantFailProbabilityIncrement: 0.005,
-        segmentsPerStep: 5
+        segmentsPerStep: 5,
+        initialSpawnIntervalSeconds: 5,
+        spawnRateIncrementPerFiveSeconds: 0.1
     )
 
     func testStepZeroForSegmentIndexBelowStep() {
@@ -74,5 +76,39 @@ final class DifficultyScalerTests: XCTestCase {
         XCTAssertEqual(speed, 1.04, accuracy: 0.0001)
         XCTAssertEqual(multiLane, 0.02, accuracy: 0.0001)
         XCTAssertEqual(instantFail, 0.01, accuracy: 0.0001)
+    }
+
+    // MARK: - DifficultySpawnRamp: spawnRate(elapsedSeconds:)
+
+    func testSpawnRate_defaultConfig_exactValues() {
+        let scaler = DifficultyScaler(config: config)
+        XCTAssertEqual(scaler.spawnRate(elapsedSeconds: 0), 0.2, accuracy: 0.0001)
+        XCTAssertEqual(scaler.spawnRate(elapsedSeconds: 5), 0.3, accuracy: 0.0001)
+        XCTAssertEqual(scaler.spawnRate(elapsedSeconds: 10), 0.4, accuracy: 0.0001)
+    }
+
+    func testSpawnRate_monotonicAndNonNegative() {
+        let scaler = DifficultyScaler(config: config)
+        var prev: Double = -1
+        for t in [0.0, 1.0, 5.0, 10.0, 20.0, 100.0] {
+            let rate = scaler.spawnRate(elapsedSeconds: t)
+            XCTAssertGreaterThanOrEqual(rate, 0)
+            XCTAssertGreaterThanOrEqual(rate, prev)
+            prev = rate
+        }
+    }
+
+    func testSpawnRate_alternativeConfig() {
+        let alt = DifficultyScalingConfig(
+            speedIncrementPerSegment: 0,
+            multiLaneProbabilityIncrement: 0,
+            instantFailProbabilityIncrement: 0,
+            segmentsPerStep: 1,
+            initialSpawnIntervalSeconds: 10,
+            spawnRateIncrementPerFiveSeconds: 0.05
+        )
+        let scaler = DifficultyScaler(config: alt)
+        XCTAssertEqual(scaler.spawnRate(elapsedSeconds: 0), 0.1, accuracy: 0.0001)
+        XCTAssertEqual(scaler.spawnRate(elapsedSeconds: 5), 0.15, accuracy: 0.0001)
     }
 }

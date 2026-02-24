@@ -8,9 +8,9 @@ Generated per [ui-mockups.plan.md](../../.cursor/Plans/subplans/P001/ui-mockups.
 
 | File | Purpose | Aspect / size | Config key (if any) |
 |------|---------|---------------|---------------------|
-| `gameOver.png` | Full-screen game over overlay | 9:16 | `ui.gameOver` |
-| `revivePanel.png` | Revive dialog (watch ad / no thanks) | 9:16 or letterboxed | `ui.revivePanel` |
-| `scorePanel.png` | HUD score strip (optional) | Wide strip (~9:1) | optional in assets.json |
+| `gameOver.png` | Full-screen game over overlay | 9:16 (e.g. 720×1280 px) | `ui.gameOver` |
+| `revivePanel.png` | Revive dialog (watch ad / no thanks) | 9:16 (e.g. 720×1280 px) | `ui.revivePanel` |
+| `scorePanel.png` | HUD score strip (optional) | Wide strip ~9:1 (e.g. 720×80 px) | optional in assets.json |
 | `appIcon_source.png` | App icon source for iOS handoff | 1024×1024, no transparency | — |
 | `logo.png` | Admin/favicon logo | 24–32 pt / favicon | — |
 
@@ -34,10 +34,11 @@ Generated per [ui-mockups.plan.md](../../.cursor/Plans/subplans/P001/ui-mockups.
 
 ---
 
-## Colors
+## Colors and style (CAT-WORLD-VISION)
 
+- **Panels:** Rounded (border-radius 12–16 px); semi-transparent dark (`--panel-bg`); neon accent (e.g. `--neon-pink`, `--neon-amber`) for borders or highlights.
 - **Backgrounds:** Dark gray / black for overlays; contrast for readability.
-- **Primary CTA:** Warm accent (orange/yellow) for "Play again", "Revive" / "Watch ad".
+- **Primary CTA:** Warm accent (orange/yellow / neon amber) for "Play again", "Revive" / "Watch ad".
 - **Secondary:** Muted for "No thanks" / "Quit".
 - **Panel:** Bordered rectangle; slightly lighter than overlay background.
 

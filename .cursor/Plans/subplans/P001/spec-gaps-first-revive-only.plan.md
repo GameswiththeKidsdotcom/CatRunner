@@ -3,7 +3,7 @@ name: Spec gaps — First-revive-only implementation
 overview: Implement SPECIFICATION.md §1 "after that, game over is final": one revive per run via hasRevivedThisRun state, VC branch, and reset on new run. Lane A (ios/) only.
 ---
 
-**Next hand off (cut & paste):** **Complete (2026-02-24).** Code + E2E J4c + 65 tests done. Invoke **Logic-Test** per [e2e-spec-journeys.plan.md](e2e-spec-journeys.plan.md) §6.1; then see [P001-SpecGaps-ideation-to-impl.plan.md](P001-SpecGaps-ideation-to-impl.plan.md) and Master-Plan for Tier 4.
+**Next hand off (cut & paste):** **Complete (2026-02-24).** Code + E2E J4c + 65 tests. Logic-Test §6.1 invoked and documented in [logic-test-revive-playagain-2026-02-23.md](zz-archive/logic-test-revive-playagain-2026-02-23.md). Tier 4 complete per [P001-SpecGaps-ideation-to-impl.plan.md](P001-SpecGaps-ideation-to-impl.plan.md) and Master-Plan.
 
 ---
 
@@ -39,7 +39,7 @@ overview: Implement SPECIFICATION.md §1 "after that, game over is final": one r
 
 5. **Run full test suite**  
    - **Action:** From `ios/`: `xcodebuild test -scheme CatRunner -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' -configuration Debug`.  
-   - **Verification:** 64 tests pass (58 CatRunnerTests + 6 CatRunnerUITests).
+   - **Verification:** 65 tests pass (58 CatRunnerTests + 7 CatRunnerUITests).
 
 6. **Update E2E J4 for second game-over path**  
    - **File:** `ios/CatRunnerUITests/JourneyTests.swift` (or equivalent).  
@@ -52,7 +52,7 @@ overview: Implement SPECIFICATION.md §1 "after that, game over is final": one r
 
 ## Validation
 
-- **Unit/regression:** 64 tests pass.  
+- **Unit/regression:** 65 tests pass (58 unit + 7 UI).  
 - **E2E:** J4 covers first game over (Watch ad / No thanks / Play again) and second game over (Play again / No thanks only).  
 - **Logic-test:** State-machine validation per §6.1.
 

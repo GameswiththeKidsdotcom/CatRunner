@@ -29,10 +29,17 @@ final class ObstacleGenerator {
 
     /// Generate obstacle placements for a segment. Deterministic for same seed and config.
     /// C8: optional difficultyOverrides bias type (instantFail) and span (multi-lane) selection.
-    func generate(segmentDuration: TimeInterval, rng: GKRandom, difficultyOverrides: DifficultyOverrides? = nil) -> [ObstaclePlacement] {
+    /// DifficultySpawnRamp: when targetObstacleCount is set, use it as total count (clamped); when nil, use random count from numberOfObstacles.
+    func generate(segmentDuration: TimeInterval, rng: GKRandom, difficultyOverrides: DifficultyOverrides? = nil, targetObstacleCount: Int? = nil) -> [ObstaclePlacement] {
         guard !obstacleConfig.types.isEmpty, segmentDuration > 0 else { return [] }
 
-        let totalCount = numberOfObstacles(segmentDuration: segmentDuration, rng: rng)
+        let totalCount: Int
+        if let target = targetObstacleCount {
+            let cap = max(0, Int(segmentDuration * 2))
+            totalCount = min(max(0, target), cap)
+        } else {
+            totalCount = numberOfObstacles(segmentDuration: segmentDuration, rng: rng)
+        }
         guard totalCount > 0 else { return [] }
 
         let clusterConfig = obstacleConfig.clusterConfig

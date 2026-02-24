@@ -28,6 +28,10 @@ struct DifficultyScalingConfig: Equatable {
     let multiLaneProbabilityIncrement: Double
     let instantFailProbabilityIncrement: Double
     let segmentsPerStep: Int
+    /// DifficultySpawnRamp — Interval in seconds for one obstacle at start; rate = 1/this. Default 5.
+    let initialSpawnIntervalSeconds: Double
+    /// DifficultySpawnRamp — Obstacles-per-second added every 5s game time. Default 0.1.
+    let spawnRateIncrementPerFiveSeconds: Double
 }
 
 /// C8 — Monetization config (revive IAP / rewarded ad); optional for stub.
@@ -100,7 +104,9 @@ struct EngineVariantConfig {
                 speedIncrementPerSegment: $0.speedIncrementPerSegment,
                 multiLaneProbabilityIncrement: $0.multiLaneProbabilityIncrement,
                 instantFailProbabilityIncrement: $0.instantFailProbabilityIncrement,
-                segmentsPerStep: max(1, $0.segmentsPerStep)
+                segmentsPerStep: max(1, $0.segmentsPerStep),
+                initialSpawnIntervalSeconds: $0.initialSpawnIntervalSeconds,
+                spawnRateIncrementPerFiveSeconds: $0.spawnRateIncrementPerFiveSeconds
             )
         }
         let monetization = root.monetization.map {
@@ -138,6 +144,27 @@ private struct FullDifficultyScalingBranch: Decodable {
     let multiLaneProbabilityIncrement: Double
     let instantFailProbabilityIncrement: Double
     let segmentsPerStep: Int
+    let initialSpawnIntervalSeconds: Double
+    let spawnRateIncrementPerFiveSeconds: Double
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        speedIncrementPerSegment = try c.decode(Double.self, forKey: .speedIncrementPerSegment)
+        multiLaneProbabilityIncrement = try c.decode(Double.self, forKey: .multiLaneProbabilityIncrement)
+        instantFailProbabilityIncrement = try c.decode(Double.self, forKey: .instantFailProbabilityIncrement)
+        segmentsPerStep = try c.decode(Int.self, forKey: .segmentsPerStep)
+        initialSpawnIntervalSeconds = try c.decodeIfPresent(Double.self, forKey: .initialSpawnIntervalSeconds) ?? 5.0
+        spawnRateIncrementPerFiveSeconds = try c.decodeIfPresent(Double.self, forKey: .spawnRateIncrementPerFiveSeconds) ?? 0.1
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case speedIncrementPerSegment
+        case multiLaneProbabilityIncrement
+        case instantFailProbabilityIncrement
+        case segmentsPerStep
+        case initialSpawnIntervalSeconds
+        case spawnRateIncrementPerFiveSeconds
+    }
 }
 
 private struct FullMonetizationBranch: Decodable {

@@ -3,7 +3,7 @@ name: E2E spec assessment and journeys
 overview: Assess the specification, create a skeleton of E2E user journeys per feature (iOS game and Admin), list what must be answered before building E2E, and add investigation plans and question sets. Aligned with logic-test, ui-test, and Blaster (CatRunner scope).
 ---
 
-**Next hand off (cut & paste):** Tier 4 done (2026-02-24). See [Master-Plan.md](../../Master-Plan.md) "Next hand off — Lane A". E2E (J1–J5 iOS, J6–J9 Admin) and Tiers 1–4 complete. Keep Master-Plan and this prompt in sync per [Agents/planner.md](../../../Agents/planner.md).
+**Next hand off (cut & paste):** Tier 4 done (2026-02-24). **Optional Lane A (5-iPhone matrix + lane IDs) — verified (2026-02-24);** see [optional-lane-a-verification.plan.md](optional-lane-a-verification.plan.md). See [Master-Plan.md](../../Master-Plan.md) "Next hand off — Lane A". E2E (J1–J5 iOS, J6–J9 Admin) and Tiers 1–4 complete. Keep Master-Plan and this prompt in sync per [Agents/planner.md](../../../Agents/planner.md).
 
 **Path to archive (supporting docs):** When E2E work is fully closed and Tier 2–4 no longer need [e2e-investigation-findings-2026-02-23.md](e2e-investigation-findings-2026-02-23.md), move that doc to `subplans/P001/zz-archive/`. This plan remains active for reference until all journey work is complete.
 
@@ -109,6 +109,17 @@ overview: Assess the specification, create a skeleton of E2E user journeys per f
 
 **Owner:** Planner or e2e-harness; can involve infrastructure for CI stability.
 
+**Implementation (2026-02-24):** (1) **5-iPhone E2E matrix** — CI job `test-ios-matrix` in [.github/workflows/test.yml](../../../.github/workflows/test.yml) runs full test suite (unit + UI) on 5 simulators: iPhone SE (3rd generation), iPhone 14, iPhone 15, iPhone 16, iPhone 16 Pro Max; `fail-fast: false` so one device failure does not cancel others. (2) **Lane accessibility IDs** — GameViewController adds overlay views `LaneTapLeft` and `LaneTapRight` (accessibilityIdentifier) that call GameScene.moveLaneLeft()/moveLaneRight(); E2E can tap by ID. JourneyTests adds testJ2_LaneTapRegions_ExistAndTappable. (3) **Viewport matrix table** (below).
+
+| Device / viewport | Scope | PR | Screenshot |
+|-------------------|-------|-----|------------|
+| iPhone SE (3rd gen) | iOS J1–J5 + unit | test-ios-matrix | N |
+| iPhone 14 | iOS J1–J5 + unit | test-ios-matrix | N |
+| iPhone 15 | iOS J1–J5 + unit | test-ios-matrix | N |
+| iPhone 16 | iOS J1–J5 + unit | test (primary) + test-ios-matrix | N |
+| iPhone 16 Pro Max | iOS J1–J5 + unit | test-ios-matrix | N |
+| Desktop 1280 / 1440 | Admin J6–J9 | admin-e2e | N |
+
 ---
 
 ## 5. Dependency and handoffs
@@ -163,7 +174,7 @@ This plan is for **P001 CatRunner** (1-player endless runner, 5 lanes, single av
 | Open questions | Entry/menu, controls, revive state, admin auth/save, active variant, viewport matrix, screenshot needs. |
 | Investigation plans | 4 plans: (1) iOS entry/HUD/controls, (2) Revive/game over, (3) Admin entry/auth/save, (4) Viewport and E2E scope. Each has question set and deliverable. |
 | Logic-test targets | §6.1: Allowed moves when rules permit; no unreachable valid states; state consistency after revive and play again. |
-| Ui-test scope | §6.2: Admin (J6–J9) = Playwright; iOS (J1–J5) = native (XCUITest); viewport matrix from Investigation 4 (override ui-test default). **Implementation:** `ios/CatRunnerUITests/JourneyTests.swift` (6 tests); launch arg `ForceGameOver` for J3–J5. |
+| Ui-test scope | §6.2: Admin (J6–J9) = Playwright; iOS (J1–J5) = native (XCUITest); viewport matrix from Investigation 4 (override ui-test default). **Implementation:** `ios/CatRunnerUITests/JourneyTests.swift` (7 tests incl. J2 lane-tap); `LaneTapLeft`/`LaneTapRight` in GameViewController; launch arg `ForceGameOver` for J3–J5. **5-iPhone matrix:** job `test-ios-matrix` (SE, 14, 15, 16, 16 Pro Max). |
 | Blaster alignment | §7: CatRunner scope (1-player); ui-test for Admin + Investigation 4 matrix; logic-test per §6.1; confidence persisted per chunk. |
 
 Resolving the four investigation question sets will provide enough specificity to build a minimal, qualitative E2E harness. When Blaster runs the plan-validation pipeline on E2E-related work, use §6 and §7 for agent scope and invocation wording.

@@ -34,6 +34,10 @@
 		T1000005 /* DifficultyScalerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = T2000005 /* DifficultyScalerTests.swift */; };
 		T1000006 /* ScoreKeeperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = T2000006 /* ScoreKeeperTests.swift */; };
 		T1000009 /* B2AssetLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = T2000007 /* B2AssetLoaderTests.swift */; };
+		T1000010 /* GameSceneSafeAreaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = T2000008 /* GameSceneSafeAreaTests.swift */; };
+		T1000011 /* RevivePlayAgainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = T2000009 /* RevivePlayAgainTests.swift */; };
+		T1000012 /* SegmentGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = T2000010 /* SegmentGeneratorTests.swift */; };
+		T1000013 /* DifficultySpawnRampGameSceneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = T2000011 /* DifficultySpawnRampGameSceneTests.swift */; };
 		T1000007 /* SpriteKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3000001 /* SpriteKit.framework */; };
 		T1000008 /* GameplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3000002 /* GameplayKit.framework */; };
 		U1000001 /* JourneyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = U2000001 /* JourneyTests.swift */; };
@@ -70,6 +74,10 @@
 		T2000005 /* DifficultyScalerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DifficultyScalerTests.swift; sourceTree = "<group>"; };
 		T2000006 /* ScoreKeeperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreKeeperTests.swift; sourceTree = "<group>"; };
 		T2000007 /* B2AssetLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = B2AssetLoaderTests.swift; sourceTree = "<group>"; };
+		T2000008 /* GameSceneSafeAreaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneSafeAreaTests.swift; sourceTree = "<group>"; };
+		T2000009 /* RevivePlayAgainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevivePlayAgainTests.swift; sourceTree = "<group>"; };
+		T2000010 /* SegmentGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentGeneratorTests.swift; sourceTree = "<group>"; };
+		T2000011 /* DifficultySpawnRampGameSceneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DifficultySpawnRampGameSceneTests.swift; sourceTree = "<group>"; };
 		U0000001 /* CatRunnerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CatRunnerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		U2000001 /* JourneyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneyTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -141,6 +149,10 @@
 			isa = PBXGroup;
 			children = (
 				T2000007 /* B2AssetLoaderTests.swift */,
+				T2000008 /* GameSceneSafeAreaTests.swift */,
+				T2000009 /* RevivePlayAgainTests.swift */,
+				T2000010 /* SegmentGeneratorTests.swift */,
+				T2000011 /* DifficultySpawnRampGameSceneTests.swift */,
 				T2000001 /* PathGuaranteeTests.swift */,
 				T2000002 /* ObstaclePlacementTests.swift */,
 				T2000003 /* PowerUpSpawnerTests.swift */,
@@ -366,6 +378,10 @@
 				T1000005 /* DifficultyScalerTests.swift in Sources */,
 				T1000006 /* ScoreKeeperTests.swift in Sources */,
 				T1000009 /* B2AssetLoaderTests.swift in Sources */,
+				T1000010 /* GameSceneSafeAreaTests.swift in Sources */,
+				T1000011 /* RevivePlayAgainTests.swift in Sources */,
+				T1000012 /* SegmentGeneratorTests.swift in Sources */,
+				T1000013 /* DifficultySpawnRampGameSceneTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

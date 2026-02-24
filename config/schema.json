@@ -91,7 +91,9 @@
         "speedIncrementPerSegment": { "type": "number", "minimum": 0 },
         "multiLaneProbabilityIncrement": { "type": "number", "minimum": 0, "maximum": 1 },
         "instantFailProbabilityIncrement": { "type": "number", "minimum": 0, "maximum": 1 },
-        "segmentsPerStep": { "type": "integer", "minimum": 1 }
+        "segmentsPerStep": { "type": "integer", "minimum": 1 },
+        "initialSpawnIntervalSeconds": { "type": "number", "minimum": 1, "description": "Interval in seconds for one obstacle at start; spawn rate = 1/this. Default 5." },
+        "spawnRateIncrementPerFiveSeconds": { "type": "number", "minimum": 0, "description": "Obstacles-per-second added every 5s game time. Default 0.1." }
       }
     },
     "monetization": {

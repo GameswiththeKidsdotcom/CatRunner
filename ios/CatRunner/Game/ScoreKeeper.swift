@@ -22,6 +22,9 @@ final class ScoreKeeper {
     /// High score across runs; persisted in UserDefaults.
     private(set) var highScore: Int = 0
 
+    /// P003 Chunk 2 — True when this run has beaten the previous high score (set when currentScore first exceeds highScore). Cleared on resetCurrentRun().
+    private(set) var didBeatHighScoreThisRun: Bool = false
+
     /// Multiplier for new points (e.g. 2.0 during speedBoost). Default 1.0.
     var multiplier: Double = 1.0
 
@@ -38,6 +41,7 @@ final class ScoreKeeper {
         currentScore += points
         if currentScore > highScore {
             highScore = currentScore
+            didBeatHighScoreThisRun = true
             userDefaults.set(highScore, forKey: Self.highScoreUserDefaultsKey)
         }
     }
@@ -48,12 +52,14 @@ final class ScoreKeeper {
         currentScore += points
         if currentScore > highScore {
             highScore = currentScore
+            didBeatHighScoreThisRun = true
             userDefaults.set(highScore, forKey: Self.highScoreUserDefaultsKey)
         }
     }
 
-    /// Reset current run (e.g. new game); high score unchanged.
+    /// Reset current run (e.g. new game); high score unchanged. Clears didBeatHighScoreThisRun.
     func resetCurrentRun() {
         currentScore = 0
+        didBeatHighScoreThisRun = false
     }
 }

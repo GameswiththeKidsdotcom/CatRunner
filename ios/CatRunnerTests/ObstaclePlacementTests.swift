@@ -104,4 +104,32 @@ final class ObstaclePlacementTests: XCTestCase {
             }
         }
     }
+
+    // MARK: - DifficultySpawnRamp: targetObstacleCount
+
+    func testTargetObstacleCount_respectedCountLessThanOrEqualTarget() {
+        let types = [
+            ObstacleTypeConfig(id: "passable", laneSpanMin: 1, laneSpanMax: 2),
+            ObstacleTypeConfig(id: "instantFail", laneSpanMin: 1, laneSpanMax: 2)
+        ]
+        let config = ObstacleConfig(types: types, clusterConfig: ClusterConfig(enabled: false, minGroupSize: 2, maxGroupSize: 3, layout: "linear"))
+        let gen = ObstacleGenerator(obstacleConfig: config, laneCount: laneCount)
+        let rng = GKMersenneTwisterRandomSource(seed: 42)
+        let placements = gen.generate(segmentDuration: 5.0, rng: rng, targetObstacleCount: 3)
+        XCTAssertLessThanOrEqual(placements.count, 3, "Path guarantee may reduce count; should never exceed target")
+    }
+
+    func testTargetObstacleCount_nil_preservesRandomBehavior() {
+        let types = [
+            ObstacleTypeConfig(id: "passable", laneSpanMin: 1, laneSpanMax: 2),
+            ObstacleTypeConfig(id: "instantFail", laneSpanMin: 1, laneSpanMax: 2)
+        ]
+        let config = ObstacleConfig(types: types, clusterConfig: ClusterConfig(enabled: false, minGroupSize: 2, maxGroupSize: 3, layout: "linear"))
+        let gen = ObstacleGenerator(obstacleConfig: config, laneCount: laneCount)
+        let rng = GKMersenneTwisterRandomSource(seed: 12345)
+        let placements = gen.generate(segmentDuration: 2.5, rng: rng)
+        for p in placements {
+            XCTAssertTrue(ObstaclePlacement.validate(startLane: p.startLane, laneSpan: p.laneSpan, laneCount: laneCount))
+        }
+    }
 }
