@@ -40,7 +40,7 @@ final class SegmentGenerator {
     /// Legacy init with duration config only; obstacles will be empty (no obstacle config); no power-up spawner; no difficulty scaler.
     init(config: SegmentDurationConfig, obstacleConfig: ObstacleConfig? = nil, laneCount: Int? = nil, powerUpConfig: PowerUpConfig? = nil, difficultyScaling: DifficultyScalingConfig? = nil) {
         self.durationConfig = config
-        let lanes = laneCount ?? 5
+        let lanes = laneCount ?? DesignConstants.defaultLaneCount
         self.laneCount = lanes
         if let obs = obstacleConfig {
             self.obstacleGenerator = ObstacleGenerator(obstacleConfig: obs, laneCount: lanes)

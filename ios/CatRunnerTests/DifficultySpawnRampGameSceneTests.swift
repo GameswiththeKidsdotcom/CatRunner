@@ -14,10 +14,7 @@ final class DifficultySpawnRampGameSceneTests: XCTestCase {
 
     /// Logic-test item 8: After resumeFromCheckpoint(), totalElapsedTime must equal checkpointElapsedTime.
     func testAfterResumeFromCheckpoint_totalElapsedTimeEqualsCheckpoint() {
-        let size = CGSize(width: 393, height: 852)
-        let scene = GameScene(size: size)
-        let skView = SKView(frame: CGRect(origin: .zero, size: size))
-        scene.didMove(to: skView)
+        let scene = GameSceneTestHelper.makeSceneWithDidMove()
 
         XCTAssertEqual(scene.totalElapsedTimeForTesting, 0)
         scene.advanceToNextSegmentForTesting()
@@ -28,19 +25,13 @@ final class DifficultySpawnRampGameSceneTests: XCTestCase {
 
     /// Logic-test item 9 (new run): totalElapsedTime starts at 0.
     func testNewRun_totalElapsedTimeStartsAtZero() {
-        let size = CGSize(width: 393, height: 852)
-        let scene = GameScene(size: size)
-        let skView = SKView(frame: CGRect(origin: .zero, size: size))
-        scene.didMove(to: skView)
+        let scene = GameSceneTestHelper.makeSceneWithDidMove()
         XCTAssertEqual(scene.totalElapsedTimeForTesting, 0)
     }
 
     /// Logic-test item 9 (advance): totalElapsedTime incremented by segment duration when advancing.
     func testAdvance_incrementsTotalElapsedTime() {
-        let size = CGSize(width: 393, height: 852)
-        let scene = GameScene(size: size)
-        let skView = SKView(frame: CGRect(origin: .zero, size: size))
-        scene.didMove(to: skView)
+        let scene = GameSceneTestHelper.makeSceneWithDidMove()
         let t0 = scene.totalElapsedTimeForTesting
         scene.advanceToNextSegmentForTesting()
         XCTAssertGreaterThan(scene.totalElapsedTimeForTesting, t0, "Advance should add segment duration to totalElapsedTime")
@@ -48,10 +39,7 @@ final class DifficultySpawnRampGameSceneTests: XCTestCase {
 
     /// Logic-test item 9 (restart): totalElapsedTime unchanged when restarting current segment.
     func testRestartCurrentSegment_doesNotChangeTotalElapsedTime() {
-        let size = CGSize(width: 393, height: 852)
-        let scene = GameScene(size: size)
-        let skView = SKView(frame: CGRect(origin: .zero, size: size))
-        scene.didMove(to: skView)
+        let scene = GameSceneTestHelper.makeSceneWithDidMove()
         let t0 = scene.totalElapsedTimeForTesting
         scene.restartCurrentSegmentForTesting()
         XCTAssertEqual(scene.totalElapsedTimeForTesting, t0, "Restart same segment must not add to totalElapsedTime")

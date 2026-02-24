@@ -94,7 +94,7 @@ final class ObstacleGenerator {
         difficultyOverrides: DifficultyOverrides? = nil
     ) -> [ObstaclePlacement] {
         var times: [TimeInterval] = []
-        let margin = segmentDuration * 0.1
+        let margin = segmentDuration * DesignConstants.segmentTimeMarginFraction
         var attempts = 0
         while times.count < count, attempts < 200 {
             let t = margin + Double(rng.nextUniform()) * (segmentDuration - 2 * margin)

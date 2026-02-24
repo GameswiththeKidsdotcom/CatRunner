@@ -5,6 +5,7 @@
 //  C7 — Collision detection: player vs obstacle (by type: passable / instantFail / slowdown) and vs power-up.
 //  High/low rule: instantFail = high (must slide under); passable/slowdown = low (must jump over).
 //  Instant-fail triggers delegate/flag for C8 (revive flow not implemented in C7).
+//  T5-C9 — Moved to Engine (depends only on Segment placement types and DesignConstants).
 //
 
 import Foundation
@@ -30,7 +31,7 @@ struct CollisionResult: Equatable {
 struct CollisionSystem {
 
     /// Time window (seconds) to consider player and obstacle/power-up overlapping.
-    static let timeEpsilon: TimeInterval = 0.2
+    static var timeEpsilon: TimeInterval { DesignConstants.timeEpsilon }
 
     /// Check collision for current frame. Returns obstacle hit type and power-up collected (if any).
     static func check(

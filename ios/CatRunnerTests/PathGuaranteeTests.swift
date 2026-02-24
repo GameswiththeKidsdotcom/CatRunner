@@ -10,7 +10,7 @@ import XCTest
 
 final class PathGuaranteeTests: XCTestCase {
 
-    let laneCount = 5
+    let laneCount = DesignConstants.defaultLaneCount
 
     // MARK: - Blocked lanes and viable lane
 

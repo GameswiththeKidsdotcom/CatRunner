@@ -19,11 +19,6 @@ private let SegmentScrollSpeed: CGFloat = 200
 /// Scroller 10s — Max dimension (pt) for obstacle and enemy sprites; scale to avatar size, preserve aspect ratio.
 private let SegmentSpriteMaxDimension: CGFloat = 44
 
-/// Number of lanes (0–4); lane 2 is center. Used when EngineVariantConfig is not loaded.
-let LaneCount = 5
-/// Center lane index.
-let CenterLaneIndex = 2
-
 class GameScene: SKScene {
 
     /// Lane index (0–4) → x position. Lanes evenly spaced across scene width.
@@ -31,18 +26,18 @@ class GameScene: SKScene {
     /// P002 — Vertical runner: player and lane reference y (lower third); obstacles move from top toward this.
     private var laneY: CGFloat = 0
 
-    /// C7 — Config from variant.json when available; nil → use LaneCount, CenterLaneIndex, default durations.
+    /// C7 — Config from variant.json when available; nil → use DesignConstants.defaultLaneCount, defaultCenterLaneIndex, default durations.
     private var engineConfig: EngineVariantConfig?
     /// B2 — Asset loader (assets.json → textures). Loaded once at startup; B3 uses for player texture.
     private(set) var assetConfig: AssetConfig?
-    /// C7 — Effective lane count (from config or global).
-    private var laneCount: Int { engineConfig?.laneCount ?? LaneCount }
+    /// C7 — Effective lane count (from config or default).
+    private var laneCount: Int { engineConfig?.laneCount ?? DesignConstants.defaultLaneCount }
     /// C7 — Jump duration from config or default.
     private var jumpDuration: TimeInterval { engineConfig?.jumpDurationSeconds ?? PlayerNode.defaultJumpDuration }
     /// C7 — Slide duration from config or default.
     private var slideDuration: TimeInterval { engineConfig?.slideDurationSeconds ?? PlayerNode.defaultSlideDuration }
     /// C7 — Player start lane from config or default.
-    private var playerStartLane: Int { engineConfig?.playerStartLane ?? PlayerNode.defaultStartLane }
+    private var playerStartLane: Int { engineConfig?.playerStartLane ?? DesignConstants.defaultCenterLaneIndex }
 
     /// C7 — Player node (set in addPlayer).
     private weak var playerNode: PlayerNode?
@@ -285,6 +280,13 @@ class GameScene: SKScene {
         engineConfig?.segmentDurationConfig.maxDurationSeconds ?? 12
     }
 
+    /// T5-C4 — Fallback segment when engineConfig is nil (no variant.json). Single source for 10s duration, one passable obstacle, one dog enemy.
+    private static func makeFallbackSegment(seed: UInt64) -> Segment {
+        let obs = ObstaclePlacement(startLane: DesignConstants.defaultCenterLaneIndex, laneSpan: 1, typeId: "passable", timeOffset: 1.0)
+        let enemy = EnemyPlacement(laneIndex: 0, typeId: "dog", timeOffset: 1.5)
+        return Segment(durationSeconds: 10.0, seed: seed, obstacles: [obs], powerUp: nil, enemy: enemy)
+    }
+
     /// Load variant.json into engineConfig when available.
     private func loadEngineConfig() {
         engineConfig = try? EngineVariantConfig.load(fromBundle: .main, filename: "variant")
@@ -345,9 +347,7 @@ class GameScene: SKScene {
             checkpointSegmentIndex = currentSegmentIndex
             checkpointSegmentSeed = seed
         } else {
-            let obs = ObstaclePlacement(startLane: 2, laneSpan: 1, typeId: "passable", timeOffset: 1.0)
-            let enemy = EnemyPlacement(laneIndex: 0, typeId: "dog", timeOffset: 1.5)
-            currentSegment = Segment(durationSeconds: 10.0, seed: 0, obstacles: [obs], powerUp: nil, enemy: enemy)
+            currentSegment = Self.makeFallbackSegment(seed: UInt64(bitPattern: Int64(currentSegmentIndex)))
         }
         segmentTime = 0
         refreshSegmentSprites()
@@ -371,9 +371,7 @@ class GameScene: SKScene {
             let generator = SegmentGenerator(engineConfig: config)
             currentSegment = generator.generateSegment(seed: seed, segmentIndex: idx, elapsedTimeAtSegmentStart: totalElapsedTime)
         } else {
-            let obs = ObstaclePlacement(startLane: 2, laneSpan: 1, typeId: "passable", timeOffset: 1.0)
-            let enemy = EnemyPlacement(laneIndex: 0, typeId: "dog", timeOffset: 1.5)
-            currentSegment = Segment(durationSeconds: 10.0, seed: seed, obstacles: [obs], powerUp: nil, enemy: enemy)
+            currentSegment = Self.makeFallbackSegment(seed: seed)
         }
         checkpointSegmentIndex = idx
         checkpointSegmentSeed = seed
@@ -402,7 +400,7 @@ class GameScene: SKScene {
     /// Lane index (0..<laneCount) → x position.
     func laneXPosition(for laneIndex: Int) -> CGFloat {
         guard laneIndex >= 0, laneIndex < laneXPositions.count else {
-            let center = min(CenterLaneIndex, laneCount - 1)
+            let center = min(DesignConstants.defaultCenterLaneIndex, laneCount - 1)
             return laneXPositions[max(0, center)]
         }
         return laneXPositions[laneIndex]

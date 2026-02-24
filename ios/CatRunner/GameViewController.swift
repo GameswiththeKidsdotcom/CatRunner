@@ -11,9 +11,6 @@ import UIKit
 import SpriteKit
 import GameplayKit
 
-/// P002 — Design size (portrait) for consistent layout; aspectFit scales to fit all iPhones.
-private let DesignSize = CGSize(width: 393, height: 852)
-
 /// Width of left/right lane-tap overlay (pt). Narrow so swipes still hit the scene.
 private let LaneTapOverlayWidth: CGFloat = 56
 
@@ -39,7 +36,7 @@ class GameViewController: UIViewController {
         skView.ignoresSiblingOrder = true
         skView.showsFPS = true
         skView.showsNodeCount = true
-        let scene = GameScene(size: DesignSize)
+        let scene = GameScene(size: DesignConstants.designSize)
         scene.scaleMode = .aspectFit
         scene.gameDelegate = self
         gameScene = scene
@@ -51,8 +48,8 @@ class GameViewController: UIViewController {
         super.viewDidLayoutSubviews()
         skView?.frame = view.bounds
         // P003 Chunk 1 — Top safe area in scene coords (aspectFit) so score HUD sits below notch/Dynamic Island.
-        let designW = DesignSize.width
-        let designH = DesignSize.height
+        let designW = DesignConstants.designSize.width
+        let designH = DesignConstants.designSize.height
         let scale = min(view.bounds.width / designW, view.bounds.height / designH)
         let viewTop = (view.bounds.height - designH * scale) / 2
         let overlap = max(0, view.safeAreaInsets.top - viewTop)
@@ -150,7 +147,7 @@ extension GameViewController: GameSceneDelegate {
     /// Starts a new run (fresh GameScene). High score persists via ScoreKeeper UserDefaults.
     private func startNewGame() {
         guard let sk = skView else { return }
-        let scene = GameScene(size: DesignSize)
+        let scene = GameScene(size: DesignConstants.designSize)
         scene.scaleMode = .aspectFit
         scene.gameDelegate = self
         gameScene = scene

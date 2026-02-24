@@ -12,7 +12,7 @@ import GameplayKit
 
 final class ObstaclePlacementTests: XCTestCase {
 
-    let laneCount = 5
+    let laneCount = DesignConstants.defaultLaneCount
 
     // MARK: - Lane index valid (0–4)
 

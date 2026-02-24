@@ -17,7 +17,7 @@ final class PowerUpSpawner {
     private let laneCount: Int
 
     /// Time window (seconds) around an obstacle's timeOffset; power-up will not be placed within this to avoid overlap.
-    private static let obstacleTimeEpsilon: TimeInterval = 0.2
+    private static var obstacleTimeEpsilon: TimeInterval { DesignConstants.timeEpsilon }
 
     init(powerUpConfig: PowerUpConfig, laneCount: Int) {
         self.config = powerUpConfig
@@ -61,7 +61,7 @@ final class PowerUpSpawner {
         obstaclesInLane: [ObstaclePlacement],
         rng: GKRandom
     ) -> TimeInterval? {
-        let margin = duration * 0.1
+        let margin = duration * DesignConstants.segmentTimeMarginFraction
         let low = margin
         let high = duration - margin
         guard high > low else { return nil }

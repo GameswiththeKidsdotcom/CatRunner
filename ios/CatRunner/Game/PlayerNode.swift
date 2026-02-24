@@ -17,13 +17,13 @@ final class PlayerNode: SKSpriteNode {
     /// Default durations when EngineVariantConfig is not loaded (C7 fallback).
     static let defaultJumpDuration: TimeInterval = 0.4
     static let defaultSlideDuration: TimeInterval = 0.5
-    /// Default start lane (center for 5 lanes).
-    static let defaultStartLane = 2
+    /// Default start lane (center; must match DesignConstants.defaultCenterLaneIndex for default lane count). T5-C3.
+    static var defaultStartLane: Int { DesignConstants.defaultCenterLaneIndex }
 
     // MARK: - C7 Player state (used by GameScene and CollisionSystem)
 
     /// Current lane index (0..<laneCount). Lane swap is clamped 0–4 when laneCount is 5.
-    private(set) var currentLaneIndex: Int = defaultStartLane
+    private(set) var currentLaneIndex: Int = DesignConstants.defaultCenterLaneIndex
     /// True while jump animation is running; player avoids low obstacles when true.
     private(set) var isJumping: Bool = false
     /// True while slide animation is running; player avoids high obstacles when true.

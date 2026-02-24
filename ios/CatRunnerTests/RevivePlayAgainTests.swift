@@ -13,19 +13,13 @@ final class RevivePlayAgainTests: XCTestCase {
 
     /// hasRevivedThisRun is false before any revive.
     func testHasRevivedThisRunFalseInitially() {
-        let size = CGSize(width: 393, height: 852)
-        let scene = GameScene(size: size)
-        let skView = SKView(frame: CGRect(origin: .zero, size: size))
-        scene.didMove(to: skView)
+        let scene = GameSceneTestHelper.makeSceneWithDidMove()
         XCTAssertFalse(scene.hasRevivedThisRun)
     }
 
     /// After resumeFromCheckpoint(), hasRevivedThisRun becomes true (first-revive-only spec).
     func testHasRevivedThisRunTrueAfterResumeFromCheckpoint() {
-        let size = CGSize(width: 393, height: 852)
-        let scene = GameScene(size: size)
-        let skView = SKView(frame: CGRect(origin: .zero, size: size))
-        scene.didMove(to: skView)
+        let scene = GameSceneTestHelper.makeSceneWithDidMove()
         XCTAssertFalse(scene.hasRevivedThisRun)
         scene.resumeFromCheckpoint()
         XCTAssertTrue(scene.hasRevivedThisRun)
@@ -33,10 +27,7 @@ final class RevivePlayAgainTests: XCTestCase {
 
     /// Default variant has null IAP and null ad, so isReviveMonetizationConfigured is false.
     func testIsReviveMonetizationConfiguredFalseWhenNoIAPOrAd() {
-        let size = CGSize(width: 393, height: 852)
-        let scene = GameScene(size: size)
-        let skView = SKView(frame: CGRect(origin: .zero, size: size))
-        scene.didMove(to: skView)
+        let scene = GameSceneTestHelper.makeSceneWithDidMove()
         XCTAssertFalse(scene.isReviveMonetizationConfigured)
     }
 }

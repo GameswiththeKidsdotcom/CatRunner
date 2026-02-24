@@ -11,8 +11,8 @@ import GameplayKit
 
 final class PowerUpSpawnerTests: XCTestCase {
 
-    let laneCount = 5
-    let epsilon: TimeInterval = 0.21 // Slightly above PowerUpSpawner.obstacleTimeEpsilon (0.2) for overlap check
+    let laneCount = DesignConstants.defaultLaneCount
+    let epsilon: TimeInterval = DesignConstants.timeEpsilon + 0.01 // Slightly above shared timeEpsilon for overlap check
 
     // MARK: - spawnProbability 0 → never spawn
 

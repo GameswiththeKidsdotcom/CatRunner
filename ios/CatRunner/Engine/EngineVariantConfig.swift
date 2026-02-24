@@ -66,7 +66,7 @@ struct EngineVariantConfig {
         powerUpConfig: PowerUpConfig? = nil,
         jumpDurationSeconds: TimeInterval = 0.4,
         slideDurationSeconds: TimeInterval = 0.5,
-        playerStartLane: Int = 2,
+        playerStartLane: Int = DesignConstants.defaultCenterLaneIndex,
         difficultyScaling: DifficultyScalingConfig? = nil,
         monetization: MonetizationConfig? = nil
     ) {
@@ -122,7 +122,7 @@ struct EngineVariantConfig {
             powerUpConfig: powerUpConfig,
             jumpDurationSeconds: root.engine.jumpDurationSeconds ?? 0.4,
             slideDurationSeconds: root.engine.slideDurationSeconds ?? 0.5,
-            playerStartLane: root.engine.playerStartLane ?? 2,
+            playerStartLane: root.engine.playerStartLane ?? DesignConstants.defaultCenterLaneIndex,
             difficultyScaling: difficultyScaling,
             monetization: monetization
         )

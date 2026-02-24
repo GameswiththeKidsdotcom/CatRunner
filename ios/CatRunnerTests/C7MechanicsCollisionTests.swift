@@ -12,13 +12,13 @@ import XCTest
 
 final class C7MechanicsCollisionTests: XCTestCase {
 
-    let laneCount = 5
+    let laneCount = DesignConstants.defaultLaneCount
 
     // MARK: - Lane swap clamps 0–4
 
     func testLaneSwap_clampsToZero() {
         let player = PlayerNode()
-        player.setInitialLane(2, laneCount: laneCount)
+        player.setInitialLane(DesignConstants.defaultCenterLaneIndex, laneCount: laneCount)
         let result = player.moveToLane(-1, laneCount: laneCount, xPosition: 0)
         XCTAssertEqual(result, 0)
         XCTAssertEqual(player.currentLaneIndex, 0)
@@ -26,7 +26,7 @@ final class C7MechanicsCollisionTests: XCTestCase {
 
     func testLaneSwap_clampsToFour() {
         let player = PlayerNode()
-        player.setInitialLane(2, laneCount: laneCount)
+        player.setInitialLane(DesignConstants.defaultCenterLaneIndex, laneCount: laneCount)
         let result = player.moveToLane(10, laneCount: laneCount, xPosition: 0)
         XCTAssertEqual(result, 4)
         XCTAssertEqual(player.currentLaneIndex, 4)

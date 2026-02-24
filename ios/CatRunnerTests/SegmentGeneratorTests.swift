@@ -11,7 +11,7 @@ import XCTest
 
 final class SegmentGeneratorTests: XCTestCase {
 
-    let laneCount = 5
+    let laneCount = DesignConstants.defaultLaneCount
 
     /// Logic-test item 6: With elapsedTimeAtSegmentStart and spawn-rate config, obstacle count
     /// scales with rate×duration (later elapsed → higher rate → more or equal obstacles for same seed/duration).

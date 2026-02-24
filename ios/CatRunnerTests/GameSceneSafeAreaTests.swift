@@ -13,10 +13,8 @@ final class GameSceneSafeAreaTests: XCTestCase {
 
     /// P003 Chunk 1 — setTopSafeAreaMargin(59) places score HUD at y = size.height - 59 - 24.
     func testSetTopSafeAreaMarginUpdatesHUDPosition() {
-        let size = CGSize(width: 393, height: 852)
-        let scene = GameScene(size: size)
-        let skView = SKView(frame: CGRect(origin: .zero, size: size))
-        scene.didMove(to: skView)
+        let scene = GameSceneTestHelper.makeSceneWithDidMove()
+        let size = DesignConstants.designSize
 
         guard let hud = scene.childNode(withName: "scoreHUD") else {
             XCTFail("scoreHUD node should exist after didMove(to:)")
