@@ -25,7 +25,7 @@ Use this checklist before submitting to TestFlight or the App Store. CatRunner-s
 
 ## Automation (optional)
 
-- [ ] **Fastlane:** `ios/fastlane/` contains a `beta` lane (placeholder). To automate: configure App Store Connect API key (or Apple ID), implement `build_app` + `upload_to_testflight` in the lane, and call `fastlane beta` from `.github/workflows/deploy.yml`. See `ios/fastlane/README.md` and `.github/DEPLOY.md`.
+- [x] **Fastlane:** `ios/fastlane/` has a `beta` lane: `build_app(scheme: "CatRunner", export_method: "app-store")` and `upload_to_testflight` when App Store Connect API key env vars are set. Deploy workflow runs `fastlane beta` when GitHub secrets are present; otherwise builds archive and uploads artifact. See `ios/fastlane/README.md` and `.github/DEPLOY.md`. Add secrets `APP_STORE_CONNECT_KEY_ID`, `APP_STORE_CONNECT_ISSUER_ID`, and `APP_STORE_CONNECT_KEY_CONTENT` to enable automated TestFlight in CI.
 
 ## CI
 

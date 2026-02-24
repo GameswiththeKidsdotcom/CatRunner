@@ -4,9 +4,9 @@
 
 **Top 10 plan executed (2026-02-24):** App icon copied; DifficultySpawnRamp C1–C6 done; Revive/play-again unit tests; Tier 2 doc in zz-archive; features-for-planner.md created.
 
-**Lane A status (2026-02-24):** DifficultySpawnRamp C1–C6 + Logic-Test complete; 75 unit + 8 UI tests pass; checklist at [difficulty-spawn-rate-ramp-logic-test-checklist.md](docs/testing/logic-test/difficulty-spawn-rate-ramp-logic-test-checklist.md). Baseline: 75 unit + 8 UI (2 skipped); all pass. DifficultySpawnRamp work is pushed to `origin/main`.
+**Lane A status (2026-02-24):** Tier 5 (T5-C1 through T5-C9) complete; **committed and pushed** (2026-02-24). Optional Fastlane + deploy.yml (F1–F4) **done** (2026-02-24): beta lane implemented; deploy.yml runs fastlane when secrets set; docs updated. Baseline: `npm run test:full` (1/1 Vitest) and iOS (75 unit + 8 UI, 2 skipped) passing.
 
-**Next priority — Lane A:** Run `npm run test:full` and the iOS test suite to confirm the DifficultySpawnRamp baseline (75 unit + 8 UI, 2 skipped). If tests pass with no new regressions, invoke the **planner** to assign the next prioritized plan from the roadmap or `features-for-planner.md` (e.g. new feature or Tier 5 / next tier) and update this hand off accordingly. Agent: **shell** or **generalPurpose** for tests; **planner** for next assignment.
+**Next priority — Lane A:** No mandatory task. **Optional:** Execute Fastlane + deploy.yml enhancements per [Next-Priority-After-Tier5.plan.md](.cursor/Plans/Next-Priority-After-Tier5.plan.md) §3 (pieces F1–F4). Agent: **Lane A (generalPurpose)** for the chosen chunk. When a new tier or roadmap item is defined by planner, set that as next mandatory priority.
 
 ## Next hand off (cut & paste) — Lane B
 
@@ -14,7 +14,9 @@
 
 **Asset-based overlays — done (2026-02-24).** `assets/ui/gameOver.png`, `revivePanel.png`, `scorePanel.png` verified and resized per implementation-spec. No ios/ change.
 
-**Next priority — Lane B:** Add a **variant override** in `config/variants/` that documents the difficulty-spawn-ramp defaults for testing/reference. Create `config/variants/difficulty-spawn-ramp.json` (or a short name of your choice) with optional fields `initialSpawnIntervalSeconds` and `spawnRateIncrementPerFiveSeconds` matching the schema in `config/schema.json` and the defaults used in DifficultySpawnRamp. Ensure `config/default/variant.json` and schema remain the source of truth; this file is an explicit override example. No edits to `ios/` or shared code. Agent: **generalPurpose**. Plan reference: [DifficultySpawnRamp C1-Config](.cursor/Plans/subplans/DifficultySpawnRamp/C1-Config.plan.md). If no config work is desired, leave Lane B empty and invoke **planner** when new config/asset work is added.
+**Next priority — Lane B:** *(Empty. Invoke **planner** when new config/ or assets/ work is defined.)*
+
+**Variant override — done (2026-02-24).** Added `config/variants/difficulty-spawn-ramp.json` (explicit override example) with optional fields `initialSpawnIntervalSeconds`: 5 and `spawnRateIncrementPerFiveSeconds`: 0.1 matching schema and DifficultySpawnRamp defaults. `config/default/variant.json` and `config/schema.json` remain source of truth. Added `config/variants/README.md` documenting the override. No edits to ios/ or shared code. Plan reference: [DifficultySpawnRamp C1-Config](.cursor/Plans/subplans/DifficultySpawnRamp/C1-Config.plan.md).
 
 ---
 
@@ -34,7 +36,7 @@ When picking up the next larger task, consider these optional items so they are 
 | Spec/docs update (SPEC §1/§7, Master-Plan note) | P003 Chunk 3 | **Done (2026-02-24).** |
 | App icon copy to AppIcon.appiconset | Pending work below | **Done (2026-02-24).** Copied to `ios/CatRunner/Assets.xcassets/AppIcon.appiconset/AppIcon.png`. |
 | Revive/play-again unit tests | Tier 1 optional | **Done (2026-02-24).** RevivePlayAgainTests.swift (hasRevivedThisRun, resumeFromCheckpoint, isReviveMonetizationConfigured). |
-| Fastlane + deploy.yml enhancements; second simulator in CI | Tier 3 optional | Already present per History; enhancements optional. |
+| Fastlane + deploy.yml enhancements; second simulator in CI | Tier 3 optional | **Done (2026-02-24).** F1–F4: documented current state; implemented `fastlane beta` (build_app + upload_to_testflight when API key set); deploy.yml runs `fastlane beta` when secrets present, else build + artifact; DEPLOY.md and ios/fastlane/README.md updated. Second simulator: test-ios-matrix already in test.yml. |
 | Tier 2 completion doc in zz-archive | Path to archive table | **Done (2026-02-24).** [Tier2-defect-remediation-done.md](.cursor/Plans/subplans/P001/zz-archive/Tier2-defect-remediation-done.md) in zz-archive. |
 | features-for-planner.md at .cursor/Plans/ | Features for planner § | **Done (2026-02-24).** [features-for-planner.md](.cursor/Plans/features-for-planner.md) created. |
 
@@ -72,6 +74,12 @@ When picking up the next larger task, consider these optional items so they are 
 
 **(13) Optional Lane A — 5-iPhone E2E matrix + lane accessibility IDs (2026-02-24).** Read-only verification: job `test-ios-matrix` in [.github/workflows/test.yml](.github/workflows/test.yml) runs unit + UI on iPhone SE (3rd gen), 14, 15, 16, 16 Pro Max (fail-fast: false). LaneTapLeft/LaneTapRight, GameView, GameOverAlert in GameViewController; testJ2_LaneTapRegions_ExistAndTappable in JourneyTests. No code changes; plan [optional-lane-a-verification.plan.md](.cursor/Plans/subplans/P001/optional-lane-a-verification.plan.md).
 
+**(14) Planner — Tier 5 (Tech debt and consolidation) plan created (2026-02-24).** Defined and registered Tier 5 plan focusing on code consolidation and cleanup in CatRunner iOS engine and tests. Parent plan: [Tier5-TechDebt-Consolidation.plan.md](.cursor/Plans/subplans/Tier5-TechDebt/Tier5-TechDebt-Consolidation.plan.md). First chunk: T5-C1 (Single source for design size) — [T5-C1-DesignSize.plan.md](.cursor/Plans/subplans/Tier5-TechDebt/T5-C1-DesignSize.plan.md). Build chunks T5-C1→T5-C8 (T5-C9 optional). Next hand off — Lane A updated to point at T5-C1.
+
+**(15) Tier 5 (Tech debt) — complete (2026-02-24).** T5-C1 through T5-C9 done. **Committed and pushed 2026-02-24.** Next hand off updated; planner invoked.
+
+**(16) Planner — Next priority after Tier 5 (2026-02-24).** No Tier 6 or next roadmap item defined. Plan: [Next-Priority-After-Tier5.plan.md](.cursor/Plans/Next-Priority-After-Tier5.plan.md). Mandatory Lane A: none. Optional Lane A: Fastlane + deploy.yml enhancements (F1–F4). Lane A (generalPurpose) to execute optional chunk.
+
 Completed items are listed here; update Next hand off above when a tier or task is done.
 
 ---
@@ -79,7 +87,7 @@ Completed items are listed here; update Next hand off above when a tier or task 
 ## Concurrent agents (max 2)
 
 - **Lane A** edits `ios/` only. **Lane B** edits `config/` and `assets/` only (and may invoke ui-designer for asset images). No file overlap; both may run in parallel.
-- **Hand-offs:** Lane A = P001-E2E ui-test + logic-test + iOS E2E (J1–J5) done; E2E in CI. Lane B = complete (S1 + BG1+BG2); no current task. No file overlap.
+- **Hand-offs:** Lane A = Tier 5 complete and pushed; next priority set by planner ([Next-Priority-After-Tier5.plan.md](.cursor/Plans/Next-Priority-After-Tier5.plan.md)); optional = Fastlane + deploy.yml. Lane B = no current task; invoke planner when config/ or assets/ work is added.
 - When both lanes touch the same area (e.g. C3 and C7 both touch Engine), run sequentially.
 - **Asset path and image spec:** Only [sprites-ui-assets.plan.md](.cursor/Plans/subplans/P001/zz-archive/sprites-ui-assets.plan.md) defines the asset inventory and `assets.json` path map; C2 creates the file, C9/admin consume it.
 
@@ -87,7 +95,7 @@ Completed items are listed here; update Next hand off above when a tier or task 
 
 ## Prioritized roadmap (controls our fate)
 
-Work is ordered in four tiers. Complete each tier before advancing; the **Next hand off — Lane A** above points at the current tier.
+Work is ordered in five tiers. Complete each tier before advancing; the **Next hand off — Lane A** above points at the current tier.
 
 | Tier | Name | Goal | Key deliverables |
 |------|------|------|-------------------|
@@ -95,6 +103,9 @@ Work is ordered in four tiers. Complete each tier before advancing; the **Next h
 | **2** | Defect remediation | Close spec/impl gaps | Revive vs monetization (doc or minimal branch); document admin config save semantics; score in alert only vs in-game HUD (doc or implement) |
 | **3** | Scalability for App Store | TestFlight / store readiness | A7 app icon in AppIcon.appiconset; optional: fastlane + deploy.yml; App Store readiness checklist (doc); optional: second simulator in CI |
 | **4** | New feature build-out | New functionality after 1–3 | Monetization stub (C8); in-game score HUD if not in Tier 2; optional: 5-iPhone E2E, lane accessibility IDs |
+| **5** | Tech debt and consolidation | Code consolidation and cleanup in iOS engine and tests | Single source for constants (design size, time epsilon, lane defaults); extract fallback segment and segment-time margin; test helpers and README; optional naming. See [Tier5-TechDebt-Consolidation.plan.md](.cursor/Plans/subplans/Tier5-TechDebt/Tier5-TechDebt-Consolidation.plan.md). |
+
+Tier 5 complete and pushed 2026-02-24. Next priority: planner output [Next-Priority-After-Tier5.plan.md](.cursor/Plans/Next-Priority-After-Tier5.plan.md) — no mandatory task; optional Lane A = Fastlane + deploy.yml enhancements.
 
 **Spec gaps (ideation through implementation):** Gap analysis (spec vs app) and ideation review ([Agents/ideation.md](Agents/ideation.md) — Quick MVP / Scalable / Innovative) identified one remaining spec violation: **first-revive-only** (SPECIFICATION.md §1: "after that, game over is final"). Tier 2 closed doc and monetization branch; first-revive-only is implemented in **P001-SpecGaps** before Tier 4. Plan: [P001-SpecGaps-ideation-to-impl.plan.md](.cursor/Plans/subplans/P001/P001-SpecGaps-ideation-to-impl.plan.md) (ideation phase done; build chunk [spec-gaps-first-revive-only.plan.md](.cursor/Plans/subplans/P001/spec-gaps-first-revive-only.plan.md)). Test checkpoint: Logic-Test + E2E J4 second-game-over path. Deferred to Tier 4: in-game score HUD, asset-based overlays (implementation-spec).
 
@@ -121,6 +132,7 @@ Archived plans live under `.cursor/Plans/zz-archives/` (folder names start with 
 | P001-SpecGaps | Spec gaps — ideation through implementation | 1 | One remaining spec violation (first-revive-only per SPEC §1); detailed plan from ideation through implementation. See [P001-SpecGaps-ideation-to-impl.plan.md](.cursor/Plans/subplans/P001/P001-SpecGaps-ideation-to-impl.plan.md); build chunk: [spec-gaps-first-revive-only.plan.md](.cursor/Plans/subplans/P001/spec-gaps-first-revive-only.plan.md). | **Complete (2026-02-24). Pushed 2026-02-24.** Code + E2E J4c + 65 tests. Logic-Test handoff per §6.1. | 95% | 95% |
 | P003 | Score HUD Safe Area and High-Score Paradigm | 1 | Fix score HUD covered by Dynamic Island/notch (iPhone 15 Plus etc.); safe-area-aware HUD position. Details in [P003-ScoreHUD-SafeArea.plan.md](.cursor/Plans/subplans/P003/P003-ScoreHUD-SafeArea.plan.md); Chunk 1: [Chunk1-SafeArea-Fix.plan.md](.cursor/Plans/subplans/P003/Chunk1-SafeArea-Fix.plan.md). | Chunks 1, 2, 3 done (2026-02-24). **Next:** optional backlog (5-iPhone E2E, lane IDs, etc.). | 95% | 93% |
 | DifficultySpawnRamp | Difficulty spawn rate ramp (1 per 5s, +0.1 every 5s) | 1 | Time-based obstacle spawn rate; config + Engine + GameScene + tests. Main plan: [difficulty-spawn-rate-ramp.plan.md](.cursor/Plans/difficulty-spawn-rate-ramp.plan.md). Details and chunks C1–C6 in sub-plans under `.cursor/Plans/subplans/DifficultySpawnRamp/`. | **C1–C6 + Logic-Test done (2026-02-24). Pushed 2026-02-24.** 75 unit + 8 UI tests pass. Checklist: [difficulty-spawn-rate-ramp-logic-test-checklist.md](docs/testing/logic-test/difficulty-spawn-rate-ramp-logic-test-checklist.md). | 95% | 95% |
+| Tier5-TechDebt | Tier 5 — Tech debt and consolidation | 1 | Code consolidation and cleanup in iOS engine and tests: single source for design size, time epsilon, lane constants; fallback segment factory; segment-time margin; GameScene test helper; test README; test naming; CollisionSystem in Engine. See [Tier5-TechDebt-Consolidation.plan.md](.cursor/Plans/subplans/Tier5-TechDebt/Tier5-TechDebt-Consolidation.plan.md). | T5-C1 through T5-C9 done (2026-02-24). | N/A | 92% |
 
 **DifficultySpawnRamp Build Chunk Progress (Lane A):**
 
@@ -140,6 +152,20 @@ Archived plans live under `.cursor/Plans/zz-archives/` (folder names start with 
 | Chunk 1 | Safe-area fix: VC topMarginScene + GameScene setTopSafeAreaMargin + HUD position | **Done (2026-02-24)** | 95% | 93% | [Chunk1-SafeArea-Fix.plan.md](.cursor/Plans/subplans/P003/Chunk1-SafeArea-Fix.plan.md). Unit test + full suite pass. |
 | Chunk 2 | "New high score!" celebration (in-game / game-over) | **Done (2026-02-24)** | N/A | 90% | ScoreKeeper.didBeatHighScoreThisRun; in-game label; VC "New record!" alert; SPEC §1. |
 | Chunk 3 | Spec/docs update (SPEC §1/§7, Master-Plan note) | **Done (2026-02-24)** | N/A | 92% | SPEC §1/§7 + Master-Plan updated; Chunk 1 noted done. |
+
+**Tier 5 (Tech debt and consolidation) Build Chunk Progress (Lane A):**
+
+| Chunk | Description | State | Conf (root) | Conf (solution) | Note |
+|-------|-------------|-------|-------------|-----------------|------|
+| T5-C1 | Single source for design size (393×852); VC + tests | **Done (2026-02-24)** | N/A | 92% | [T5-C1-DesignSize.plan.md](.cursor/Plans/subplans/Tier5-TechDebt/T5-C1-DesignSize.plan.md). |
+| T5-C2 | Unify time-epsilon constant (CollisionSystem, PowerUpSpawner) | **Done (2026-02-24)** | N/A | 93% | DesignConstants.timeEpsilon; VC + both systems + PowerUpSpawnerTests. |
+| T5-C3 | Centralize default lane count and center lane | **Done (2026-02-24)** | N/A | 92% | DesignConstants.defaultLaneCount, defaultCenterLaneIndex; GameScene, PlayerNode, SegmentGenerator, EngineVariantConfig, tests. |
+| T5-C4 | Extract fallback segment factory (GameScene) | **Done (2026-02-24)** | N/A | 91% | [T5-C4-FallbackSegment.plan.md](.cursor/Plans/subplans/Tier5-TechDebt/T5-C4-FallbackSegment.plan.md). |
+| T5-C5 | Shared segment-time margin (duration × 0.1) | **Done (2026-02-24)** | N/A | 92% | DesignConstants.segmentTimeMarginFraction; ObstacleGenerator, PowerUpSpawner. |
+| T5-C6 | GameScene test helper (scene + SKView + didMove) | **Done (2026-02-24)** | N/A | 93% | GameSceneTestHelper.makeSceneWithDidMove(); used in 3 test files. |
+| T5-C7 | Update CatRunnerTests README (all test files) | **Done (2026-02-24)** | N/A | 95% | ios/CatRunnerTests/README.md lists all files and coverage. |
+| T5-C8 | Test file naming convention | **Done (2026-02-24)** | N/A | 88% | [T5-C8-TestNaming.plan.md](.cursor/Plans/subplans/Tier5-TechDebt/T5-C8-TestNaming.plan.md). |
+| T5-C9 | CollisionSystem in Engine | **Done (2026-02-24)** | N/A | 85% | [T5-C9-CollisionSystemEngine.plan.md](.cursor/Plans/subplans/Tier5-TechDebt/T5-C9-CollisionSystemEngine.plan.md). |
 
 **Scroller-10s chunks (Lane A = ios/, Lane B = config/):**
 
@@ -218,6 +244,7 @@ Every plan has a path to archive: either complete the remaining work then move t
 | **e2e-investigation-findings** | Supporting doc, not a plan. When Tier 2–4 no longer need it for reference, move [e2e-investigation-findings-2026-02-23.md](.cursor/Plans/subplans/P001/e2e-investigation-findings-2026-02-23.md) to `subplans/P001/zz-archive/`. |
 | **P002, Scroller-10s, Many-buildings-bg** | Archived in zz-archives; path to archive: N/A. |
 | **P001-SpecGaps** | When first-revive-only is complete (code + E2E J4 + Logic-Test): update matrix to Complete; move [P001-SpecGaps-ideation-to-impl.plan.md](.cursor/Plans/subplans/P001/P001-SpecGaps-ideation-to-impl.plan.md) and [spec-gaps-first-revive-only.plan.md](.cursor/Plans/subplans/P001/spec-gaps-first-revive-only.plan.md) to `subplans/P001/zz-archive/`; set Next hand off to Tier 4. |
+| **Tier 5 (Tech debt and consolidation)** | **T5-C1–T5-C9 complete 2026-02-24.** Plan Matrix Tier5-TechDebt row updated. Next hand off set to: invoke planner to define next tier or roadmap item. Optionally move [Tier5-TechDebt-Consolidation.plan.md](.cursor/Plans/subplans/Tier5-TechDebt/Tier5-TechDebt-Consolidation.plan.md) and chunk plans to `subplans/Tier5-TechDebt/zz-archive/` (or leave in place). |
 
 ---
 

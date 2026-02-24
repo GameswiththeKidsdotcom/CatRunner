@@ -1,6 +1,6 @@
 # C10 — Deploy: Build + test, then prepare for TestFlight.
-# Choice: Manual TestFlight upload. Workflow builds and artifacts archive for manual upload.
-# Optional: fastlane can be added later (see ios/fastlane/README or repo root .cursor/Plans).
+# When App Store Connect API key secrets are set, runs fastlane beta (build + TestFlight upload).
+# Otherwise: build archive + artifact for manual upload (unchanged behavior).
 
 name: Deploy
 
@@ -17,15 +17,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build
-        working-directory: ios
-        run: |
-          xcodebuild -scheme CatRunner \
-            -destination 'generic/platform=iOS' \
-            -configuration Release \
-            -archivePath build/CatRunner.xcarchive \
-            archive 2>&1 | tee deploy-build.log
-
+      # Always run tests first (same as test.yml)
       - name: Run tests (same as test.yml)
         working-directory: ios
         run: |
@@ -34,13 +26,57 @@ jobs:
             -configuration Debug \
             test 2>&1 | tee deploy-test.log
 
+      # When App Store Connect API key is present: use fastlane beta (build + upload).
+      # When absent: build archive and upload artifact for manual TestFlight (fallback).
+      - name: Check for TestFlight automation secrets
+        id: fastlane-secrets
+        run: |
+          if [ -n "${{ secrets.APP_STORE_CONNECT_KEY_ID }}" ] && [ -n "${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}" ]; then
+            if [ -n "${{ secrets.APP_STORE_CONNECT_KEY_CONTENT }}" ] || [ -n "${{ secrets.APP_STORE_CONNECT_KEY_PATH }}" ]; then
+              echo "available=true" >> $GITHUB_OUTPUT
+            else
+              echo "available=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "available=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Install fastlane (for beta lane)
+        if: steps.fastlane-secrets.outputs.available == 'true'
+        run: gem install fastlane
+
+      - name: Build and upload to TestFlight (fastlane beta)
+        if: steps.fastlane-secrets.outputs.available == 'true'
+        working-directory: ios
+        env:
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_KEY_CONTENT: ${{ secrets.APP_STORE_CONNECT_KEY_CONTENT }}
+          APP_STORE_CONNECT_KEY_PATH: ${{ secrets.APP_STORE_CONNECT_KEY_PATH }}
+        run: fastlane beta
+
+      - name: Build archive (manual path — when secrets not set)
+        if: steps.fastlane-secrets.outputs.available != 'true'
+        working-directory: ios
+        run: |
+          xcodebuild -scheme CatRunner \
+            -destination 'generic/platform=iOS' \
+            -configuration Release \
+            -archivePath build/CatRunner.xcarchive \
+            archive 2>&1 | tee deploy-build.log
+
       - name: Deploy summary
         run: |
           echo "## Deploy summary" >> $GITHUB_STEP_SUMMARY
-          echo "**TestFlight:** Manual upload. Export \`CatRunner.xcarchive\` from \`ios/build/\` (or use Xcode Organizer) and upload to App Store Connect." >> $GITHUB_STEP_SUMMARY
-          echo "To automate: add fastlane (e.g. \`ios/fastlane\`) and call \`fastlane beta\` in this workflow." >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.fastlane-secrets.outputs.available }}" = "true" ]; then
+            echo "**TestFlight:** Automated via \`fastlane beta\`. Build uploaded to App Store Connect; check TestFlight for processing." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "**TestFlight:** Manual upload. Download \`CatRunner-archive\` artifact, export from \`ios/build/CatRunner.xcarchive\` (or Xcode Organizer), then upload to App Store Connect." >> $GITHUB_STEP_SUMMARY
+            echo "To enable automation: add GitHub secrets \`APP_STORE_CONNECT_KEY_ID\`, \`APP_STORE_CONNECT_ISSUER_ID\`, and \`APP_STORE_CONNECT_KEY_CONTENT\` (or \`APP_STORE_CONNECT_KEY_PATH\`). See \`ios/fastlane/README.md\`." >> $GITHUB_STEP_SUMMARY
+          fi
 
       - name: Upload archive (for manual TestFlight)
+        if: steps.fastlane-secrets.outputs.available != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: CatRunner-archive
@@ -51,5 +87,6 @@ jobs:
         with:
           name: deploy-logs
           path: |
-            ios/deploy-build.log
             ios/deploy-test.log
+            ios/deploy-build.log
+          if-no-files-found: ignore
