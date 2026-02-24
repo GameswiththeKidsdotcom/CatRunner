@@ -2,11 +2,11 @@
 
 ## Next hand off (cut & paste) — Lane A
 
-**Commit checkpoint (Lane A):** Tier 4 and related plan updates are complete and tests pass. **Next action:** Commit and push to GitHub, then update this Master-Plan (e.g. add push date to Tier 4 / P001-SpecGaps in History and matrix). Suggested commit message: `Tier 4: C8 Done, in-game score HUD, Logic-Test §6.1, asset-integration archived`. After push, set next hand off to optional work or "No mandatory Lane A task."
+**No mandatory Lane A task.**
 
-**Optional Lane A (after commit):** 5-iPhone E2E matrix (per e2e-spec-journeys Investigation 4); lane accessibility IDs for E2E selectors. Plan: [e2e-spec-journeys.plan.md](.cursor/Plans/subplans/P001/e2e-spec-journeys.plan.md).
+**Optional Lane A:** 5-iPhone E2E matrix (per e2e-spec-journeys Investigation 4); lane accessibility IDs for E2E selectors. Plan: [e2e-spec-journeys.plan.md](.cursor/Plans/subplans/P001/e2e-spec-journeys.plan.md).
 
-**P001-SpecGaps — done (2026-02-24):** First-revive-only implemented; 65 tests pass. Full plan: [P001-SpecGaps-ideation-to-impl.plan.md](.cursor/Plans/subplans/P001/P001-SpecGaps-ideation-to-impl.plan.md).
+**P001-SpecGaps — done (2026-02-24, pushed 2026-02-24):** First-revive-only implemented; 65 tests pass. Full plan: [P001-SpecGaps-ideation-to-impl.plan.md](.cursor/Plans/subplans/P001/P001-SpecGaps-ideation-to-impl.plan.md).
 
 ## Next hand off (cut & paste) — Lane B
 
@@ -24,9 +24,9 @@ No conflict-free Lane B task assigned. Lane B may edit **config/** and **assets/
 
 **(6) Tier 3 (Scalability for App Store) — done (2026-02-23).** (1) A7 app icon: copied `assets/reference/appIcon_catworld_1024.png` to `ios/CatRunner/Assets.xcassets/AppIcon.appiconset/AppIcon.png`; updated Contents.json. (2) Fastlane: already in `ios/fastlane/`; deploy.yml runs tests (not just build). (3) App Store readiness: [docs/app-store-readiness.md](docs/app-store-readiness.md). (4) Second simulator: job `test-ios-se` (iPhone SE 3rd gen) in [.github/workflows/test.yml](.github/workflows/test.yml). Plan: [tier3-app-store-scalability-2026-02-23.md](.cursor/Plans/subplans/P001/tier3-app-store-scalability-2026-02-23.md).
 
-**(7) P001-SpecGaps (first-revive-only) — done (2026-02-24).** GameScene.hasRevivedThisRun; VC gates "Watch ad" when true; set on revive, reset on new run. E2E J4c (second game-over path); 65 tests pass (58 unit + 7 UI). Logic-Test handoff per e2e-spec-journeys §6.1. Plans: [P001-SpecGaps-ideation-to-impl.plan.md](.cursor/Plans/subplans/P001/P001-SpecGaps-ideation-to-impl.plan.md), [spec-gaps-first-revive-only.plan.md](.cursor/Plans/subplans/P001/spec-gaps-first-revive-only.plan.md).
+**(7) P001-SpecGaps (first-revive-only) — done (2026-02-24). Pushed 2026-02-24.** GameScene.hasRevivedThisRun; VC gates "Watch ad" when true; set on revive, reset on new run. E2E J4c (second game-over path); 65 tests pass (58 unit + 7 UI). Logic-Test handoff per e2e-spec-journeys §6.1. Plans: [P001-SpecGaps-ideation-to-impl.plan.md](.cursor/Plans/subplans/P001/P001-SpecGaps-ideation-to-impl.plan.md), [spec-gaps-first-revive-only.plan.md](.cursor/Plans/subplans/P001/spec-gaps-first-revive-only.plan.md).
 
-**(8) Tier 4 (New feature build-out) — done (2026-02-24).** Monetization stub (C8): confirmed (SPEC §9; "Watch ad" resumes from checkpoint); C8 Build Chunk Progress set to Done. In-game score HUD: added in GameScene (scoreHUDLabel at top, "Score: X | High: Y", updated each frame). Logic-Test §6.1 first-revive-only re-validation: completed and documented in logic-test-revive-playagain doc. Optional B5: [asset-integration.plan.md](.cursor/Plans/subplans/P001/zz-archive/asset-integration.plan.md) moved to zz-archive (B5 satisfied by BG3). Deferred: 5-iPhone E2E, lane accessibility IDs.
+**(8) Tier 4 (New feature build-out) — done (2026-02-24). Pushed 2026-02-24.** Monetization stub (C8): confirmed (SPEC §9; "Watch ad" resumes from checkpoint); C8 Build Chunk Progress set to Done. In-game score HUD: added in GameScene (scoreHUDLabel at top, "Score: X | High: Y", updated each frame). Logic-Test §6.1 first-revive-only re-validation: completed and documented in logic-test-revive-playagain doc. Optional B5: [asset-integration.plan.md](.cursor/Plans/subplans/P001/zz-archive/asset-integration.plan.md) moved to zz-archive (B5 satisfied by BG3). Deferred: 5-iPhone E2E, lane accessibility IDs.
 
 Completed items are listed here; update Next hand off above when a tier or task is done.
 
@@ -74,7 +74,7 @@ Archived plans live under `.cursor/Plans/zz-archives/` (folder names start with 
 | P002 | Lane A Vertical Runner & Viewport | 1 | Vertical Temple Run-style runner (swipe left/right lanes), avatar/enemy visibility, viewport scaling for last 5 iPhones; Blaster complete (V1–V4). See [.cursor/Plans/zz-archives/zz-P002/P002-vertical-runner-viewport.plan.md](.cursor/Plans/zz-archives/zz-P002/P002-vertical-runner-viewport.plan.md). Viewport ui-test: [P002-viewport-validation-2026-02-23.md](.cursor/Plans/zz-archives/zz-P002/P002-viewport-validation-2026-02-23.md). | **Blaster complete.** | 95% | 95% |
 | Scroller-10s | Scroller 10s loop and avatar sizing | 1 | 10s segment, seamless loop (same segment repeats), dog/boxes as obstacles, 44pt sprite scaling. Blaster complete; chunks S1–S4. See [.cursor/Plans/zz-archives/zz-Scroller-10s/Scroller-10s-loop-and-sizing.plan.md](.cursor/Plans/zz-archives/zz-Scroller-10s/Scroller-10s-loop-and-sizing.plan.md). | Complete (S1–S4; S1 config done, S2–S4 pushed 2026-02-23). | 92% | 92% |
 | Many-buildings-bg | Many-buildings scrolling background and sprite integration | 1 | Scrolling rooftop background (many buildings, tileable), dog/boxes integrate on runway; ui-designer + canva-ui-design; B5 (background layer + tiling). See [.cursor/Plans/zz-archives/zz-Many-buildings-bg/Many-buildings-bg.plan.md](.cursor/Plans/zz-archives/zz-Many-buildings-bg/Many-buildings-bg.plan.md). | Complete (BG1–BG4; BG1+BG2 assets done, BG3+BG4 pushed 2026-02-23). | N/A | High |
-| P001-SpecGaps | Spec gaps — ideation through implementation | 1 | One remaining spec violation (first-revive-only per SPEC §1); detailed plan from ideation through implementation. See [P001-SpecGaps-ideation-to-impl.plan.md](.cursor/Plans/subplans/P001/P001-SpecGaps-ideation-to-impl.plan.md); build chunk: [spec-gaps-first-revive-only.plan.md](.cursor/Plans/subplans/P001/spec-gaps-first-revive-only.plan.md). | **Complete (2026-02-24).** Code + E2E J4c + 65 tests. Logic-Test handoff per §6.1. | 95% | 95% |
+| P001-SpecGaps | Spec gaps — ideation through implementation | 1 | One remaining spec violation (first-revive-only per SPEC §1); detailed plan from ideation through implementation. See [P001-SpecGaps-ideation-to-impl.plan.md](.cursor/Plans/subplans/P001/P001-SpecGaps-ideation-to-impl.plan.md); build chunk: [spec-gaps-first-revive-only.plan.md](.cursor/Plans/subplans/P001/spec-gaps-first-revive-only.plan.md). | **Complete (2026-02-24). Pushed 2026-02-24.** Code + E2E J4c + 65 tests. Logic-Test handoff per §6.1. | 95% | 95% |
 
 **Scroller-10s chunks (Lane A = ios/, Lane B = config/):**
 
@@ -146,7 +146,7 @@ Every plan has a path to archive: either complete the remaining work then move t
 |--------------------|-----------------|
 | **Tier 2 (Defect remediation)** | Done 2026-02-23. Optional: add `subplans/P001/zz-archive/Tier2-defect-remediation-done.md` (or link [tier2-defect-remediation-2026-02-23.md](.cursor/Plans/subplans/P001/tier2-defect-remediation-2026-02-23.md)). Update Master-Plan when Tier 2 doc is archived. |
 | **Tier 3 (Scalability for App Store)** | Complete deliverables (A7 app icon in AppIcon.appiconset; optional fastlane/deploy; App Store checklist; optional second simulator). Then update Master-Plan Tier 3 row and Next hand off to Tier 4; optionally add completion note in `subplans/P001/zz-archive/`. |
-| **Tier 4 (New feature build-out)** | **Done 2026-02-24.** C8 Done; in-game score HUD added; Logic-Test §6.1 documented; optional B5 plan moved to zz-archive. |
+| **Tier 4 (New feature build-out)** | **Done 2026-02-24. Pushed 2026-02-24.** C8 Done; in-game score HUD added; Logic-Test §6.1 documented; optional B5 plan moved to zz-archive. |
 | **P001-Asset-Integration** | **Done 2026-02-24.** Plan moved to [subplans/P001/zz-archive/asset-integration.plan.md](.cursor/Plans/subplans/P001/zz-archive/asset-integration.plan.md); matrix updated. |
 | **P001-Assets / P001-UI-Mockups** | Already in zz-archive; path to archive: N/A (reference only). |
 | **C8 (Difficulty scaling, scoring, revive)** | **Done 2026-02-24.** Build Chunk Progress set to Done; monetization stub confirmed; in-game score HUD (Tier 4) added. |
