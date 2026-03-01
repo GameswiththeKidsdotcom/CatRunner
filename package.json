@@ -10,7 +10,8 @@
     "test": "vitest",
     "test:full": "vitest run",
     "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui"
+    "test:e2e:ui": "playwright test --ui",
+    "ios:simulator": "cd ios && ./run-simulator.sh"
   },
   "dependencies": {
     "ajv": "^8.18.0",

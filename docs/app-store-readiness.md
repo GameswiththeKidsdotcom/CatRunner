@@ -2,12 +2,32 @@
 
 Use this checklist before submitting to TestFlight or the App Store. CatRunner-specific; adjust for your build and metadata.
 
+**Ship readiness (Tier 6):** Baseline and docs are aligned per [Master-Plan](.cursor/Plans/Master-Plan.md) Tier 6: iOS **83 tests** (75 CatRunnerTests + 8 CatRunnerUITests, 2 skipped when monetization not configured); [SPECIFICATION.md](SPECIFICATION.md) §7, [Agents/tester.md](../Agents/tester.md), and this doc use the same numbers.
+
+## Ship it checklist (summary)
+
+Before release, confirm in order:
+
+1. **Baseline green** — All 83 iOS tests pass (or 81 run + 2 skipped) on at least one simulator; `npm run test:full` passes if running admin tests. See [Build and archive](#build-and-archive) below.
+2. **Build and archive** — App icon, scheme CatRunner Release, archive produced. See [Build and archive](#build-and-archive).
+3. **TestFlight** — Export for App Store, upload to App Store Connect, export compliance, processing. See [TestFlight upload](#testflight-upload).
+4. **App Store metadata** — When going to store: name/description, screenshots, privacy, age rating. See [App Store Connect metadata](#app-store-connect-metadata-when-going-to-store).
+
 ## Build and archive
 
 - [ ] **App icon:** `ios/CatRunner/Assets.xcassets/AppIcon.appiconset/` contains a 1024×1024 PNG (e.g. `AppIcon.png`). Source: `assets/reference/appIcon_catworld_1024.png` (A7). If the source is not 1024×1024, resize with `sips -z 1024 1024` or replace with a true 1024×1024 asset.
 - [ ] **Scheme:** Build and archive with scheme **CatRunner**, configuration **Release**, destination `generic/platform=iOS`.
 - [ ] **Archive:** Produce `CatRunner.xcarchive` (e.g. `xcodebuild -scheme CatRunner -destination 'generic/platform=iOS' -configuration Release -archivePath build/CatRunner.xcarchive archive` from `ios/`).
-- [ ] **Tests:** All 65 tests pass (58 CatRunnerTests + 7 CatRunnerUITests) on at least one simulator (e.g. iPhone 16) before archiving.
+- [ ] **Tests:** All 83 tests pass (75 CatRunnerTests + 8 CatRunnerUITests; 2 skipped when monetization not configured — J4a, J4c) on at least one simulator (e.g. iPhone 16) before archiving.
+
+## Manual simulator testing
+
+To ensure every run in the simulator uses the **latest built** version (and avoid testing stale builds or reporting bugs that are already fixed):
+
+- **Preferred:** In **Xcode**, use **Run** (⌘R). That builds and installs to the selected simulator, then launches — so the run is always the latest build.
+- **Optional clean rebuild:** Product → Clean Build Folder (⇧⌘K), then Run (⌘R).
+- **Do not:** Rely on launching CatRunner by tapping its icon on the Simulator home screen **unless** you have just run from Xcode (or run the run-simulator script). That icon is the last installed build.
+- **Alternatively,** run `npm run ios:simulator` from repo root to build, install, and launch on the booted simulator (see `ios/run-simulator.sh`).
 
 ## TestFlight upload
 
@@ -19,7 +39,7 @@ Use this checklist before submitting to TestFlight or the App Store. CatRunner-s
 ## App Store Connect metadata (when going to store)
 
 - [ ] **App name / subtitle / description:** Match app behavior; no placeholder text; no competitor names or pricing in description.
-- [ ] **Screenshots:** Required sizes (e.g. 6.7" and 5.5") using real app UI; correct device frames.
+- [ ] **Screenshots:** Required sizes and capture method (simulator or manual) per [app-store-screenshots.md](app-store-screenshots.md). Provide at least one iPhone size (e.g. 6.9" 1320×2868 portrait); 1–10 screens per size, real app UI only.
 - [ ] **Privacy:** Privacy policy URL if you collect data; App Privacy form completed.
 - [ ] **Age rating / categories:** Set as appropriate for the app.
 
@@ -34,6 +54,6 @@ Use this checklist before submitting to TestFlight or the App Store. CatRunner-s
 
 ## References
 
-- [Master-Plan](.cursor/Plans/Master-Plan.md) — Prioritized roadmap Tiers 1–4.
+- [Master-Plan](.cursor/Plans/Master-Plan.md) — Prioritized roadmap Tiers 1–6; Tier 6 (Ship readiness) aligned baseline and this checklist.
 - [SPECIFICATION.md](SPECIFICATION.md) — App spec and testing baseline (§7).
 - [.github/DEPLOY.md](../.github/DEPLOY.md) — Deploy and TestFlight steps.
