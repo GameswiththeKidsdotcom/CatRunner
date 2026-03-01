@@ -1,22 +1,32 @@
 # Master-Plan — CatRunner
 
+## Where we are (assessment)
+
+**As of 2026-02-28:** Tiers 1–6 are complete. **Tier 6 (Ship readiness and baseline alignment)** is done. **Tier 7 (App Store submission and first release):** T7-C1 (Store metadata and listing) and T7-C2 (Screenshots and previews) done — `docs/app-store-listing.md`, `docs/app-store-screenshots.md` created; app-store-readiness and app-store-listing updated with screenshot section. Next Lane A: **T7-C3 (Submission checklist)**. Lane B has no config/assets task. Baseline: `npm run test:full` (Vitest) and iOS (83 tests, 2 skipped) passing.
+
+### Pre–App Store submit: remaining plans (clear before submit)
+
+**Remaining plan work before first App Store submit:** One chunk only — **T7-C3 (Submission checklist)**. All other plans in the matrix are either Complete, Pushed, or optional/deferred. When **T7-C3 is done**, plan work is clear for App Store submission (TestFlight or App Store review). No other plan chunks are blockers.
+
+---
+
 ## Next hand off (cut & paste) — Lane A
 
-**Top 10 plan executed (2026-02-24):** App icon copied; DifficultySpawnRamp C1–C6 done; Revive/play-again unit tests; Tier 2 doc in zz-archive; features-for-planner.md created.
+**Copy-paste this prompt for the next Lane A action:**
 
-**Lane A status (2026-02-24):** Tier 5 (T5-C1 through T5-C9) complete; **committed and pushed** (2026-02-24). Optional Fastlane + deploy.yml (F1–F4) **done** (2026-02-24): beta lane implemented; deploy.yml runs fastlane when secrets set; docs updated. Baseline: `npm run test:full` (1/1 Vitest) and iOS (75 unit + 8 UI, 2 skipped) passing.
+**Primary (Tier 7 — App Store submit):** Execute **T7-C3 (Submission checklist)** per [T7-C3-SubmissionChecklist.plan.md](.cursor/Plans/subplans/Tier7-AppStoreSubmission/T7-C3-SubmissionChecklist.plan.md): link app-store-readiness to first submission; optional App Store Connect notes. Parent plan: [Tier7-AppStoreSubmission.plan.md](.cursor/Plans/subplans/Tier7-AppStoreSubmission/Tier7-AppStoreSubmission.plan.md). Agent: **generalPurpose**. When T7-C3 is done, plans are clear for App Store submit.
 
-**Next priority — Lane A:** No mandatory task. **Optional:** Execute Fastlane + deploy.yml enhancements per [Next-Priority-After-Tier5.plan.md](.cursor/Plans/Next-Priority-After-Tier5.plan.md) §3 (pieces F1–F4). Agent: **Lane A (generalPurpose)** for the chosen chunk. When a new tier or roadmap item is defined by planner, set that as next mandatory priority.
+**Optional (simulator always current build):** **Done (pushed 2026-02-28).** C1 + C2 implemented: "Manual simulator testing" in app-store-readiness + tester.md reminder; `ios/run-simulator.sh` + `npm run ios:simulator`. See [SimulatorCurrentBuild.plan.md](.cursor/Plans/subplans/SimulatorCurrentBuild/SimulatorCurrentBuild.plan.md).
+
+**Optional (defect fix — No-Thanks Menu iPhone Plus):** Execute **P001-NoThanksMenu C1** per [C1-NoThanks-SecondAlert.plan.md](.cursor/Plans/subplans/P001/NoThanksMenu/C1-NoThanks-SecondAlert.plan.md): wire "No thanks" in GameViewController to present second alert ("Game Over", "Play again"). Then **C2** per [C2-J4b-ValidatePlus.plan.md](.cursor/Plans/subplans/P001/NoThanksMenu/C2-J4b-ValidatePlus.plan.md): update J4b and validate on iPhone Plus. Parent: [NoThanks-Menu-iPhonePlus.plan.md](.cursor/Plans/subplans/P001/NoThanks-Menu-iPhonePlus.plan.md). Agent: **generalPurpose**. Run `npm run test:full` after C1; full iOS suite after C2.
+
+---
 
 ## Next hand off (cut & paste) — Lane B
 
-**App icon asset — done (2026-02-24).** Verified and corrected `assets/reference/appIcon_catworld_1024.png` to 1024×1024. Source ready for Lane A or user to copy to `ios/CatRunner/Assets.xcassets/AppIcon.appiconset/AppIcon.png`.
+**Copy-paste this prompt for the next Lane B action:**
 
-**Asset-based overlays — done (2026-02-24).** `assets/ui/gameOver.png`, `revivePanel.png`, `scorePanel.png` verified and resized per implementation-spec. No ios/ change.
-
-**Next priority — Lane B:** *(Empty. Invoke **planner** when new config/ or assets/ work is defined.)*
-
-**Variant override — done (2026-02-24).** Added `config/variants/difficulty-spawn-ramp.json` (explicit override example) with optional fields `initialSpawnIntervalSeconds`: 5 and `spawnRateIncrementPerFiveSeconds`: 0.1 matching schema and DifficultySpawnRamp defaults. `config/default/variant.json` and `config/schema.json` remain source of truth. Added `config/variants/README.md` documenting the override. No edits to ios/ or shared code. Plan reference: [DifficultySpawnRamp C1-Config](.cursor/Plans/subplans/DifficultySpawnRamp/C1-Config.plan.md).
+Lane B has no current task. Lane B may pick up **config/ or assets/ only** work when the **planner** defines it (e.g. new variant, asset refresh, doc under config or assets) and when it does **not** conflict with Lane A (no shared files). Using @.cursor/Plans/Master-Plan.md: invoke the **planner** agent when config/ or assets/ work is defined; the planner will add it to the Master-Plan and set the Lane B hand off. Until then Lane B is idle.
 
 ---
 
@@ -39,6 +49,7 @@ When picking up the next larger task, consider these optional items so they are 
 | Fastlane + deploy.yml enhancements; second simulator in CI | Tier 3 optional | **Done (2026-02-24).** F1–F4: documented current state; implemented `fastlane beta` (build_app + upload_to_testflight when API key set); deploy.yml runs `fastlane beta` when secrets present, else build + artifact; DEPLOY.md and ios/fastlane/README.md updated. Second simulator: test-ios-matrix already in test.yml. |
 | Tier 2 completion doc in zz-archive | Path to archive table | **Done (2026-02-24).** [Tier2-defect-remediation-done.md](.cursor/Plans/subplans/P001/zz-archive/Tier2-defect-remediation-done.md) in zz-archive. |
 | features-for-planner.md at .cursor/Plans/ | Features for planner § | **Done (2026-02-24).** [features-for-planner.md](.cursor/Plans/features-for-planner.md) created. |
+| No thanks → menu (iPhone Plus) | [NoThanks-Menu-iPhonePlus.plan.md](.cursor/Plans/subplans/P001/NoThanks-Menu-iPhonePlus.plan.md) | Post–game-over menu after "No thanks"; C1 (second alert), C2 (J4b). Blaster pipeline applied. |
 
 **Lane B (optional / deferred — when no conflict with current Lane A focus)**
 
@@ -80,6 +91,24 @@ When picking up the next larger task, consider these optional items so they are 
 
 **(16) Planner — Next priority after Tier 5 (2026-02-24).** No Tier 6 or next roadmap item defined. Plan: [Next-Priority-After-Tier5.plan.md](.cursor/Plans/Next-Priority-After-Tier5.plan.md). Mandatory Lane A: none. Optional Lane A: Fastlane + deploy.yml enhancements (F1–F4). Lane A (generalPurpose) to execute optional chunk.
 
+**(17) Planner assessment — hand offs aligned (2026-02-28).** Assessed current state: Tiers 1–5 and optional F1–F4 done; no Tier 6 defined. Updated Master-Plan: added "Where we are" assessment; replaced Lane A and Lane B blocks with single **cut-and-paste prompts** per Agents/planner.md. Lane A prompt = invoke planner to define next priority; Lane B prompt = invoke planner when config/assets work defined. Same Lane A prompt added to top of Next-Priority-After-Tier5.plan.md. Concurrent agents and prioritized roadmap lines updated.
+
+**(18) Planner — Tier 6 defined (2026-02-28).** Next priority for Lane A set to **Tier 6 (Ship readiness and baseline alignment)**. Plan: [Tier6-ShipReadiness.plan.md](.cursor/Plans/subplans/Tier6-ShipReadiness/Tier6-ShipReadiness.plan.md). First chunk: **T6-C1 (Baseline alignment)** — align docs/SPECIFICATION.md §7, Agents/tester.md, docs/app-store-readiness.md to one iOS test baseline; agent **generalPurpose**. Second chunk: T6-C2 (Ship-readiness doc). Master-Plan roadmap and Plan Matrix updated; Next hand off — Lane A set to T6-C1.
+
+**(19) T6-C1 (Baseline alignment) — done (2026-02-28).** Ran iOS test suite from `ios/`: **83 tests** (75 CatRunnerTests + 8 CatRunnerUITests), 2 skipped (J4a, J4c when monetization not configured). Updated docs/SPECIFICATION.md §6–§7, Agents/tester.md, and docs/app-store-readiness.md to this baseline. Master-Plan "Where we are" updated. Next hand off — Lane A set to **T6-C2 (Ship-readiness doc)**.
+
+**(20) T6-C2 (Ship-readiness doc) — done (2026-02-28).** Updated docs/app-store-readiness.md: added Ship readiness (Tier 6) note and optional "Ship it" checklist (summary: baseline green → build/archive → TestFlight → store metadata). Updated Master-Plan Path to archive for Tier 6; Tier 6 row and build chunk progress set to complete. Lane A next hand off: invoke planner to define next priority.
+
+**(21) Planner — Tier 7 defined (2026-02-28).** Next priority for Lane A set to **Tier 7 (App Store submission and first release)**. Plan: [Tier7-AppStoreSubmission.plan.md](.cursor/Plans/subplans/Tier7-AppStoreSubmission/Tier7-AppStoreSubmission.plan.md). First chunk: **T7-C1 (Store metadata and listing)** — create docs/app-store-listing.md with app name, subtitle, description, keywords, privacy, age rating; agent **generalPurpose**. Then T7-C2 (screenshots checklist), T7-C3 (submission checklist). Master-Plan roadmap and Plan Matrix updated; Next hand off — Lane A set to T7-C1.
+
+**(22) T7-C1 (Store metadata and listing) — done (2026-02-28).** Created docs/app-store-listing.md with app name (CatRunner), subtitle (30 chars), description (under 4000 chars), keywords (99 chars, comma-separated), privacy note (no data collection in default; note for monetization), and age rating (4+). Master-Plan Tier 7 chunk progress and Next hand off updated to T7-C2.
+
+**(23) T7-C2 (Screenshots and previews) — done (2026-02-28).** Created docs/app-store-screenshots.md with checklist, required iPhone/iPad screenshot sizes (Apple specs), capture method (simulator recommended, manual optional), and optional app preview specs. Updated docs/app-store-readiness.md (screenshot bullet) and docs/app-store-listing.md (Screenshots and previews section + reference). Master-Plan Tier 7 chunk progress and Next hand off updated to T7-C3.
+
+**(24) Planner — No-Thanks Menu breakdown and Lane prompts (2026-02-28).** Broke down P001-NoThanksMenu into planner-style decomposition (feature → objects, ordered steps C1→C2). Updated **Next hand off — Lane A** to list primary (T7-C3 Submission checklist) and optional (P001-NoThanksMenu C1 then C2). Updated **Next hand off — Lane B** to state conflict rules (config/assets only, no shared files with Lane A) and to invoke planner when config/assets work is defined. Added cut-and-paste prompt to [NoThanks-Menu-iPhonePlus.plan.md](.cursor/Plans/subplans/P001/NoThanks-Menu-iPhonePlus.plan.md) and [C1-NoThanks-SecondAlert.plan.md](.cursor/Plans/subplans/P001/NoThanksMenu/C1-NoThanks-SecondAlert.plan.md) so next action is consistent from Master-Plan or sub-plan.
+
+**(25) Blaster + Planner — Simulator always current build (2026-02-28).** Ran Blaster pipeline on simulator plan: root cause and solution path validated (>90% confidence); test/infra noted (no new E2E; local script only). Created plan **SimulatorCurrentBuild** with chunks C1 (doc: "Manual simulator testing" in app-store-readiness + optional tester.md), C2 (optional ios/run-simulator.sh + npm script). Registered in Master-Plan matrix and **Next hand off — Lane A** as optional task; added SimulatorCurrentBuild Build Chunk Progress table. Plan files: [SimulatorCurrentBuild.plan.md](.cursor/Plans/subplans/SimulatorCurrentBuild/SimulatorCurrentBuild.plan.md), [C1-Doc.plan.md](.cursor/Plans/subplans/SimulatorCurrentBuild/C1-Doc.plan.md), [C2-Script.plan.md](.cursor/Plans/subplans/SimulatorCurrentBuild/C2-Script.plan.md). **C1+C2 done; pushed 2026-02-28.**
+
 Completed items are listed here; update Next hand off above when a tier or task is done.
 
 ---
@@ -87,7 +116,7 @@ Completed items are listed here; update Next hand off above when a tier or task 
 ## Concurrent agents (max 2)
 
 - **Lane A** edits `ios/` only. **Lane B** edits `config/` and `assets/` only (and may invoke ui-designer for asset images). No file overlap; both may run in parallel.
-- **Hand-offs:** Lane A = Tier 5 complete and pushed; next priority set by planner ([Next-Priority-After-Tier5.plan.md](.cursor/Plans/Next-Priority-After-Tier5.plan.md)); optional = Fastlane + deploy.yml. Lane B = no current task; invoke planner when config/ or assets/ work is added.
+- **Hand-offs:** Lane A = **T7-C3 (Submission checklist)** per Tier 7 plan (primary), or optionally **P001-NoThanksMenu C1 then C2** (No-Thanks Menu defect). SimulatorCurrentBuild C1+C2 done (pushed 2026-02-28). Lane B = invoke **planner** when config/ or assets/ work is defined; no task until then. See "Next hand off (cut & paste)" at top of Master-Plan. iOS baseline: 83 tests (75 CatRunnerTests + 8 CatRunnerUITests, 2 skipped).
 - When both lanes touch the same area (e.g. C3 and C7 both touch Engine), run sequentially.
 - **Asset path and image spec:** Only [sprites-ui-assets.plan.md](.cursor/Plans/subplans/P001/zz-archive/sprites-ui-assets.plan.md) defines the asset inventory and `assets.json` path map; C2 creates the file, C9/admin consume it.
 
@@ -95,7 +124,7 @@ Completed items are listed here; update Next hand off above when a tier or task 
 
 ## Prioritized roadmap (controls our fate)
 
-Work is ordered in five tiers. Complete each tier before advancing; the **Next hand off — Lane A** above points at the current tier.
+Work is ordered in seven tiers. Complete each tier before advancing; the **Next hand off — Lane A** above points at the current tier.
 
 | Tier | Name | Goal | Key deliverables |
 |------|------|------|-------------------|
@@ -104,8 +133,10 @@ Work is ordered in five tiers. Complete each tier before advancing; the **Next h
 | **3** | Scalability for App Store | TestFlight / store readiness | A7 app icon in AppIcon.appiconset; optional: fastlane + deploy.yml; App Store readiness checklist (doc); optional: second simulator in CI |
 | **4** | New feature build-out | New functionality after 1–3 | Monetization stub (C8); in-game score HUD if not in Tier 2; optional: 5-iPhone E2E, lane accessibility IDs |
 | **5** | Tech debt and consolidation | Code consolidation and cleanup in iOS engine and tests | Single source for constants (design size, time epsilon, lane defaults); extract fallback segment and segment-time margin; test helpers and README; optional naming. See [Tier5-TechDebt-Consolidation.plan.md](.cursor/Plans/subplans/Tier5-TechDebt/Tier5-TechDebt-Consolidation.plan.md). |
+| **6** | Ship readiness and baseline alignment | Align docs and baseline; ship-readiness checklist | Single baseline for iOS tests (SPEC §7, tester.md, app-store-readiness); ship-readiness doc and Master-Plan path. See [Tier6-ShipReadiness.plan.md](.cursor/Plans/subplans/Tier6-ShipReadiness/Tier6-ShipReadiness.plan.md). |
+| **7** | App Store submission and first release | Store metadata, screenshots, submission checklist | Store listing doc (name, description, keywords, privacy, age); screenshot/preview checklist; submission checklist tied to app-store-readiness. See [Tier7-AppStoreSubmission.plan.md](.cursor/Plans/subplans/Tier7-AppStoreSubmission/Tier7-AppStoreSubmission.plan.md). |
 
-Tier 5 complete and pushed 2026-02-24. Next priority: planner output [Next-Priority-After-Tier5.plan.md](.cursor/Plans/Next-Priority-After-Tier5.plan.md) — no mandatory task; optional Lane A = Fastlane + deploy.yml enhancements.
+Tier 5 complete and pushed 2026-02-24. **Tier 6** complete 2026-02-28 (T6-C1 baseline alignment, T6-C2 ship-readiness doc). **Tier 7** is next: T7-C1 (Store metadata and listing) → T7-C2 (screenshots) → T7-C3 (submission checklist).
 
 **Spec gaps (ideation through implementation):** Gap analysis (spec vs app) and ideation review ([Agents/ideation.md](Agents/ideation.md) — Quick MVP / Scalable / Innovative) identified one remaining spec violation: **first-revive-only** (SPECIFICATION.md §1: "after that, game over is final"). Tier 2 closed doc and monetization branch; first-revive-only is implemented in **P001-SpecGaps** before Tier 4. Plan: [P001-SpecGaps-ideation-to-impl.plan.md](.cursor/Plans/subplans/P001/P001-SpecGaps-ideation-to-impl.plan.md) (ideation phase done; build chunk [spec-gaps-first-revive-only.plan.md](.cursor/Plans/subplans/P001/spec-gaps-first-revive-only.plan.md)). Test checkpoint: Logic-Test + E2E J4 second-game-over path. Deferred to Tier 4: in-game score HUD, asset-based overlays (implementation-spec).
 
@@ -130,9 +161,13 @@ Archived plans live under `.cursor/Plans/zz-archives/` (folder names start with 
 | Scroller-10s | Scroller 10s loop and avatar sizing | 1 | 10s segment, seamless loop (same segment repeats), dog/boxes as obstacles, 44pt sprite scaling. Blaster complete; chunks S1–S4. See [.cursor/Plans/zz-archives/zz-Scroller-10s/Scroller-10s-loop-and-sizing.plan.md](.cursor/Plans/zz-archives/zz-Scroller-10s/Scroller-10s-loop-and-sizing.plan.md). | Complete (S1–S4; S1 config done, S2–S4 pushed 2026-02-23). | 92% | 92% |
 | Many-buildings-bg | Many-buildings scrolling background and sprite integration | 1 | Scrolling rooftop background (many buildings, tileable), dog/boxes integrate on runway; ui-designer + canva-ui-design; B5 (background layer + tiling). See [.cursor/Plans/zz-archives/zz-Many-buildings-bg/Many-buildings-bg.plan.md](.cursor/Plans/zz-archives/zz-Many-buildings-bg/Many-buildings-bg.plan.md). | Complete (BG1–BG4; BG1+BG2 assets done, BG3+BG4 pushed 2026-02-23). | N/A | High |
 | P001-SpecGaps | Spec gaps — ideation through implementation | 1 | One remaining spec violation (first-revive-only per SPEC §1); detailed plan from ideation through implementation. See [P001-SpecGaps-ideation-to-impl.plan.md](.cursor/Plans/subplans/P001/P001-SpecGaps-ideation-to-impl.plan.md); build chunk: [spec-gaps-first-revive-only.plan.md](.cursor/Plans/subplans/P001/spec-gaps-first-revive-only.plan.md). | **Complete (2026-02-24). Pushed 2026-02-24.** Code + E2E J4c + 65 tests. Logic-Test handoff per §6.1. | 95% | 95% |
+| P001-NoThanksMenu | No-Thanks Menu (iPhone Plus) — post–game-over menu | 1 | After "No thanks" on game-over alert, show second alert with "Play again" so user can start new game on all devices including iPhone Plus. See [NoThanks-Menu-iPhonePlus.plan.md](.cursor/Plans/subplans/P001/NoThanks-Menu-iPhonePlus.plan.md). Chunks C1 (VC second alert), C2 (J4b + Plus validation). | **Next:** C1 then C2. Blaster pipeline applied (Investigator, ui-test, logic-test, infra, Planner). | 95% | 92% |
 | P003 | Score HUD Safe Area and High-Score Paradigm | 1 | Fix score HUD covered by Dynamic Island/notch (iPhone 15 Plus etc.); safe-area-aware HUD position. Details in [P003-ScoreHUD-SafeArea.plan.md](.cursor/Plans/subplans/P003/P003-ScoreHUD-SafeArea.plan.md); Chunk 1: [Chunk1-SafeArea-Fix.plan.md](.cursor/Plans/subplans/P003/Chunk1-SafeArea-Fix.plan.md). | Chunks 1, 2, 3 done (2026-02-24). **Next:** optional backlog (5-iPhone E2E, lane IDs, etc.). | 95% | 93% |
 | DifficultySpawnRamp | Difficulty spawn rate ramp (1 per 5s, +0.1 every 5s) | 1 | Time-based obstacle spawn rate; config + Engine + GameScene + tests. Main plan: [difficulty-spawn-rate-ramp.plan.md](.cursor/Plans/difficulty-spawn-rate-ramp.plan.md). Details and chunks C1–C6 in sub-plans under `.cursor/Plans/subplans/DifficultySpawnRamp/`. | **C1–C6 + Logic-Test done (2026-02-24). Pushed 2026-02-24.** 75 unit + 8 UI tests pass. Checklist: [difficulty-spawn-rate-ramp-logic-test-checklist.md](docs/testing/logic-test/difficulty-spawn-rate-ramp-logic-test-checklist.md). | 95% | 95% |
 | Tier5-TechDebt | Tier 5 — Tech debt and consolidation | 1 | Code consolidation and cleanup in iOS engine and tests: single source for design size, time epsilon, lane constants; fallback segment factory; segment-time margin; GameScene test helper; test README; test naming; CollisionSystem in Engine. See [Tier5-TechDebt-Consolidation.plan.md](.cursor/Plans/subplans/Tier5-TechDebt/Tier5-TechDebt-Consolidation.plan.md). | T5-C1 through T5-C9 done (2026-02-24). | N/A | 92% |
+| Tier6-ShipReadiness | Tier 6 — Ship readiness and baseline alignment | 1 | Align SPEC §7, tester.md, app-store-readiness to one iOS test baseline; ship-readiness doc and Master-Plan path. See [Tier6-ShipReadiness.plan.md](.cursor/Plans/subplans/Tier6-ShipReadiness/Tier6-ShipReadiness.plan.md). | **Complete (2026-02-28).** T6-C1 + T6-C2 done. | High | High |
+| Tier7-AppStoreSubmission | Tier 7 — App Store submission and first release | 1 | Store metadata, screenshots, submission checklist. See [Tier7-AppStoreSubmission.plan.md](.cursor/Plans/subplans/Tier7-AppStoreSubmission/Tier7-AppStoreSubmission.plan.md). | **Next:** T7-C3 (Submission checklist). T7-C1, T7-C2 done 2026-02-28. | High | High |
+| SimulatorCurrentBuild | Simulator always current build | 1 | Ensure every simulator run uses latest build: doc (Manual simulator testing) + optional build-install-launch script. See [SimulatorCurrentBuild.plan.md](.cursor/Plans/subplans/SimulatorCurrentBuild/SimulatorCurrentBuild.plan.md). Chunks C1 (doc), C2 (optional script). Blaster pipeline applied. | **Complete. Pushed 2026-02-28.** | 95% | 95% |
 
 **DifficultySpawnRamp Build Chunk Progress (Lane A):**
 
@@ -153,6 +188,13 @@ Archived plans live under `.cursor/Plans/zz-archives/` (folder names start with 
 | Chunk 2 | "New high score!" celebration (in-game / game-over) | **Done (2026-02-24)** | N/A | 90% | ScoreKeeper.didBeatHighScoreThisRun; in-game label; VC "New record!" alert; SPEC §1. |
 | Chunk 3 | Spec/docs update (SPEC §1/§7, Master-Plan note) | **Done (2026-02-24)** | N/A | 92% | SPEC §1/§7 + Master-Plan updated; Chunk 1 noted done. |
 
+**P001-NoThanksMenu Build Chunk Progress (Lane A):**
+
+| Chunk | Description | State | Conf (root) | Conf (solution) | Note |
+|-------|-------------|-------|-------------|-----------------|------|
+| C1 | No thanks → second alert (GameViewController) | **Next** | 95% | 92% | [C1-NoThanks-SecondAlert.plan.md](.cursor/Plans/subplans/P001/NoThanksMenu/C1-NoThanks-SecondAlert.plan.md). |
+| C2 | J4b update and iPhone Plus validation | Pending | 95% | 92% | [C2-J4b-ValidatePlus.plan.md](.cursor/Plans/subplans/P001/NoThanksMenu/C2-J4b-ValidatePlus.plan.md). |
+
 **Tier 5 (Tech debt and consolidation) Build Chunk Progress (Lane A):**
 
 | Chunk | Description | State | Conf (root) | Conf (solution) | Note |
@@ -166,6 +208,28 @@ Archived plans live under `.cursor/Plans/zz-archives/` (folder names start with 
 | T5-C7 | Update CatRunnerTests README (all test files) | **Done (2026-02-24)** | N/A | 95% | ios/CatRunnerTests/README.md lists all files and coverage. |
 | T5-C8 | Test file naming convention | **Done (2026-02-24)** | N/A | 88% | [T5-C8-TestNaming.plan.md](.cursor/Plans/subplans/Tier5-TechDebt/T5-C8-TestNaming.plan.md). |
 | T5-C9 | CollisionSystem in Engine | **Done (2026-02-24)** | N/A | 85% | [T5-C9-CollisionSystemEngine.plan.md](.cursor/Plans/subplans/Tier5-TechDebt/T5-C9-CollisionSystemEngine.plan.md). |
+
+**Tier 6 (Ship readiness and baseline alignment) Build Chunk Progress (Lane A):**
+
+| Chunk | Description | State | Conf (root) | Conf (solution) | Note |
+|-------|-------------|-------|-------------|-----------------|------|
+| T6-C1 | Baseline alignment: SPEC §7, tester.md, app-store-readiness.md → same iOS test count | **Done (2026-02-28)** | High | High | [T6-C1-BaselineAlignment.plan.md](.cursor/Plans/subplans/Tier6-ShipReadiness/T6-C1-BaselineAlignment.plan.md). Baseline: 83 tests (75+8, 2 skipped). |
+| T6-C2 | Ship-readiness doc: app-store-readiness + Master-Plan path; optional "ship it" checklist | **Done (2026-02-28)** | Medium | High | Ship-it checklist and Tier 6 path updated. |
+
+**Tier 7 (App Store submission and first release) Build Chunk Progress (Lane A):**
+
+| Chunk | Description | State | Conf (root) | Conf (solution) | Note |
+|-------|-------------|-------|-------------|-----------------|------|
+| T7-C1 | Store metadata and listing: docs/app-store-listing.md (name, subtitle, description, keywords, privacy, age) | **Done (2026-02-28)** | High | High | [T7-C1-StoreMetadata.plan.md](.cursor/Plans/subplans/Tier7-AppStoreSubmission/T7-C1-StoreMetadata.plan.md). |
+| T7-C2 | Screenshots and previews: checklist + required sizes; capture method | Done (2026-02-28) | High | High | docs/app-store-screenshots.md; app-store-readiness, app-store-listing updated. |
+| T7-C3 | Submission checklist: link app-store-readiness to first submission; App Store Connect notes | **Next** | Medium | High | [T7-C3-SubmissionChecklist.plan.md](.cursor/Plans/subplans/Tier7-AppStoreSubmission/T7-C3-SubmissionChecklist.plan.md). After T7-C2. |
+
+**SimulatorCurrentBuild Build Chunk Progress (Lane A):**
+
+| Chunk | Description | State | Conf (root) | Conf (solution) | Note |
+|-------|-------------|-------|-------------|-----------------|------|
+| C1 | Doc: "Manual simulator testing" (app-store-readiness + optional tester.md) | **Done (2026-02-28)** | 95% | 95% | [C1-Doc.plan.md](.cursor/Plans/subplans/SimulatorCurrentBuild/C1-Doc.plan.md). |
+| C2 | Optional: ios/run-simulator.sh + npm script ios:simulator | **Done (2026-02-28)** | 95% | 92% | [C2-Script.plan.md](.cursor/Plans/subplans/SimulatorCurrentBuild/C2-Script.plan.md). |
 
 **Scroller-10s chunks (Lane A = ios/, Lane B = config/):**
 
@@ -245,6 +309,8 @@ Every plan has a path to archive: either complete the remaining work then move t
 | **P002, Scroller-10s, Many-buildings-bg** | Archived in zz-archives; path to archive: N/A. |
 | **P001-SpecGaps** | When first-revive-only is complete (code + E2E J4 + Logic-Test): update matrix to Complete; move [P001-SpecGaps-ideation-to-impl.plan.md](.cursor/Plans/subplans/P001/P001-SpecGaps-ideation-to-impl.plan.md) and [spec-gaps-first-revive-only.plan.md](.cursor/Plans/subplans/P001/spec-gaps-first-revive-only.plan.md) to `subplans/P001/zz-archive/`; set Next hand off to Tier 4. |
 | **Tier 5 (Tech debt and consolidation)** | **T5-C1–T5-C9 complete 2026-02-24.** Plan Matrix Tier5-TechDebt row updated. Next hand off set to: invoke planner to define next tier or roadmap item. Optionally move [Tier5-TechDebt-Consolidation.plan.md](.cursor/Plans/subplans/Tier5-TechDebt/Tier5-TechDebt-Consolidation.plan.md) and chunk plans to `subplans/Tier5-TechDebt/zz-archive/` (or leave in place). |
+| **Tier 6 (Ship readiness and baseline alignment)** | **T6-C1 and T6-C2 complete 2026-02-28.** Plan: [Tier6-ShipReadiness.plan.md](.cursor/Plans/subplans/Tier6-ShipReadiness/Tier6-ShipReadiness.plan.md). Master-Plan Tier 6 row and path-to-archive updated. Optionally move plan and T6-C1 to `subplans/Tier6-ShipReadiness/zz-archive/` (or leave in place). |
+| **Tier 7 (App Store submission and first release)** | Plan: [Tier7-AppStoreSubmission.plan.md](.cursor/Plans/subplans/Tier7-AppStoreSubmission/Tier7-AppStoreSubmission.plan.md). Chunks T7-C1 (store metadata) → T7-C3 (submission checklist). When T7-C1–T7-C3 done: update Master-Plan Tier 7 row; optionally move plan to `subplans/Tier7-AppStoreSubmission/zz-archive/`. |
 
 ---
 
