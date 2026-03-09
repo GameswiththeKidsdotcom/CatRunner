@@ -1,8 +1,8 @@
 # Cat Transparency and Background Fix
 
-**Next hand off (cut & paste) — Lane A:** Commit CatTransparency C1+C2 to GitHub and update the plan accordingly. Stage: `scripts/add-transparency-to-cat-frames.py`, `assets/character/cat_run.png`, `assets/character/cat_jump.png`, `assets/character/cat_slide.png`, `assets/character/cat_jump_*.png`, `assets/character/cat_slide_*.png`, `ios/CatRunner/Game/PlayerNode.swift`. Message: `fix(cat): transparency script + PlayerNode .clear (CatTransparency C1+C2)`. Run `npm run test:full` and iOS tests before commit; confirm no regressions. Plan: this file. Agent: **generalPurpose**. After push: update Master-Plan History and Next hand off to App Store submission or SeamlessBackground C2 (when C1 done).
+**Next hand off (cut & paste) — Lane A:** Execute **App Store submission** per docs/app-store-readiness.md; or **SeamlessBackground C2** (object integration) when C1 (background assets) done. Plan: [Tier7-AppStoreSubmission.plan.md](../../Tier7-AppStoreSubmission/Tier7-AppStoreSubmission.plan.md) or [C2-ObjectIntegration.plan.md](../../SeamlessBackground/C2-ObjectIntegration.plan.md). Agent: **generalPurpose**.
 
-**Complete (2026-03-09).** C1 (script extend) and C2 (PlayerNode .clear) done. Lane B = SeamlessBackground C1.
+**Complete (2026-03-09).** C1 (script extend) and C2 (PlayerNode .clear) done; committed and pushed fc507e5. Lane B = SeamlessBackground C1.
 
 ---
 

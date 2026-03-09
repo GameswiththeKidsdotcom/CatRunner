@@ -2,11 +2,11 @@
 
 ## Where we are (assessment)
 
-**As of 2026-02-28:** Tiers 1–6 are complete. **Tier 6 (Ship readiness and baseline alignment)** is done. **Tier 7 (App Store submission and first release):** T7-C1 (Store metadata and listing) and T7-C2 (Screenshots and previews) done — `docs/app-store-listing.md`, `docs/app-store-screenshots.md` created; app-store-readiness and app-store-listing updated with screenshot section. Next Lane A: **T7-C3 (Submission checklist)**. Lane B has no config/assets task. Baseline: `npm run test:full` (Vitest) and iOS (83 tests, 2 skipped) passing.
+**As of 2026-03-09:** Tiers 1–6 are complete. **Tier 7 (App Store submission):** T7-C1, T7-C2, T7-C3 done. **SlideJumpCatAnimation** (C1–C4) done. **RightLaneTap** (lane boundary tap visual/collision desync) — C1+C2+C3 done; pushed. **CatTransparency** (idle/jump/slide transparent) — C1+C2 done. Plan work is **clear for App Store submit**. Baseline: `npm run test:full` (Vitest) and iOS (85 tests = 77 CatRunnerTests + 8 CatRunnerUITests, 2 skipped) passing.
 
 ### Pre–App Store submit: remaining plans (clear before submit)
 
-**Remaining plan work before first App Store submit:** One chunk only — **T7-C3 (Submission checklist)**. All other plans in the matrix are either Complete, Pushed, or optional/deferred. When **T7-C3 is done**, plan work is clear for App Store submission (TestFlight or App Store review). No other plan chunks are blockers.
+**Remaining plan work before first App Store submit:** **None.** **Right-lane-tap visual/collision mismatch** fixed and pushed 2026-03-09: tap right (or left) when cat on rightmost (or leftmost) lane no longer desyncs visual from hitbox. Plan: [RightLaneTap-VisualBug.plan.md](.cursor/Plans/subplans/RightLaneTap/RightLaneTap-VisualBug.plan.md). Cat jump/slide assets have been polished (`cat_jump.png`, `cat_slide.png` in `assets/character/`) via **ui-designer** per [CAT-WORLD-VISION.md](assets/CAT-WORLD-VISION.md) and hero mockup (2026-03-02). Config and PlayerNode are already wired; plans remain clear for App Store submit. Plan: [SlideJumpCatAnimation.plan.md](.cursor/Plans/subplans/SlideJumpCatAnimation/SlideJumpCatAnimation.plan.md). Agent: **ui-designer** or **generalPurpose** per [Agents/planner.md](Agents/planner.md).
 
 ---
 
@@ -14,11 +14,7 @@
 
 **Copy-paste this prompt for the next Lane A action:**
 
-**Primary (Tier 7 — App Store submit):** Execute **T7-C3 (Submission checklist)** per [T7-C3-SubmissionChecklist.plan.md](.cursor/Plans/subplans/Tier7-AppStoreSubmission/T7-C3-SubmissionChecklist.plan.md): link app-store-readiness to first submission; optional App Store Connect notes. Parent plan: [Tier7-AppStoreSubmission.plan.md](.cursor/Plans/subplans/Tier7-AppStoreSubmission/Tier7-AppStoreSubmission.plan.md). Agent: **generalPurpose**. When T7-C3 is done, plans are clear for App Store submit.
-
-**Optional (simulator always current build):** **Done (pushed 2026-02-28).** C1 + C2 implemented: "Manual simulator testing" in app-store-readiness + tester.md reminder; `ios/run-simulator.sh` + `npm run ios:simulator`. See [SimulatorCurrentBuild.plan.md](.cursor/Plans/subplans/SimulatorCurrentBuild/SimulatorCurrentBuild.plan.md).
-
-**Optional (defect fix — No-Thanks Menu iPhone Plus):** Execute **P001-NoThanksMenu C1** per [C1-NoThanks-SecondAlert.plan.md](.cursor/Plans/subplans/P001/NoThanksMenu/C1-NoThanks-SecondAlert.plan.md): wire "No thanks" in GameViewController to present second alert ("Game Over", "Play again"). Then **C2** per [C2-J4b-ValidatePlus.plan.md](.cursor/Plans/subplans/P001/NoThanksMenu/C2-J4b-ValidatePlus.plan.md): update J4b and validate on iPhone Plus. Parent: [NoThanks-Menu-iPhonePlus.plan.md](.cursor/Plans/subplans/P001/NoThanks-Menu-iPhonePlus.plan.md). Agent: **generalPurpose**. Run `npm run test:full` after C1; full iOS suite after C2.
+**Primary:** Execute **App Store submission** per docs/app-store-readiness.md; or **SeamlessBackground C2** (object integration) when C1 (background assets) done. Plan: [Tier7-AppStoreSubmission.plan.md](.cursor/Plans/subplans/Tier7-AppStoreSubmission/Tier7-AppStoreSubmission.plan.md) or [C2-ObjectIntegration.plan.md](.cursor/Plans/subplans/SeamlessBackground/C2-ObjectIntegration.plan.md). Agent: **generalPurpose**.
 
 ---
 
@@ -26,7 +22,7 @@
 
 **Copy-paste this prompt for the next Lane B action:**
 
-Lane B has no current task. Lane B may pick up **config/ or assets/ only** work when the **planner** defines it (e.g. new variant, asset refresh, doc under config or assets) and when it does **not** conflict with Lane A (no shared files). Using @.cursor/Plans/Master-Plan.md: invoke the **planner** agent when config/ or assets/ work is defined; the planner will add it to the Master-Plan and set the Lane B hand off. Until then Lane B is idle.
+**Primary:** Execute **SeamlessBackground C1** — Generate seamless sky.png and ground.png (786×1800 px) per [C1-BackgroundAssets.plan.md](.cursor/Plans/subplans/SeamlessBackground/C1-BackgroundAssets.plan.md). Use **ui-designer** subagent. Save to assets/backgrounds/. No conflict with Lane A (assets/ only).
 
 ---
 
@@ -49,7 +45,10 @@ When picking up the next larger task, consider these optional items so they are 
 | Fastlane + deploy.yml enhancements; second simulator in CI | Tier 3 optional | **Done (2026-02-24).** F1–F4: documented current state; implemented `fastlane beta` (build_app + upload_to_testflight when API key set); deploy.yml runs `fastlane beta` when secrets present, else build + artifact; DEPLOY.md and ios/fastlane/README.md updated. Second simulator: test-ios-matrix already in test.yml. |
 | Tier 2 completion doc in zz-archive | Path to archive table | **Done (2026-02-24).** [Tier2-defect-remediation-done.md](.cursor/Plans/subplans/P001/zz-archive/Tier2-defect-remediation-done.md) in zz-archive. |
 | features-for-planner.md at .cursor/Plans/ | Features for planner § | **Done (2026-02-24).** [features-for-planner.md](.cursor/Plans/features-for-planner.md) created. |
-| No thanks → menu (iPhone Plus) | [NoThanks-Menu-iPhonePlus.plan.md](.cursor/Plans/subplans/P001/NoThanks-Menu-iPhonePlus.plan.md) | Post–game-over menu after "No thanks"; C1 (second alert), C2 (J4b). Blaster pipeline applied. |
+| No thanks → menu (iPhone Plus) | [NoThanks-Menu-iPhonePlus.plan.md](.cursor/Plans/subplans/P001/NoThanks-Menu-iPhonePlus.plan.md) | **Done.** C1 + C2 implemented and validated. |
+| T7-C3 (Submission checklist) | [T7-C3-SubmissionChecklist.plan.md](.cursor/Plans/subplans/Tier7-AppStoreSubmission/T7-C3-SubmissionChecklist.plan.md) | **Done (2026-03-02).** First submission section in app-store-readiness; App Store Connect notes. |
+| Seamless background + object integration | [SeamlessBackground-OptionsAndObjectIntegration.plan.md](.cursor/Plans/subplans/SeamlessBackground/SeamlessBackground-OptionsAndObjectIntegration.plan.md) | Option A (two layers) or B (single image); sprite grounding, shadows, lane overlay tuning. |
+| **CatTransparency C2** | [C2-PlayerNodeClear.plan.md](.cursor/Plans/subplans/CatTransparency/C2-PlayerNodeClear.plan.md) | PlayerNode use `.clear` when runTexture present; removes tint on transparent areas. **Done (2026-03-09).** |
 
 **Lane B (optional / deferred — when no conflict with current Lane A focus)**
 
@@ -58,6 +57,10 @@ When picking up the next larger task, consider these optional items so they are 
 | Ensure app icon asset in assets/reference | **Done (2026-02-24);** [CatWorld-A7-appicon.plan.md](.cursor/Plans/subplans/P001/zz-archive/CatWorld-A7-appicon.plan.md) | Verified and resized to 1024×1024. Lane A or user copies to ios/ AppIcon.appiconset. |
 | Asset-based overlays (game-over / revive) | Spec gaps §; assets/ui implementation-spec | **Done (2026-02-24).** gameOver.png, revivePanel.png, scorePanel.png at 9:16 and 9:1; spec/README updated. No ios/ change. |
 | New variant or asset refresh | Master-Plan "Next hand off — Lane B" | When Planner defines config or asset work (e.g. new variant, asset refresh, doc under config or assets), Lane B picks it up; no conflict with Lane A if scope is config/ and assets/ only. |
+| **ConfigVariantsDoc C1** | [C1-DocEasy.plan.md](.cursor/Plans/subplans/ConfigVariantsDoc/C1-DocEasy.plan.md) | **Done (2026-03-02).** easy.json documented in config/variants/README.md. Plan complete; both variants documented. |
+| **Cat jump/slide asset polish (pre-submit)** | [SlideJumpCatAnimation.plan.md](.cursor/Plans/subplans/SlideJumpCatAnimation/SlideJumpCatAnimation.plan.md) | **Done (2026-03-02).** Polished `cat_jump.png` and `cat_slide.png` generated via **ui-designer** per CAT-WORLD-VISION and saved to `assets/character/`. |
+| Seamless background assets (sky.png, ground.png) | [SeamlessBackground-OptionsAndObjectIntegration.plan.md](.cursor/Plans/subplans/SeamlessBackground/SeamlessBackground-OptionsAndObjectIntegration.plan.md) | 786×1800 px, seamless top/bottom; runway band lower ~28%; cat-world style. |
+| **CatTransparency C1** | [C1-ScriptExtend.plan.md](.cursor/Plans/subplans/CatTransparency/C1-ScriptExtend.plan.md) | Extend transparency script to cat_run.png, cat_jump.png, cat_slide.png; run on all 19 files. **Done (2026-03-09).** |
 
 ---
 
@@ -109,6 +112,36 @@ When picking up the next larger task, consider these optional items so they are 
 
 **(25) Blaster + Planner — Simulator always current build (2026-02-28).** Ran Blaster pipeline on simulator plan: root cause and solution path validated (>90% confidence); test/infra noted (no new E2E; local script only). Created plan **SimulatorCurrentBuild** with chunks C1 (doc: "Manual simulator testing" in app-store-readiness + optional tester.md), C2 (optional ios/run-simulator.sh + npm script). Registered in Master-Plan matrix and **Next hand off — Lane A** as optional task; added SimulatorCurrentBuild Build Chunk Progress table. Plan files: [SimulatorCurrentBuild.plan.md](.cursor/Plans/subplans/SimulatorCurrentBuild/SimulatorCurrentBuild.plan.md), [C1-Doc.plan.md](.cursor/Plans/subplans/SimulatorCurrentBuild/C1-Doc.plan.md), [C2-Script.plan.md](.cursor/Plans/subplans/SimulatorCurrentBuild/C2-Script.plan.md). **C1+C2 done; pushed 2026-02-28.**
 
+**(26) Planner — SlideJumpCatAnimation added to Master-Plan (2026-03-01).** Registered plan **SlideJumpCatAnimation** (slide/jump = 2 obstacle lengths + cat as multi-frame animation per ui-designer). Created [SlideJumpCatAnimation.plan.md](.cursor/Plans/subplans/SlideJumpCatAnimation/SlideJumpCatAnimation.plan.md) with chunks C1 (duration 1.1 s), C2 (config + assets jump/slide), C3 (PlayerNode animation state), C4 (easing + run cycle). Added to Plan Matrix, Build Chunk Progress, prioritized roadmap (After 7 optional), Path to archive, and Optional and deferred work. Lane A primary remains T7-C3; SlideJumpCatAnimation is next optional after Tier 7.
+
+**(27) Planner — SlideJumpCatAnimation prioritized above T7-C3 (2026-03-01).** Submission checklist (T7-C3) moved below SlideJumpCatAnimation. Lane A primary = **SlideJumpCatAnimation** (C1–C4) first; then T7-C3. Lane B = SlideJumpCatAnimation C2 (config + assets). Next hand off, Plan Matrix, Build Chunk Progress, roadmap, and Concurrent agents updated.
+
+**(28) SlideJumpCatAnimation C1–C4 + T7-C3 (2026-03-02).** C1: variant.json jumpDurationSeconds/slideDurationSeconds=1.1; C7MechanicsCollisionTests updated. C2: assets.json character.jump, character.slide; AssetConfig extended. C3: PlayerNode state-based textures (run/jump/slide); no procedural scale. C4: jump easing (easeInEaseOut); run cycle support (runFrameTextures). T7-C3: docs/app-store-readiness.md "First submission" section; App Store Connect notes. Master-Plan updated: plans clear for App Store submit.
+
+**(29) Planner — Next priority after Tier 7 (2026-03-02).** SlideJumpCatAnimation (C1–C4) and T7-C3 done; plans clear for App Store submit. Next priority: **Execute App Store submission** (user action) per docs/app-store-readiness.md; or invoke planner for optional/post-release work. Plan: [Next-Priority-After-Tier7.plan.md](.cursor/Plans/Next-Priority-After-Tier7.plan.md). Lane A primary = user submission; Lane B = invoke planner when config/assets work defined.
+
+**(30) Master-Plan — Cat jump/slide asset polish before submit (2026-03-02).** Added pre–App Store submit step: replace placeholder `cat_jump.png` and `cat_slide.png` with polished art via ui-designer per CAT-WORLD-VISION. Updated Pre–App Store submit section, Next hand off (Lane A + Lane B), Concurrent agents, and Lane B optional table. References [Agents/planner.md](Agents/planner.md).
+
+**(31) Planner — Lane B ConfigVariantsDoc defined (2026-03-02).** Invoked planner per Agents/planner.md. Cat jump/slide asset polish complete. Defined Lane B work: **ConfigVariantsDoc C1** — document easy.json in config/variants/README.md. Plan: [ConfigVariantsDoc.plan.md](.cursor/Plans/subplans/ConfigVariantsDoc/ConfigVariantsDoc.plan.md), [C1-DocEasy.plan.md](.cursor/Plans/subplans/ConfigVariantsDoc/C1-DocEasy.plan.md). No conflict with Lane A (App Store submission — user action). Updated Master-Plan Next hand off — Lane B, Concurrent agents, Optional and deferred work.
+
+**(32) ConfigVariantsDoc C1 — done (2026-03-02).** Documented easy.json in [config/variants/README.md](config/variants/README.md): obstacles (passable + slowdown only, no instantFail), clusterConfig disabled, engine (jumpDurationSeconds 0.5, slideDurationSeconds 0.6, baseSpeed 0.8, segmentDurationSeconds 2.5–4 s), gentler difficulty scaling. Lane B hand off updated to invoke planner for next config/assets work.
+
+**(33) Planner — Lane B ConfigVariantsDoc complete; no further work defined (2026-03-02).** Invoked planner per Agents/planner.md. ConfigVariantsDoc C1 done; both easy.json and difficulty-spawn-ramp.json documented in config/variants/README.md. No further ConfigVariantsDoc chunks defined; no other config/assets work in backlog. Lane B idle. Next hand off — Lane B set to **None.**
+
+**(34) Blaster — SeamlessBackground full pipeline (2026-03-02).** Ran full plan-validation pipeline per Agents/blaster.md: Step 1 Investigator (>90% per section); Step 2 ui-test, logic-test, infrastructure (test plans in [SeamlessBackground-TestPlans.plan.md](.cursor/Plans/subplans/SeamlessBackground/SeamlessBackground-TestPlans.plan.md)); Step 3 reconcile; Step 4 Planner (chunks C1, C2); Step 5 per-chunk fidelity. Plan: [SeamlessBackground-OptionsAndObjectIntegration.plan.md](.cursor/Plans/subplans/SeamlessBackground/SeamlessBackground-OptionsAndObjectIntegration.plan.md). Chunks: [C1-BackgroundAssets.plan.md](.cursor/Plans/subplans/SeamlessBackground/C1-BackgroundAssets.plan.md) (Lane B, ui-designer), [C2-ObjectIntegration.plan.md](.cursor/Plans/subplans/SeamlessBackground/C2-ObjectIntegration.plan.md) (Lane A). Added to Plan Matrix, Build Chunk Progress, prioritized roadmap (After 7 optional), Path to archive, and Optional and deferred work.
+
+**(35) RightLaneTap — Lane boundary tap visual/collision desync (2026-03-09).** Defect: tap right (or left) when cat on rightmost (or leftmost) lane moved visual to center while hitbox stayed at boundary. Root cause: out-of-bounds lane index passed to `laneXPosition(for:)` returned center X. Fix: clamp before `moveToLane`, early return at boundary. C1 (GameScene.triggerLaneLeft/Right) and C2 (LaneBoundaryTapTests, playerContainerPositionForTesting) done. C3 (commit and push) pending. Plan: [RightLaneTap-VisualBug.plan.md](.cursor/Plans/subplans/RightLaneTap/RightLaneTap-VisualBug.plan.md). Added to Plan Matrix, Build Chunk Progress, Next hand off.
+
+**(36) Planner — CatTransparency on path (2026-03-09).** Cat transparency and background fix (idle/jump/slide opaque box) added to Master-Plan path. Blaster pipeline complete. C1 (extend transparency script to cat_run.png, cat_jump.png, cat_slide.png) — Lane B. C2 (PlayerNode use .clear when runTexture present) — Lane A. Added to Plan Matrix, Build Chunk Progress, Prioritized roadmap (After 7 optional), Optional and deferred work, Path to archive, Next hand off (Lane A + Lane B), and Concurrent agents. Plan: [CatTransparency-TransparencyAndBackgroundFix.plan.md](.cursor/Plans/subplans/CatTransparency/CatTransparency-TransparencyAndBackgroundFix.plan.md).
+
+**(37) RightLaneTap C3 — committed and pushed (2026-03-09).** fix(lane): boundary tap no-op to prevent visual/collision desync (RightLaneTap). Staged GameScene.swift, LaneBoundaryTapTests.swift, project.pbxproj; pushed to origin/main. Plan: [RightLaneTap-VisualBug.plan.md](.cursor/Plans/subplans/RightLaneTap/RightLaneTap-VisualBug.plan.md).
+
+**(38) CatTransparency C2 — done (2026-03-09).** PlayerNode use `.clear` when runTexture present; `.systemTeal` when nil (tests). Edit [PlayerNode.swift](ios/CatRunner/Game/PlayerNode.swift) line 84. 77 CatRunnerTests pass. Plan: [C2-PlayerNodeClear.plan.md](.cursor/Plans/subplans/CatTransparency/C2-PlayerNodeClear.plan.md).
+
+**(39) CatTransparency C1 — done (2026-03-09).** Script already extended to cat_run.png, cat_jump.png, cat_slide.png; ran `python3 scripts/add-transparency-to-cat-frames.py`; verified `sips -g hasAlpha` returns yes for all three. Plan: [C1-ScriptExtend.plan.md](.cursor/Plans/subplans/CatTransparency/C1-ScriptExtend.plan.md). Lane B hand off updated to SeamlessBackground C1.
+
+**(40) CatTransparency C1+C2 — committed and pushed (2026-03-09).** fix(cat): transparency script + PlayerNode .clear (CatTransparency C1+C2). Staged script, cat_run.png, cat_jump.png, cat_slide.png, cat_jump_*.png, cat_slide_*.png, CatTransparency plan files; C2 (PlayerNode .clear) already in 97afbc9. Pushed fc507e5 to origin/main. npm run test:full and iOS tests (77 unit + 8 UI, 2 skipped) passed. Plan: [CatTransparency-TransparencyAndBackgroundFix.plan.md](.cursor/Plans/subplans/CatTransparency/CatTransparency-TransparencyAndBackgroundFix.plan.md). Next hand off — Lane A: App Store submission or SeamlessBackground C2 (when C1 done).
+
 Completed items are listed here; update Next hand off above when a tier or task is done.
 
 ---
@@ -116,7 +149,7 @@ Completed items are listed here; update Next hand off above when a tier or task 
 ## Concurrent agents (max 2)
 
 - **Lane A** edits `ios/` only. **Lane B** edits `config/` and `assets/` only (and may invoke ui-designer for asset images). No file overlap; both may run in parallel.
-- **Hand-offs:** Lane A = **T7-C3 (Submission checklist)** per Tier 7 plan (primary), or optionally **P001-NoThanksMenu C1 then C2** (No-Thanks Menu defect). SimulatorCurrentBuild C1+C2 done (pushed 2026-02-28). Lane B = invoke **planner** when config/ or assets/ work is defined; no task until then. See "Next hand off (cut & paste)" at top of Master-Plan. iOS baseline: 83 tests (75 CatRunnerTests + 8 CatRunnerUITests, 2 skipped).
+- **Hand-offs:** Lane A = **App Store submission** or **SeamlessBackground C2** (when C1 done). Lane B = **SeamlessBackground C1** (background assets sky.png, ground.png). CatTransparency C1+C2 pushed 2026-03-09. See "Next hand off (cut & paste)" at top of Master-Plan. iOS baseline: 85 tests (77 CatRunnerTests + 8 CatRunnerUITests, 2 skipped).
 - When both lanes touch the same area (e.g. C3 and C7 both touch Engine), run sequentially.
 - **Asset path and image spec:** Only [sprites-ui-assets.plan.md](.cursor/Plans/subplans/P001/zz-archive/sprites-ui-assets.plan.md) defines the asset inventory and `assets.json` path map; C2 creates the file, C9/admin consume it.
 
@@ -124,7 +157,7 @@ Completed items are listed here; update Next hand off above when a tier or task 
 
 ## Prioritized roadmap (controls our fate)
 
-Work is ordered in seven tiers. Complete each tier before advancing; the **Next hand off — Lane A** above points at the current tier.
+Work is ordered in seven tiers (plus optional post–Tier 7 work). Complete each tier before advancing; the **Next hand off — Lane A** above points at the current tier.
 
 | Tier | Name | Goal | Key deliverables |
 |------|------|------|-------------------|
@@ -134,9 +167,13 @@ Work is ordered in seven tiers. Complete each tier before advancing; the **Next 
 | **4** | New feature build-out | New functionality after 1–3 | Monetization stub (C8); in-game score HUD if not in Tier 2; optional: 5-iPhone E2E, lane accessibility IDs |
 | **5** | Tech debt and consolidation | Code consolidation and cleanup in iOS engine and tests | Single source for constants (design size, time epsilon, lane defaults); extract fallback segment and segment-time margin; test helpers and README; optional naming. See [Tier5-TechDebt-Consolidation.plan.md](.cursor/Plans/subplans/Tier5-TechDebt/Tier5-TechDebt-Consolidation.plan.md). |
 | **6** | Ship readiness and baseline alignment | Align docs and baseline; ship-readiness checklist | Single baseline for iOS tests (SPEC §7, tester.md, app-store-readiness); ship-readiness doc and Master-Plan path. See [Tier6-ShipReadiness.plan.md](.cursor/Plans/subplans/Tier6-ShipReadiness/Tier6-ShipReadiness.plan.md). |
-| **7** | App Store submission and first release | Store metadata, screenshots, submission checklist | Store listing doc (name, description, keywords, privacy, age); screenshot/preview checklist; submission checklist tied to app-store-readiness. See [Tier7-AppStoreSubmission.plan.md](.cursor/Plans/subplans/Tier7-AppStoreSubmission/Tier7-AppStoreSubmission.plan.md). |
+| **7** | App Store submission and first release | Store metadata, screenshots, submission checklist | Store listing doc (name, description, keywords, privacy, age); screenshot/preview checklist; submission checklist tied to app-store-readiness. See [Tier7-AppStoreSubmission.plan.md](.cursor/Plans/subplans/Tier7-AppStoreSubmission/Tier7-AppStoreSubmission.plan.md). **Complete:** T7-C1, T7-C2, T7-C3 done 2026-03-02. |
+| **After 7 (optional)** | Slide/jump duration + animated cat | Easier gameplay + cat as animation | Jump/slide = 2 obstacle lengths (1.1 s); cat = multi-frame run, jump, slide (no squash-and-stretch). **Complete (2026-03-02).** See [SlideJumpCatAnimation.plan.md](.cursor/Plans/subplans/SlideJumpCatAnimation/SlideJumpCatAnimation.plan.md). |
+| **After 7 (defect)** | Right-lane-tap visual/collision desync | Lane boundary tap no-op | Tap right/left at boundary no longer desyncs visual from hitbox. **Complete (2026-03-09).** See [RightLaneTap-VisualBug.plan.md](.cursor/Plans/subplans/RightLaneTap/RightLaneTap-VisualBug.plan.md). |
+| **After 7 (optional)** | Cat transparency and background fix | Idle/jump/slide transparent; no box flash | Extend transparency script to cat_run.png, cat_jump.png, cat_slide.png; PlayerNode use .clear. **Complete (2026-03-09).** See [CatTransparency-TransparencyAndBackgroundFix.plan.md](.cursor/Plans/subplans/CatTransparency/CatTransparency-TransparencyAndBackgroundFix.plan.md). |
+| **After 7 (optional)** | Seamless background + object integration | Seamless tiles, sprite grounding | 2× height sky/ground (786×1800 px); anchor (0.5,0), shadows, lane overlay. **Test plan ready.** See [SeamlessBackground-OptionsAndObjectIntegration.plan.md](.cursor/Plans/subplans/SeamlessBackground/SeamlessBackground-OptionsAndObjectIntegration.plan.md). |
 
-Tier 5 complete and pushed 2026-02-24. **Tier 6** complete 2026-02-28 (T6-C1 baseline alignment, T6-C2 ship-readiness doc). **Tier 7** is next: T7-C1 (Store metadata and listing) → T7-C2 (screenshots) → T7-C3 (submission checklist).
+Tier 5 complete and pushed 2026-02-24. **Tier 6** complete 2026-02-28 (T6-C1 baseline alignment, T6-C2 ship-readiness doc). **Tier 7** complete 2026-03-02 (T7-C1, T7-C2, T7-C3). **SlideJumpCatAnimation** (C1–C4) complete 2026-03-02. **RightLaneTap** (lane boundary tap desync) — complete 2026-03-09; pushed. **CatTransparency** — Complete (2026-03-09); C1+C2 done. **SeamlessBackground** — Blaster pipeline complete; C1 (assets) and C2 (object integration) pending.
 
 **Spec gaps (ideation through implementation):** Gap analysis (spec vs app) and ideation review ([Agents/ideation.md](Agents/ideation.md) — Quick MVP / Scalable / Innovative) identified one remaining spec violation: **first-revive-only** (SPECIFICATION.md §1: "after that, game over is final"). Tier 2 closed doc and monetization branch; first-revive-only is implemented in **P001-SpecGaps** before Tier 4. Plan: [P001-SpecGaps-ideation-to-impl.plan.md](.cursor/Plans/subplans/P001/P001-SpecGaps-ideation-to-impl.plan.md) (ideation phase done; build chunk [spec-gaps-first-revive-only.plan.md](.cursor/Plans/subplans/P001/spec-gaps-first-revive-only.plan.md)). Test checkpoint: Logic-Test + E2E J4 second-game-over path. Deferred to Tier 4: in-game score HUD, asset-based overlays (implementation-spec).
 
@@ -161,13 +198,40 @@ Archived plans live under `.cursor/Plans/zz-archives/` (folder names start with 
 | Scroller-10s | Scroller 10s loop and avatar sizing | 1 | 10s segment, seamless loop (same segment repeats), dog/boxes as obstacles, 44pt sprite scaling. Blaster complete; chunks S1–S4. See [.cursor/Plans/zz-archives/zz-Scroller-10s/Scroller-10s-loop-and-sizing.plan.md](.cursor/Plans/zz-archives/zz-Scroller-10s/Scroller-10s-loop-and-sizing.plan.md). | Complete (S1–S4; S1 config done, S2–S4 pushed 2026-02-23). | 92% | 92% |
 | Many-buildings-bg | Many-buildings scrolling background and sprite integration | 1 | Scrolling rooftop background (many buildings, tileable), dog/boxes integrate on runway; ui-designer + canva-ui-design; B5 (background layer + tiling). See [.cursor/Plans/zz-archives/zz-Many-buildings-bg/Many-buildings-bg.plan.md](.cursor/Plans/zz-archives/zz-Many-buildings-bg/Many-buildings-bg.plan.md). | Complete (BG1–BG4; BG1+BG2 assets done, BG3+BG4 pushed 2026-02-23). | N/A | High |
 | P001-SpecGaps | Spec gaps — ideation through implementation | 1 | One remaining spec violation (first-revive-only per SPEC §1); detailed plan from ideation through implementation. See [P001-SpecGaps-ideation-to-impl.plan.md](.cursor/Plans/subplans/P001/P001-SpecGaps-ideation-to-impl.plan.md); build chunk: [spec-gaps-first-revive-only.plan.md](.cursor/Plans/subplans/P001/spec-gaps-first-revive-only.plan.md). | **Complete (2026-02-24). Pushed 2026-02-24.** Code + E2E J4c + 65 tests. Logic-Test handoff per §6.1. | 95% | 95% |
-| P001-NoThanksMenu | No-Thanks Menu (iPhone Plus) — post–game-over menu | 1 | After "No thanks" on game-over alert, show second alert with "Play again" so user can start new game on all devices including iPhone Plus. See [NoThanks-Menu-iPhonePlus.plan.md](.cursor/Plans/subplans/P001/NoThanks-Menu-iPhonePlus.plan.md). Chunks C1 (VC second alert), C2 (J4b + Plus validation). | **Next:** C1 then C2. Blaster pipeline applied (Investigator, ui-test, logic-test, infra, Planner). | 95% | 92% |
+| P001-NoThanksMenu | No-Thanks Menu (iPhone Plus) — post–game-over menu | 1 | After "No thanks" on game-over alert, show second alert with "Play again" so user can start new game on all devices including iPhone Plus. See [NoThanks-Menu-iPhonePlus.plan.md](.cursor/Plans/subplans/P001/NoThanks-Menu-iPhonePlus.plan.md). Chunks C1 (VC second alert), C2 (J4b + Plus validation). | **Complete (2026-02-28).** C1 + C2 done; second alert + J4b + iPhone Plus validation. Blaster pipeline applied. | 95% | 92% |
 | P003 | Score HUD Safe Area and High-Score Paradigm | 1 | Fix score HUD covered by Dynamic Island/notch (iPhone 15 Plus etc.); safe-area-aware HUD position. Details in [P003-ScoreHUD-SafeArea.plan.md](.cursor/Plans/subplans/P003/P003-ScoreHUD-SafeArea.plan.md); Chunk 1: [Chunk1-SafeArea-Fix.plan.md](.cursor/Plans/subplans/P003/Chunk1-SafeArea-Fix.plan.md). | Chunks 1, 2, 3 done (2026-02-24). **Next:** optional backlog (5-iPhone E2E, lane IDs, etc.). | 95% | 93% |
 | DifficultySpawnRamp | Difficulty spawn rate ramp (1 per 5s, +0.1 every 5s) | 1 | Time-based obstacle spawn rate; config + Engine + GameScene + tests. Main plan: [difficulty-spawn-rate-ramp.plan.md](.cursor/Plans/difficulty-spawn-rate-ramp.plan.md). Details and chunks C1–C6 in sub-plans under `.cursor/Plans/subplans/DifficultySpawnRamp/`. | **C1–C6 + Logic-Test done (2026-02-24). Pushed 2026-02-24.** 75 unit + 8 UI tests pass. Checklist: [difficulty-spawn-rate-ramp-logic-test-checklist.md](docs/testing/logic-test/difficulty-spawn-rate-ramp-logic-test-checklist.md). | 95% | 95% |
 | Tier5-TechDebt | Tier 5 — Tech debt and consolidation | 1 | Code consolidation and cleanup in iOS engine and tests: single source for design size, time epsilon, lane constants; fallback segment factory; segment-time margin; GameScene test helper; test README; test naming; CollisionSystem in Engine. See [Tier5-TechDebt-Consolidation.plan.md](.cursor/Plans/subplans/Tier5-TechDebt/Tier5-TechDebt-Consolidation.plan.md). | T5-C1 through T5-C9 done (2026-02-24). | N/A | 92% |
 | Tier6-ShipReadiness | Tier 6 — Ship readiness and baseline alignment | 1 | Align SPEC §7, tester.md, app-store-readiness to one iOS test baseline; ship-readiness doc and Master-Plan path. See [Tier6-ShipReadiness.plan.md](.cursor/Plans/subplans/Tier6-ShipReadiness/Tier6-ShipReadiness.plan.md). | **Complete (2026-02-28).** T6-C1 + T6-C2 done. | High | High |
-| Tier7-AppStoreSubmission | Tier 7 — App Store submission and first release | 1 | Store metadata, screenshots, submission checklist. See [Tier7-AppStoreSubmission.plan.md](.cursor/Plans/subplans/Tier7-AppStoreSubmission/Tier7-AppStoreSubmission.plan.md). | **Next:** T7-C3 (Submission checklist). T7-C1, T7-C2 done 2026-02-28. | High | High |
+| Tier7-AppStoreSubmission | Tier 7 — App Store submission and first release | 1 | Store metadata, screenshots, submission checklist. See [Tier7-AppStoreSubmission.plan.md](.cursor/Plans/subplans/Tier7-AppStoreSubmission/Tier7-AppStoreSubmission.plan.md). | **Complete (2026-03-02).** T7-C1, T7-C2, T7-C3 done. | High | High |
 | SimulatorCurrentBuild | Simulator always current build | 1 | Ensure every simulator run uses latest build: doc (Manual simulator testing) + optional build-install-launch script. See [SimulatorCurrentBuild.plan.md](.cursor/Plans/subplans/SimulatorCurrentBuild/SimulatorCurrentBuild.plan.md). Chunks C1 (doc), C2 (optional script). Blaster pipeline applied. | **Complete. Pushed 2026-02-28.** | 95% | 95% |
+| SlideJumpCatAnimation | Slide/jump 2 obstacle lengths + animated cat | 1 | Easier gameplay: jump/slide last 1.1 s (2 × obstacle length). Cat = multi-frame animation (run, jump, slide) per ui-designer—no squash-and-stretch. Details and chunks C1–C4 in [SlideJumpCatAnimation.plan.md](.cursor/Plans/subplans/SlideJumpCatAnimation/SlideJumpCatAnimation.plan.md). Lane A (ios/ + variant); Lane B (assets/ + AssetConfig paths). | **Complete (2026-03-02).** C1–C4 done. | N/A | High |
+| ConfigVariantsDoc | Config variants README documentation (Lane B) | 1 | Document variant overrides in config/variants/README.md. Config only; no ios/ or assets/ code. See [ConfigVariantsDoc.plan.md](.cursor/Plans/subplans/ConfigVariantsDoc/ConfigVariantsDoc.plan.md). Chunk C1: document easy.json. | **Complete (2026-03-02).** C1 done; both variants documented. | N/A | High |
+| SeamlessBackground | Seamless background tiles + object integration | 2 | Option A (two layers) or B (single image); sprite grounding, shadows, lane overlay. Blaster pipeline applied. See [SeamlessBackground-OptionsAndObjectIntegration.plan.md](.cursor/Plans/subplans/SeamlessBackground/SeamlessBackground-OptionsAndObjectIntegration.plan.md). | **Test plan ready.** C1 (assets) → C2 (object integration). | 95% | 92% |
+| RightLaneTap | Lane boundary tap visual/collision desync | 1 | Tap right (or left) when cat on rightmost (or leftmost) lane desyncs visual from hitbox. Fix: clamp before moveToLane, early return at boundary. See [RightLaneTap-VisualBug.plan.md](.cursor/Plans/subplans/RightLaneTap/RightLaneTap-VisualBug.plan.md). | **Complete (2026-03-09).** C1+C2+C3 done; pushed. | 95% | 95% |
+| CatTransparency | Cat transparency and background fix | 1 | Fix idle/jump/slide opaque box: extend transparency script to cat_run.png, cat_jump.png, cat_slide.png; PlayerNode use .clear when textures present. See [CatTransparency-TransparencyAndBackgroundFix.plan.md](.cursor/Plans/subplans/CatTransparency/CatTransparency-TransparencyAndBackgroundFix.plan.md). | **Complete (2026-03-09).** C1+C2 done. | 95% | 95% |
+
+**CatTransparency Build Chunk Progress (Lane A + Lane B):**
+
+| Chunk | Description | State | Lane | Conf (root) | Conf (solution) | Note |
+|-------|-------------|-------|------|-------------|-----------------|------|
+| C1 | Extend transparency script to cat_run.png, cat_jump.png, cat_slide.png; run on all 19 files | **Done (2026-03-09)** | B | N/A | 95% | [C1-ScriptExtend.plan.md](.cursor/Plans/subplans/CatTransparency/C1-ScriptExtend.plan.md). |
+| C2 | PlayerNode: use .clear when runTexture present | **Done (2026-03-09)** | A | 95% | 95% | [C2-PlayerNodeClear.plan.md](.cursor/Plans/subplans/CatTransparency/C2-PlayerNodeClear.plan.md). |
+
+**RightLaneTap Build Chunk Progress (Lane A):**
+
+| Chunk | Description | State | Conf (root) | Conf (solution) | Note |
+|-------|-------------|-------|-------------|-----------------|------|
+| C1 | Fix: GameScene.triggerLaneLeft/Right — clamp before moveToLane, early return at boundary | **Done (2026-03-09)** | 95% | 95% | [RightLaneTap-VisualBug.plan.md](.cursor/Plans/subplans/RightLaneTap/RightLaneTap-VisualBug.plan.md). |
+| C2 | Unit tests: LaneBoundaryTapTests; playerContainerPositionForTesting | **Done (2026-03-09)** | 95% | 95% | 2 tests; right/left boundary no-op. |
+| C3 | Commit and push to origin/main | **Done (2026-03-09)** | N/A | N/A | Pushed to origin/main. |
+
+**SeamlessBackground Build Chunk Progress (Lane A + Lane B):**
+
+| Chunk | Description | State | Lane | Conf (root) | Conf (solution) | Note |
+|-------|-------------|-------|------|-------------|-----------------|------|
+| C1 | Background assets: sky.png, ground.png 786×1800 px, seamless top/bottom; ui-designer | Pending | B | 95% | 92% | [C1-BackgroundAssets.plan.md](.cursor/Plans/subplans/SeamlessBackground/C1-BackgroundAssets.plan.md). |
+| C2 | Object integration: anchor (0.5,0), shadows, lane overlay | Pending | A | 93% | 90% | [C2-ObjectIntegration.plan.md](.cursor/Plans/subplans/SeamlessBackground/C2-ObjectIntegration.plan.md). Depends on C1. |
 
 **DifficultySpawnRamp Build Chunk Progress (Lane A):**
 
@@ -192,8 +256,8 @@ Archived plans live under `.cursor/Plans/zz-archives/` (folder names start with 
 
 | Chunk | Description | State | Conf (root) | Conf (solution) | Note |
 |-------|-------------|-------|-------------|-----------------|------|
-| C1 | No thanks → second alert (GameViewController) | **Next** | 95% | 92% | [C1-NoThanks-SecondAlert.plan.md](.cursor/Plans/subplans/P001/NoThanksMenu/C1-NoThanks-SecondAlert.plan.md). |
-| C2 | J4b update and iPhone Plus validation | Pending | 95% | 92% | [C2-J4b-ValidatePlus.plan.md](.cursor/Plans/subplans/P001/NoThanksMenu/C2-J4b-ValidatePlus.plan.md). |
+| C1 | No thanks → second alert (GameViewController) | **Done (2026-02-28)** | 95% | 92% | Done; second alert + J4b + Plus validation. [C1-NoThanks-SecondAlert.plan.md](.cursor/Plans/subplans/P001/NoThanksMenu/C1-NoThanks-SecondAlert.plan.md). |
+| C2 | J4b update and iPhone Plus validation | **Done (2026-02-28)** | 95% | 92% | Done; second alert + J4b + Plus validation. [C2-J4b-ValidatePlus.plan.md](.cursor/Plans/subplans/P001/NoThanksMenu/C2-J4b-ValidatePlus.plan.md). |
 
 **Tier 5 (Tech debt and consolidation) Build Chunk Progress (Lane A):**
 
@@ -222,7 +286,7 @@ Archived plans live under `.cursor/Plans/zz-archives/` (folder names start with 
 |-------|-------------|-------|-------------|-----------------|------|
 | T7-C1 | Store metadata and listing: docs/app-store-listing.md (name, subtitle, description, keywords, privacy, age) | **Done (2026-02-28)** | High | High | [T7-C1-StoreMetadata.plan.md](.cursor/Plans/subplans/Tier7-AppStoreSubmission/T7-C1-StoreMetadata.plan.md). |
 | T7-C2 | Screenshots and previews: checklist + required sizes; capture method | Done (2026-02-28) | High | High | docs/app-store-screenshots.md; app-store-readiness, app-store-listing updated. |
-| T7-C3 | Submission checklist: link app-store-readiness to first submission; App Store Connect notes | **Next** | Medium | High | [T7-C3-SubmissionChecklist.plan.md](.cursor/Plans/subplans/Tier7-AppStoreSubmission/T7-C3-SubmissionChecklist.plan.md). After T7-C2. |
+| T7-C3 | Submission checklist: link app-store-readiness to first submission; App Store Connect notes | **Done (2026-03-02)** | Medium | High | [T7-C3-SubmissionChecklist.plan.md](.cursor/Plans/subplans/Tier7-AppStoreSubmission/T7-C3-SubmissionChecklist.plan.md). |
 
 **SimulatorCurrentBuild Build Chunk Progress (Lane A):**
 
@@ -230,6 +294,15 @@ Archived plans live under `.cursor/Plans/zz-archives/` (folder names start with 
 |-------|-------------|-------|-------------|-----------------|------|
 | C1 | Doc: "Manual simulator testing" (app-store-readiness + optional tester.md) | **Done (2026-02-28)** | 95% | 95% | [C1-Doc.plan.md](.cursor/Plans/subplans/SimulatorCurrentBuild/C1-Doc.plan.md). |
 | C2 | Optional: ios/run-simulator.sh + npm script ios:simulator | **Done (2026-02-28)** | 95% | 92% | [C2-Script.plan.md](.cursor/Plans/subplans/SimulatorCurrentBuild/C2-Script.plan.md). |
+
+**SlideJumpCatAnimation Build Chunk Progress (Lane A + Lane B):**
+
+| Chunk | Description | State | Lane | Conf (solution) | Note |
+|-------|-------------|-------|------|-----------------|------|
+| C1 | Duration = 2 obstacle lengths: variant.json jumpDurationSeconds 1.1, slideDurationSeconds 1.1; update tests if they assert 0.4/0.5 | **Done (2026-03-02)** | A | High | [SlideJumpCatAnimation.plan.md](.cursor/Plans/subplans/SlideJumpCatAnimation/SlideJumpCatAnimation.plan.md). |
+| C2 | Config + assets: assets.json + AssetConfig character.jump, character.slide; assets in assets/character/ (Lane B or ui-designer) | **Done (2026-03-02)** | B then A | High | Optional run frames later. |
+| C3 | PlayerNode: switch to jump/slide texture or frames during action; restore run when done; no scale/squash of run image | **Done (2026-03-02)** | A | High | Collision unchanged. |
+| C4 | Jump easing (easeIn/easeOut on motion); optional run cycle when idle if multi-frame run exists | **Done (2026-03-02)** | A | High | Visual polish. |
 
 **Scroller-10s chunks (Lane A = ios/, Lane B = config/):**
 
@@ -271,6 +344,12 @@ Archived plans live under `.cursor/Plans/zz-archives/` (folder names start with 
 | BG3 | B5: background layer + vertical tiling in GameScene; runway band aligns with lanes | Done (pushed 2026-02-23) | A | GameScene.swift |
 | BG4 | Validation: 5-iPhone simulator, ui-test journey, screenshot baseline | Done (pushed 2026-02-23) | A + ui-test | See BG4-validation-2026-02-23.md |
 
+**ConfigVariantsDoc Build Chunk Progress (Lane B):**
+
+| Chunk | Description | State | Note |
+|-------|-------------|-------|------|
+| C1 | Document easy.json in config/variants/README.md | **Done (2026-03-02)** | [C1-DocEasy.plan.md](.cursor/Plans/subplans/ConfigVariantsDoc/C1-DocEasy.plan.md). Config-only. Both easy.json and difficulty-spawn-ramp.json now documented. |
+
 **P002 Build Chunk Progress (Lane A):**
 
 | Chunk | Description | State | Conf (root) | Conf (solution) | Note |
@@ -310,7 +389,12 @@ Every plan has a path to archive: either complete the remaining work then move t
 | **P001-SpecGaps** | When first-revive-only is complete (code + E2E J4 + Logic-Test): update matrix to Complete; move [P001-SpecGaps-ideation-to-impl.plan.md](.cursor/Plans/subplans/P001/P001-SpecGaps-ideation-to-impl.plan.md) and [spec-gaps-first-revive-only.plan.md](.cursor/Plans/subplans/P001/spec-gaps-first-revive-only.plan.md) to `subplans/P001/zz-archive/`; set Next hand off to Tier 4. |
 | **Tier 5 (Tech debt and consolidation)** | **T5-C1–T5-C9 complete 2026-02-24.** Plan Matrix Tier5-TechDebt row updated. Next hand off set to: invoke planner to define next tier or roadmap item. Optionally move [Tier5-TechDebt-Consolidation.plan.md](.cursor/Plans/subplans/Tier5-TechDebt/Tier5-TechDebt-Consolidation.plan.md) and chunk plans to `subplans/Tier5-TechDebt/zz-archive/` (or leave in place). |
 | **Tier 6 (Ship readiness and baseline alignment)** | **T6-C1 and T6-C2 complete 2026-02-28.** Plan: [Tier6-ShipReadiness.plan.md](.cursor/Plans/subplans/Tier6-ShipReadiness/Tier6-ShipReadiness.plan.md). Master-Plan Tier 6 row and path-to-archive updated. Optionally move plan and T6-C1 to `subplans/Tier6-ShipReadiness/zz-archive/` (or leave in place). |
-| **Tier 7 (App Store submission and first release)** | Plan: [Tier7-AppStoreSubmission.plan.md](.cursor/Plans/subplans/Tier7-AppStoreSubmission/Tier7-AppStoreSubmission.plan.md). Chunks T7-C1 (store metadata) → T7-C3 (submission checklist). When T7-C1–T7-C3 done: update Master-Plan Tier 7 row; optionally move plan to `subplans/Tier7-AppStoreSubmission/zz-archive/`. |
+| **Tier 7 (App Store submission and first release)** | **T7-C1–T7-C3 done 2026-03-02.** Plan: [Tier7-AppStoreSubmission.plan.md](.cursor/Plans/subplans/Tier7-AppStoreSubmission/Tier7-AppStoreSubmission.plan.md). Optionally move plan to `subplans/Tier7-AppStoreSubmission/zz-archive/`. |
+| **SlideJumpCatAnimation (slide/jump 2 lengths + animated cat)** | **C1–C4 done 2026-03-02.** Plan: [SlideJumpCatAnimation.plan.md](.cursor/Plans/subplans/SlideJumpCatAnimation/SlideJumpCatAnimation.plan.md). Optionally move plan to `subplans/SlideJumpCatAnimation/zz-archive/`. |
+| **ConfigVariantsDoc (Lane B)** | **C1 done 2026-03-02.** Both variants documented. Plan complete; optionally move to `subplans/ConfigVariantsDoc/zz-archive/`. |
+| **SeamlessBackground (Lane A + Lane B)** | When C1+C2 done: update matrix to Complete; optionally move plan and chunks to `subplans/SeamlessBackground/zz-archive/`. |
+| **RightLaneTap (Lane A)** | When C3 (commit) done: update matrix to Complete; add push date to History; optionally move plan to `subplans/RightLaneTap/zz-archive/`. |
+| **CatTransparency (Lane A + Lane B)** | **C1+C2 done 2026-03-09.** Update matrix to Complete; optionally move plan and chunks to `subplans/CatTransparency/zz-archive/`. |
 
 ---
 
@@ -432,4 +516,5 @@ Scaffolded deliverables are grouped by repo location and owning chunk.
 Features are maintained in this section. An optional `features-for-planner.md` at `.cursor/Plans/` may be used if a separate doc is needed (planner owns both).
 
 - **CatRunner**: 1-player endless runner; 5 lanes; procedural segments; single avatar.
+- **SlideJumpCatAnimation (optional after Tier 7):** Slide and jump last 2 obstacle lengths (1.1 s); cat is multi-frame animation (run, jump, slide) per ui-designer—no squash-and-stretch. Plan: [SlideJumpCatAnimation.plan.md](.cursor/Plans/subplans/SlideJumpCatAnimation/SlideJumpCatAnimation.plan.md).
 - **Scope**: iOS (Swift + SpriteKit), in-repo VariantConfig, Next.js admin scaffold, GitHub Actions CI/CD.
