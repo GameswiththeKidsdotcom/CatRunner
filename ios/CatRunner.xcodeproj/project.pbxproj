@@ -40,6 +40,7 @@
 		T1000012 /* SegmentGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = T2000010 /* SegmentGeneratorTests.swift */; };
 		T1000013 /* DifficultySpawnRampGameSceneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = T2000011 /* DifficultySpawnRampGameSceneTests.swift */; };
 		T1000014 /* GameSceneTestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = T2000012 /* GameSceneTestHelper.swift */; };
+		T1000015 /* LaneBoundaryTapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = T2000013 /* LaneBoundaryTapTests.swift */; };
 		T1000007 /* SpriteKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3000001 /* SpriteKit.framework */; };
 		T1000008 /* GameplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3000002 /* GameplayKit.framework */; };
 		U1000001 /* JourneyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = U2000001 /* JourneyTests.swift */; };
@@ -82,6 +83,7 @@
 		T2000010 /* SegmentGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentGeneratorTests.swift; sourceTree = "<group>"; };
 		T2000011 /* DifficultySpawnRampGameSceneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DifficultySpawnRampGameSceneTests.swift; sourceTree = "<group>"; };
 		T2000012 /* GameSceneTestHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneTestHelper.swift; sourceTree = "<group>"; };
+		T2000013 /* LaneBoundaryTapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaneBoundaryTapTests.swift; sourceTree = "<group>"; };
 		U0000001 /* CatRunnerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CatRunnerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		U2000001 /* JourneyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneyTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -165,6 +167,7 @@
 				T2000004 /* C7MechanicsCollisionTests.swift */,
 				T2000005 /* DifficultyScalerTests.swift */,
 				T2000006 /* ScoreKeeperTests.swift */,
+				T2000013 /* LaneBoundaryTapTests.swift */,
 			);
 			path = CatRunnerTests;
 			sourceTree = "<group>";
@@ -390,6 +393,7 @@
 				T1000012 /* SegmentGeneratorTests.swift in Sources */,
 				T1000013 /* DifficultySpawnRampGameSceneTests.swift in Sources */,
 				T1000014 /* GameSceneTestHelper.swift in Sources */,
+				T1000015 /* LaneBoundaryTapTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -16,8 +16,8 @@ import GameplayKit
 /// B4/P002 — Points per second for time-based vertical offset of obstacle/power-up/enemy sprites (move from top toward player).
 private let SegmentScrollSpeed: CGFloat = 200
 
-/// Scroller 10s — Max dimension (pt) for obstacle and enemy sprites; scale to avatar size, preserve aspect ratio.
-private let SegmentSpriteMaxDimension: CGFloat = 44
+/// Scroller 10s — Max dimension (pt) for obstacle and enemy sprites; scale to avatar size, preserve aspect ratio. Increased 25% (88 → 110) so obstacle art is clearly visible.
+private let SegmentSpriteMaxDimension: CGFloat = 110
 
 class GameScene: SKScene {
 
@@ -41,6 +41,8 @@ class GameScene: SKScene {
 
     /// C7 — Player node (set in addPlayer).
     private weak var playerNode: PlayerNode?
+    /// C2 — Container for player + shadow; moves with lane; player jumps relative to this.
+    private var playerContainerNode: SKNode?
 
     /// C7 — Delegate for game-over, power-up, slowdown (C8).
     weak var gameDelegate: GameSceneDelegate?
@@ -76,6 +78,8 @@ class GameScene: SKScene {
     internal var checkpointElapsedTimeForTesting: TimeInterval { checkpointElapsedTime }
     internal func advanceToNextSegmentForTesting() { advanceToNextSegment() }
     internal func restartCurrentSegmentForTesting() { restartCurrentSegment() }
+    /// Right-lane-tap bug: expose container position for boundary no-op test.
+    internal var playerContainerPositionForTesting: CGPoint? { playerContainerNode?.position }
 
     /// C8 — Score and high score; multiplier from power-up (e.g. speedBoost).
     private let scoreKeeper = ScoreKeeper()
@@ -111,12 +115,12 @@ class GameScene: SKScene {
 
     /// B4 — Container for obstacle and power-up sprites; z-order below player. Cleared when segment advances.
     private let segmentStrip = SKNode()
-    /// B4 — Sprites for current segment obstacles; positions updated each frame.
-    private var obstacleSpriteNodes: [(ObstaclePlacement, SKSpriteNode)] = []
-    /// B4 — Sprites for current segment power-up (if any); position updated each frame.
-    private var powerUpSpriteNodes: [(PowerUpPlacement, SKSpriteNode)] = []
-    /// P002 — Sprites for optional segment enemy (e.g. dog); position updated each frame.
-    private var enemySpriteNodes: [(EnemyPlacement, SKSpriteNode)] = []
+    /// B4 — Containers (shadow + sprite) for current segment obstacles; positions updated each frame. C2: container holds shadow (z 0) and sprite (z 1).
+    private var obstacleSpriteNodes: [(ObstaclePlacement, SKNode)] = []
+    /// B4 — Containers for current segment power-up (if any); position updated each frame.
+    private var powerUpSpriteNodes: [(PowerUpPlacement, SKNode)] = []
+    /// P002 — Containers for optional segment enemy (e.g. dog); position updated each frame.
+    private var enemySpriteNodes: [(EnemyPlacement, SKNode)] = []
 
     /// C7 — Swipe detection.
     private var touchStartPosition: CGPoint?
@@ -143,6 +147,48 @@ class GameScene: SKScene {
         setupScoreHUD()
         startSegment()
         triggerGameOverForE2EIfRequested()
+        // #region agent log
+        CollisionSystem.collisionDebugLog = { [weak self] obs, hitResult, playerLane, isJumping, isSliding, segTime in
+            let hitStr: String
+            switch hitResult {
+            case .miss: hitStr = "miss"
+            case .hitPassable: hitStr = "hitPassable"
+            case .hitSlowdown: hitStr = "hitSlowdown"
+            case .hitInstantFail: hitStr = "hitInstantFail"
+            }
+            let hypothesisId: String
+            if obs.typeId == "instantFail" && !isSliding { hypothesisId = "A" }
+            else if (obs.typeId == "passable" || obs.typeId == "slowdown") && !isJumping { hypothesisId = "B" }
+            else if hitResult == .miss { hypothesisId = "success" }
+            else { hypothesisId = "other" }
+            let payload: [String: Any] = [
+                "sessionId": "ed5bd7",
+                "location": "GameScene:collisionLog",
+                "message": "collision overlap",
+                "data": [
+                    "typeId": obs.typeId,
+                    "startLane": obs.startLane,
+                    "laneSpan": obs.laneSpan,
+                    "timeOffset": obs.timeOffset,
+                    "playerLane": playerLane,
+                    "isJumping": isJumping,
+                    "isSliding": isSliding,
+                    "segmentTime": segTime,
+                    "hitResult": hitStr
+                ],
+                "timestamp": Int64(Date().timeIntervalSince1970 * 1000),
+                "hypothesisId": hypothesisId
+            ]
+            guard let url = URL(string: "http://127.0.0.1:7781/ingest/228ee501-d47f-4f54-bb0d-c641d99d4416"),
+                  let body = try? JSONSerialization.data(withJSONObject: payload) else { return }
+            var req = URLRequest(url: url)
+            req.httpMethod = "POST"
+            req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            req.setValue("ed5bd7", forHTTPHeaderField: "X-Debug-Session-Id")
+            req.httpBody = body
+            URLSession.shared.dataTask(with: req).resume()
+        }
+        // #endregion
     }
 
     /// P003 Chunk 1 — In-scene offset (pt) from safe-area bottom to HUD (label top).
@@ -303,33 +349,66 @@ class GameScene: SKScene {
         laneY = size.height * 0.28
     }
 
-    /// Draw vertical lane lines for visibility. P002: from player upward to top of screen.
+    /// Draw vertical lane lines for visibility. P002: from player upward to top of screen. Visual lanes: clearer lines and optional lane bands so obstacles clearly show which lane they're in.
     private func drawLaneLines() {
         let top = size.height
         let bottom = laneY
+        let laneHeight = top - bottom
+        // Subtle lane bands (alternating) so each lane is visually distinct
+        for i in 0..<laneXPositions.count {
+            let x = laneXPositions[i]
+            let left = i > 0 ? (laneXPositions[i - 1] + x) / 2 : x - (laneXPositions.count > 1 ? (laneXPositions[1] - laneXPositions[0]) / 2 : 20)
+            let right = i < laneXPositions.count - 1 ? (x + laneXPositions[i + 1]) / 2 : x + (laneXPositions.count > 1 ? (laneXPositions[laneXPositions.count - 1] - laneXPositions[laneXPositions.count - 2]) / 2 : 20)
+            let bandPath = CGMutablePath()
+            bandPath.move(to: CGPoint(x: left, y: bottom))
+            bandPath.addLine(to: CGPoint(x: left, y: top))
+            bandPath.addLine(to: CGPoint(x: right, y: top))
+            bandPath.addLine(to: CGPoint(x: right, y: bottom))
+            bandPath.closeSubpath()
+            let band = SKShapeNode(path: bandPath)
+            band.fillColor = (i % 2 == 0) ? SKColor.white.withAlphaComponent(0.03) : SKColor.white.withAlphaComponent(0.01)
+            band.strokeColor = .clear
+            band.name = "laneBand_\(i)"
+            band.zPosition = 4.5
+            addChild(band)
+        }
+        // Clear vertical lane dividers
         for (i, x) in laneXPositions.enumerated() {
             let path = CGMutablePath()
             path.move(to: CGPoint(x: x, y: bottom))
             path.addLine(to: CGPoint(x: x, y: top))
             let line = SKShapeNode(path: path)
-            line.strokeColor = SKColor.white.withAlphaComponent(0.35)
-            line.lineWidth = 2
+            line.strokeColor = SKColor.white.withAlphaComponent(0.5)
+            line.lineWidth = 2.5
             line.name = "lane_\(i)"
+            line.zPosition = 6
             addChild(line)
         }
     }
 
-    /// Add PlayerNode at playerStartLane (center when 5 lanes). C7: state and config-driven. B3: character.run texture when available.
+    /// Add PlayerNode at playerStartLane (center when 5 lanes). C7: state and config-driven. B3: character.run texture when available. C3: run/jump/slide textures. C2: anchor (0.5,0), shadow, container so shadow stays on ground during jump.
     private func addPlayer() {
         let runTexture = assetConfig?.texture(forKey: "character.run")
-        let player = PlayerNode(texture: runTexture)
+        let jumpTexture = assetConfig?.texture(forKey: "character.jump")
+        let slideTexture = assetConfig?.texture(forKey: "character.slide")
+        let runFrameTextures = assetConfig?.runFrameTextures()
+        let jumpFrameTextures = assetConfig?.jumpFrameTextures()
+        let slideFrameTextures = assetConfig?.slideFrameTextures()
+        let player = PlayerNode(runTexture: runTexture, jumpTexture: jumpTexture, slideTexture: slideTexture, runFrameTextures: runFrameTextures, jumpFrameTextures: jumpFrameTextures, slideFrameTextures: slideFrameTextures)
+        player.anchorPoint = CGPoint(x: 0.5, y: 0)
         let lane = playerStartLane
         let x = laneXPosition(for: lane)
-        player.position = CGPoint(x: x, y: laneY)
+        let container = SKNode()
+        container.position = CGPoint(x: x, y: laneY)
+        Self.addShadowUnderSprite(player, container: container)
+        container.addChild(player)
+        addChild(container)
         player.restPositionY = laneY
         player.setInitialLane(lane, laneCount: laneCount)
         player.name = "player"
-        addChild(player)
+        player.containerNode = container
+        playerContainerNode = container
+        player.startRunCycleIfNeeded()
         playerNode = player
     }
 
@@ -392,9 +471,6 @@ class GameScene: SKScene {
         segmentTime = 0
         refreshSegmentSprites()
         playerNode?.moveToLane(playerStartLane, laneCount: laneCount, xPosition: laneXPosition(for: playerStartLane))
-        if let player = playerNode {
-            player.position = CGPoint(x: laneXPosition(for: playerStartLane), y: laneY)
-        }
     }
 
     /// Lane index (0..<laneCount) → x position.
@@ -423,6 +499,19 @@ class GameScene: SKScene {
         "enemies.\(typeId)"
     }
 
+    /// C2 — Add procedural shadow under a sprite. Shadow is a dark ellipse; add as sibling (z 0) so it renders behind sprite (z 1).
+    private static func addShadowUnderSprite(_ sprite: SKSpriteNode, container: SKNode) {
+        let w = sprite.size.width
+        let h = sprite.size.height
+        let shadowW = w * 1.2
+        let shadowH: CGFloat = 10
+        let shadow = SKSpriteNode(color: .black.withAlphaComponent(0.3), size: CGSize(width: shadowW, height: shadowH))
+        shadow.name = "spriteShadow"
+        shadow.zPosition = 0
+        shadow.position = CGPoint(x: 0, y: -4)
+        container.addChild(shadow)
+    }
+
     /// Scroller 10s — Scale size so max dimension ≤ SegmentSpriteMaxDimension; cap scale at 1.0 to never upscale.
     private static func scaledSpriteSize(textureSize: CGSize, maxDimension: CGFloat = SegmentSpriteMaxDimension) -> CGSize {
         let w = textureSize.width
@@ -445,65 +534,93 @@ class GameScene: SKScene {
         for obs in segment.obstacles {
             let key = Self.assetKeyForObstacle(typeId: obs.typeId)
             let texture = assetConfig?.texture(forKey: key)
-            let node: SKSpriteNode
+            let sprite: SKSpriteNode
             if let texture = texture {
                 let sz = Self.scaledSpriteSize(textureSize: texture.size())
-                node = SKSpriteNode(texture: texture, color: .clear, size: sz)
+                sprite = SKSpriteNode(texture: texture, color: .clear, size: sz)
             } else {
-                node = SKSpriteNode(color: .orange, size: placeholderSize)
+                sprite = SKSpriteNode(color: .orange, size: placeholderSize)
             }
-            node.name = "obstacle_\(obs.typeId)"
-            node.zPosition = 1
-            segmentStrip.addChild(node)
-            obstacleSpriteNodes.append((obs, node))
+            sprite.anchorPoint = CGPoint(x: 0.5, y: 0)
+            sprite.name = "obstacle_\(obs.typeId)"
+            sprite.zPosition = 1
+            let container = SKNode()
+            Self.addShadowUnderSprite(sprite, container: container)
+            container.addChild(sprite)
+            segmentStrip.addChild(container)
+            let spriteH = sprite.size.height
+            let helpLabel = SKLabelNode(fontNamed: "AvenirNext-Medium")
+            helpLabel.name = "helpLabel"
+            helpLabel.fontSize = 14
+            helpLabel.fontColor = .white
+            helpLabel.horizontalAlignmentMode = .center
+            if obs.typeId == "instantFail" {
+                helpLabel.text = "Slide"
+                helpLabel.verticalAlignmentMode = .bottom
+                helpLabel.position = CGPoint(x: 0, y: spriteH / 2 + 6)
+            } else {
+                helpLabel.text = "Jump"
+                helpLabel.verticalAlignmentMode = .top
+                helpLabel.position = CGPoint(x: 0, y: -spriteH / 2 - 6)
+            }
+            sprite.addChild(helpLabel)
+            obstacleSpriteNodes.append((obs, container))
         }
         if let pu = segment.powerUp {
             let key = Self.assetKeyForPowerUp(typeId: pu.typeId)
             let texture = assetConfig?.texture(forKey: key)
-            let node: SKSpriteNode
+            let sprite: SKSpriteNode
             if let texture = texture {
-                node = SKSpriteNode(texture: texture, color: .clear, size: texture.size())
+                sprite = SKSpriteNode(texture: texture, color: .clear, size: texture.size())
             } else {
-                node = SKSpriteNode(color: .systemGreen, size: placeholderSize)
+                sprite = SKSpriteNode(color: .systemGreen, size: placeholderSize)
             }
-            node.name = "powerup_\(pu.typeId)"
-            node.zPosition = 1
-            segmentStrip.addChild(node)
-            powerUpSpriteNodes.append((pu, node))
+            sprite.anchorPoint = CGPoint(x: 0.5, y: 0)
+            sprite.name = "powerup_\(pu.typeId)"
+            sprite.zPosition = 1
+            let container = SKNode()
+            Self.addShadowUnderSprite(sprite, container: container)
+            container.addChild(sprite)
+            segmentStrip.addChild(container)
+            powerUpSpriteNodes.append((pu, container))
         }
         if let enemy = segment.enemy {
             let key = Self.assetKeyForEnemy(typeId: enemy.typeId)
             let texture = assetConfig?.texture(forKey: key)
-            let node: SKSpriteNode
+            let sprite: SKSpriteNode
             if let texture = texture {
                 let sz = Self.scaledSpriteSize(textureSize: texture.size())
-                node = SKSpriteNode(texture: texture, color: .clear, size: sz)
+                sprite = SKSpriteNode(texture: texture, color: .clear, size: sz)
             } else {
-                node = SKSpriteNode(color: .purple, size: placeholderSize)
+                sprite = SKSpriteNode(color: .purple, size: placeholderSize)
             }
-            node.name = "enemy_\(enemy.typeId)"
-            node.zPosition = 1
-            segmentStrip.addChild(node)
-            enemySpriteNodes.append((enemy, node))
+            sprite.anchorPoint = CGPoint(x: 0.5, y: 0)
+            sprite.name = "enemy_\(enemy.typeId)"
+            sprite.zPosition = 1
+            let container = SKNode()
+            Self.addShadowUnderSprite(sprite, container: container)
+            container.addChild(sprite)
+            segmentStrip.addChild(container)
+            enemySpriteNodes.append((enemy, container))
         }
     }
 
-    /// B4/P002 — Update sprite positions from segment time and lane layout (vertical time-based scroll: top → player).
+    /// B4/P002 — Update sprite positions from segment time and lane layout (vertical time-based scroll: top → player). C2: positions are container nodes.
     private func updateSegmentSpritePositions() {
-        for (obs, node) in obstacleSpriteNodes {
+        for (obs, container) in obstacleSpriteNodes {
             let centerX = (laneXPosition(for: obs.startLane) + laneXPosition(for: obs.startLane + obs.laneSpan - 1)) / 2
             let yOffset = CGFloat(obs.timeOffset - segmentTime) * SegmentScrollSpeed
-            node.position = CGPoint(x: centerX, y: laneY + yOffset)
+            container.position = CGPoint(x: centerX, y: laneY + yOffset)
         }
-        for (pu, node) in powerUpSpriteNodes {
+        for (pu, container) in powerUpSpriteNodes {
             let centerX = laneXPosition(for: pu.laneIndex)
             let yOffset = CGFloat(pu.timeOffset - segmentTime) * SegmentScrollSpeed
-            node.position = CGPoint(x: centerX, y: laneY + yOffset)
+            container.position = CGPoint(x: centerX, y: laneY + yOffset)
         }
-        for (enemy, node) in enemySpriteNodes {
+        for (enemy, container) in enemySpriteNodes {
             let centerX = laneXPosition(for: enemy.laneIndex)
             let yOffset = CGFloat(enemy.timeOffset - segmentTime) * SegmentScrollSpeed
-            node.position = CGPoint(x: centerX, y: laneY + yOffset)
+            container.position = CGPoint(x: centerX, y: laneY + yOffset)
         }
     }
 
@@ -536,13 +653,17 @@ class GameScene: SKScene {
     private func triggerLaneLeft() {
         guard let player = playerNode else { return }
         let next = player.currentLaneIndex - 1
-        _ = player.moveToLane(next, laneCount: laneCount, xPosition: laneXPosition(for: next))
+        let nextClamped = min(max(0, next), laneCount - 1)
+        guard nextClamped != player.currentLaneIndex else { return }
+        _ = player.moveToLane(nextClamped, laneCount: laneCount, xPosition: laneXPosition(for: nextClamped))
     }
 
     private func triggerLaneRight() {
         guard let player = playerNode else { return }
         let next = player.currentLaneIndex + 1
-        _ = player.moveToLane(next, laneCount: laneCount, xPosition: laneXPosition(for: next))
+        let nextClamped = min(max(0, next), laneCount - 1)
+        guard nextClamped != player.currentLaneIndex else { return }
+        _ = player.moveToLane(nextClamped, laneCount: laneCount, xPosition: laneXPosition(for: nextClamped))
     }
 
     /// E2E / accessibility: tap-to-move lane left. Used by LaneTapLeft overlay in GameViewController.
