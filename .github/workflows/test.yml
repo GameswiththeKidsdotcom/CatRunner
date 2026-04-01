@@ -1,4 +1,5 @@
 # C11 — CI: Run tests. CatRunnerTests (iOS unit) + CatRunnerUITests (iOS E2E J1–J5), Admin E2E (Playwright J6–J9).
+# Tier B (iOSMultiVersionMatrix C2): `test-ios-runtime-matrix` — device × iOS runtime on schedule or manual dispatch only (not every PR).
 
 name: Test
 
@@ -7,9 +8,25 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      run_runtime_matrix:
+        description: 'Run optional test-ios-runtime-matrix job (multi-runtime cells; ~6 xcodebuild runs)'
+        required: false
+        type: boolean
+        default: false
+      dump_ios_sim_inventory:
+        description: 'Print Xcode + simctl inventory only (no tests)'
+        required: false
+        type: boolean
+        default: false
+  schedule:
+    # Weekly Monday 06:00 UTC — optional runtime-expanded matrix (cost-controlled)
+    - cron: '0 6 * * 1'
 
 jobs:
   test:
+    if: github.event_name == 'push' || github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && !inputs.dump_ios_sim_inventory && !inputs.run_runtime_matrix)
     runs-on: macos-14
     steps:
       - name: Checkout
@@ -42,6 +59,7 @@ jobs:
   # Tier 3 — Optional second simulator for viewport coverage (P002 matrix).
   test-ios-se:
     name: iOS tests (iPhone SE)
+    if: github.event_name == 'push' || github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && !inputs.dump_ios_sim_inventory && !inputs.run_runtime_matrix)
     runs-on: macos-14
     steps:
       - name: Checkout
@@ -73,6 +91,7 @@ jobs:
   # E2E Investigation 4 — 5-iPhone viewport matrix (e2e-spec-journeys.plan.md).
   test-ios-matrix:
     name: iOS E2E matrix (${{ matrix.device }})
+    if: github.event_name == 'push' || github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && !inputs.dump_ios_sim_inventory && !inputs.run_runtime_matrix)
     runs-on: macos-14
     strategy:
       fail-fast: false
@@ -112,8 +131,107 @@ jobs:
           name: test-output-${{ matrix.device }}
           path: ios/test-output-matrix.log
 
+  # iOSMultiVersionMatrix C1/C2 — print inventory on hosted runner (optional manual dispatch).
+  ios-sim-inventory:
+    name: iOS simulator inventory (simctl)
+    if: github.event_name == 'workflow_dispatch' && inputs.dump_ios_sim_inventory
+    runs-on: macos-14
+    steps:
+      - name: Default Xcode.app (runner symlink)
+        run: |
+          echo "### Default toolchain" >> $GITHUB_STEP_SUMMARY
+          xcodebuild -version 2>&1 | tee -a $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          xcrun simctl list runtimes available 2>&1 | tee -a $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          xcrun simctl list devices available 2>&1 | head -120 | tee -a $GITHUB_STEP_SUMMARY
+
+      - name: Xcode 16.2 (iOS 18.x simulators)
+        run: |
+          echo "### Xcode_16.2.app" >> $GITHUB_STEP_SUMMARY
+          export DEVELOPER_DIR=/Applications/Xcode_16.2.app
+          xcodebuild -version 2>&1 | tee -a $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          xcrun simctl list runtimes available 2>&1 | tee -a $GITHUB_STEP_SUMMARY
+
+  # iOSMultiVersionMatrix C2 — Tier B: subset of device × OS across default Xcode (iOS 17.x latest) vs Xcode 16.2 (iOS 18.2).
+  # Pairs validated against actions/runner-images macos-14-arm64 Readme (image 20260325.x): Simulator iOS 17.5 + 18.1/18.2 device lists.
+  test-ios-runtime-matrix:
+    name: iOS runtime matrix (${{ matrix.slug }})
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.run_runtime_matrix)
+    runs-on: macos-14
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - device: "iPhone 16"
+            os: latest
+            xcode: default
+            slug: iphone-16-latest
+          - device: "iPhone 15"
+            os: latest
+            xcode: default
+            slug: iphone-15-latest
+          - device: "iPhone SE (3rd generation)"
+            os: latest
+            xcode: default
+            slug: iphone-se3-latest
+          - device: "iPhone 16"
+            os: "18.2"
+            xcode: "16.2"
+            slug: iphone-16-os182
+          - device: "iPhone 16 Pro Max"
+            os: "18.2"
+            xcode: "16.2"
+            slug: iphone-16promax-os182
+          - device: "iPhone SE (3rd generation)"
+            os: "18.2"
+            xcode: "16.2"
+            slug: iphone-se3-os182
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run tests (${{ matrix.slug }})
+        working-directory: ios
+        env:
+          MATRIX_XCODE: ${{ matrix.xcode }}
+          MATRIX_DEVICE: ${{ matrix.device }}
+          MATRIX_OS: ${{ matrix.os }}
+        run: |
+          set -euo pipefail
+          if [ "$MATRIX_XCODE" = "16.2" ]; then
+            export DEVELOPER_DIR="/Applications/Xcode_16.2.app"
+            echo "DEVELOPER_DIR=$DEVELOPER_DIR"
+          fi
+          xcodebuild -version
+          DEST="platform=iOS Simulator,name=${MATRIX_DEVICE},OS=${MATRIX_OS}"
+          echo "Destination: $DEST"
+          xcodebuild -scheme CatRunner \
+            -destination "$DEST" \
+            -configuration Debug \
+            test 2>&1 | tee test-output-runtime.log
+
+      - name: Test report (${{ matrix.slug }})
+        if: always()
+        run: |
+          echo "## iOS runtime matrix: ${{ matrix.slug }}" >> $GITHUB_STEP_SUMMARY
+          if grep -q "TEST SUCCEEDED" ios/test-output-runtime.log; then
+            echo "All tests passed." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Tests failed or incomplete. See artifact log." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload test log (${{ matrix.slug }})
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-output-runtime-${{ matrix.slug }}
+          path: ios/test-output-runtime.log
+
   admin-e2e:
     name: Admin E2E (Playwright)
+    if: github.event_name == 'push' || github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && !inputs.dump_ios_sim_inventory && !inputs.run_runtime_matrix)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
